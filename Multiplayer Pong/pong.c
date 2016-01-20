@@ -4,7 +4,7 @@
 //
 //
 
-#include <stdio.h>
+#include "pong.h"
 
 void pong() {
     // insert code here...

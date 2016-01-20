@@ -14,6 +14,20 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
+               BlueprintIdentifier = "4603A86F1C5036C900F2D26C"
+               BuildableName = "Server"
+               BlueprintName = "Server"
+               ReferencedContainer = "container:Multiplayer Pong.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
                BlueprintIdentifier = "4603A8581C5026EC00F2D26C"
                BuildableName = "Multiplayer Pong"
                BlueprintName = "Multiplayer Pong"

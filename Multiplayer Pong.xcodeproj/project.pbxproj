@@ -9,13 +9,21 @@
 /* Begin PBXBuildFile section */
 		4603A85D1C5026EC00F2D26C /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 4603A85C1C5026EC00F2D26C /* main.c */; };
 		4603A8641C50293F00F2D26C /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 4603A8631C50293F00F2D26C /* README.md */; };
-		4603A8691C502D0F00F2D26C /* pong.c in Sources */ = {isa = PBXBuildFile; fileRef = 4603A8671C502D0F00F2D26C /* pong.c */; settings = {ASSET_TAGS = (); }; };
-		883589981C502BC300F96EC8 /* server.c in Sources */ = {isa = PBXBuildFile; fileRef = 883589971C502BC300F96EC8 /* server.c */; };
-		8835899A1C502BCF00F96EC8 /* client.c in Sources */ = {isa = PBXBuildFile; fileRef = 883589991C502BCF00F96EC8 /* client.c */; };
+		4603A8731C5036C900F2D26C /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 4603A8721C5036C900F2D26C /* main.c */; };
+		4603A8971C50392D00F2D26C /* pong.c in Sources */ = {isa = PBXBuildFile; fileRef = 4603A8951C50392D00F2D26C /* pong.c */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		4603A8571C5026EC00F2D26C /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+		4603A86E1C5036C900F2D26C /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = /usr/share/man/man1/;
@@ -30,13 +38,21 @@
 		4603A8591C5026EC00F2D26C /* Multiplayer Pong */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Multiplayer Pong"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4603A85C1C5026EC00F2D26C /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		4603A8631C50293F00F2D26C /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		4603A8671C502D0F00F2D26C /* pong.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pong.c; sourceTree = "<group>"; };
-		883589971C502BC300F96EC8 /* server.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = server.c; sourceTree = "<group>"; };
-		883589991C502BCF00F96EC8 /* client.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = client.c; sourceTree = "<group>"; };
+		4603A8701C5036C900F2D26C /* Server */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Server; sourceTree = BUILT_PRODUCTS_DIR; };
+		4603A8721C5036C900F2D26C /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
+		4603A8951C50392D00F2D26C /* pong.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pong.c; sourceTree = "<group>"; };
+		4603A8961C50392D00F2D26C /* pong.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pong.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		4603A8561C5026EC00F2D26C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4603A86D1C5036C900F2D26C /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -50,6 +66,7 @@
 			isa = PBXGroup;
 			children = (
 				4603A85B1C5026EC00F2D26C /* Multiplayer Pong */,
+				4603A8711C5036C900F2D26C /* Server */,
 				4603A85A1C5026EC00F2D26C /* Products */,
 				4603A8631C50293F00F2D26C /* README.md */,
 			);
@@ -59,6 +76,7 @@
 			isa = PBXGroup;
 			children = (
 				4603A8591C5026EC00F2D26C /* Multiplayer Pong */,
+				4603A8701C5036C900F2D26C /* Server */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -66,28 +84,19 @@
 		4603A85B1C5026EC00F2D26C /* Multiplayer Pong */ = {
 			isa = PBXGroup;
 			children = (
-				4603A8651C502CEC00F2D26C /* client-server */,
 				4603A85C1C5026EC00F2D26C /* main.c */,
-				4603A8661C502CFB00F2D26C /* pong */,
+				4603A8951C50392D00F2D26C /* pong.c */,
+				4603A8961C50392D00F2D26C /* pong.h */,
 			);
 			path = "Multiplayer Pong";
 			sourceTree = "<group>";
 		};
-		4603A8651C502CEC00F2D26C /* client-server */ = {
+		4603A8711C5036C900F2D26C /* Server */ = {
 			isa = PBXGroup;
 			children = (
-				883589971C502BC300F96EC8 /* server.c */,
-				883589991C502BCF00F96EC8 /* client.c */,
+				4603A8721C5036C900F2D26C /* main.c */,
 			);
-			name = "client-server";
-			sourceTree = "<group>";
-		};
-		4603A8661C502CFB00F2D26C /* pong */ = {
-			isa = PBXGroup;
-			children = (
-				4603A8671C502D0F00F2D26C /* pong.c */,
-			);
-			name = pong;
+			path = Server;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -110,6 +119,23 @@
 			productReference = 4603A8591C5026EC00F2D26C /* Multiplayer Pong */;
 			productType = "com.apple.product-type.tool";
 		};
+		4603A86F1C5036C900F2D26C /* Server */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4603A8741C5036C900F2D26C /* Build configuration list for PBXNativeTarget "Server" */;
+			buildPhases = (
+				4603A86C1C5036C900F2D26C /* Sources */,
+				4603A86D1C5036C900F2D26C /* Frameworks */,
+				4603A86E1C5036C900F2D26C /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Server;
+			productName = Server;
+			productReference = 4603A8701C5036C900F2D26C /* Server */;
+			productType = "com.apple.product-type.tool";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -119,6 +145,9 @@
 				LastUpgradeCheck = 0700;
 				TargetAttributes = {
 					4603A8581C5026EC00F2D26C = {
+						CreatedOnToolsVersion = 7.0;
+					};
+					4603A86F1C5036C900F2D26C = {
 						CreatedOnToolsVersion = 7.0;
 					};
 				};
@@ -136,6 +165,7 @@
 			projectRoot = "";
 			targets = (
 				4603A8581C5026EC00F2D26C /* Multiplayer Pong */,
+				4603A86F1C5036C900F2D26C /* Server */,
 			);
 		};
 /* End PBXProject section */
@@ -145,11 +175,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4603A8691C502D0F00F2D26C /* pong.c in Sources */,
-				8835899A1C502BCF00F96EC8 /* client.c in Sources */,
+				4603A8971C50392D00F2D26C /* pong.c in Sources */,
 				4603A8641C50293F00F2D26C /* README.md in Sources */,
-				883589981C502BC300F96EC8 /* server.c in Sources */,
 				4603A85D1C5026EC00F2D26C /* main.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4603A86C1C5036C900F2D26C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4603A8731C5036C900F2D26C /* main.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -247,6 +283,20 @@
 			};
 			name = Release;
 		};
+		4603A8751C5036C900F2D26C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		4603A8761C5036C900F2D26C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -267,6 +317,14 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		4603A8741C5036C900F2D26C /* Build configuration list for PBXNativeTarget "Server" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4603A8751C5036C900F2D26C /* Debug */,
+				4603A8761C5036C900F2D26C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 	};
