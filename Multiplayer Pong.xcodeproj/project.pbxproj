@@ -10,7 +10,7 @@
 		4603A85D1C5026EC00F2D26C /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 4603A85C1C5026EC00F2D26C /* main.c */; };
 		4603A8641C50293F00F2D26C /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 4603A8631C50293F00F2D26C /* README.md */; };
 		4603A8731C5036C900F2D26C /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 4603A8721C5036C900F2D26C /* main.c */; };
-		4603A8971C50392D00F2D26C /* pong.c in Sources */ = {isa = PBXBuildFile; fileRef = 4603A8951C50392D00F2D26C /* pong.c */; settings = {ASSET_TAGS = (); }; };
+		4603A8971C50392D00F2D26C /* pong.c in Sources */ = {isa = PBXBuildFile; fileRef = 4603A8951C50392D00F2D26C /* pong.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -35,13 +35,14 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		4603A8591C5026EC00F2D26C /* Multiplayer Pong */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Multiplayer Pong"; sourceTree = BUILT_PRODUCTS_DIR; };
+		4603A8591C5026EC00F2D26C /* Multiplayer Pong */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; name = "Multiplayer Pong"; path = "/Users/rosewang/Dropbox (MIT)/'15-'16/6.179/multiplayer_pong/build/Debug/Multiplayer Pong"; sourceTree = "<absolute>"; };
 		4603A85C1C5026EC00F2D26C /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		4603A8631C50293F00F2D26C /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		4603A8701C5036C900F2D26C /* Server */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Server; sourceTree = BUILT_PRODUCTS_DIR; };
 		4603A8721C5036C900F2D26C /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		4603A8951C50392D00F2D26C /* pong.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pong.c; sourceTree = "<group>"; };
 		4603A8961C50392D00F2D26C /* pong.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pong.h; sourceTree = "<group>"; };
+		8835899B1C5042F600F96EC8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text; name = en; path = "en.lproj/Multiplayer Pong"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,7 +76,7 @@
 		4603A85A1C5026EC00F2D26C /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				4603A8591C5026EC00F2D26C /* Multiplayer Pong */,
+				8835899C1C5042F600F96EC8 /* Multiplayer Pong */,
 				4603A8701C5036C900F2D26C /* Server */,
 			);
 			name = Products;
@@ -190,6 +191,17 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		8835899C1C5042F600F96EC8 /* Multiplayer Pong */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8835899B1C5042F600F96EC8 /* en */,
+			);
+			name = "Multiplayer Pong";
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		4603A85E1C5026EC00F2D26C /* Debug */ = {
@@ -325,6 +337,7 @@
 				4603A8761C5036C900F2D26C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
