@@ -37,11 +37,11 @@
 /* Begin PBXFileReference section */
 		4603A85C1C5026EC00F2D26C /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		4603A8631C50293F00F2D26C /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		4603A8701C5036C900F2D26C /* Server */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; name = Server; path = "/Users/Larry/Dropbox (MIT)/6.179/Project/Multiplayer Pong/build/Debug/Server"; sourceTree = "<absolute>"; };
 		4603A8721C5036C900F2D26C /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		4603A8951C50392D00F2D26C /* pong.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pong.c; sourceTree = "<group>"; };
 		4603A8961C50392D00F2D26C /* pong.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pong.h; sourceTree = "<group>"; };
-		46B56FF01C50465400F0CCD6 /* Multiplayer Pong */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; name = "Multiplayer Pong"; path = "/Users/Larry/Dropbox (MIT)/6.179/Project/Multiplayer Pong/build/Debug/Multiplayer Pong"; sourceTree = "<absolute>"; };
+		883589A01C50475A00F96EC8 /* Multiplayer Pong */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; name = "Multiplayer Pong"; path = "/Users/rosewang/Dropbox (MIT)/'15-'16/6.179/multiplayer_pong/build/Debug/Multiplayer Pong"; sourceTree = "<absolute>"; };
+		883589A11C50475A00F96EC8 /* Server */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; name = Server; path = "/Users/rosewang/Dropbox (MIT)/'15-'16/6.179/multiplayer_pong/build/Debug/Server"; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,7 +106,7 @@
 			);
 			name = "Multiplayer Pong";
 			productName = "Multiplayer Pong";
-			productReference = 46B56FF01C50465400F0CCD6 /* Multiplayer Pong */;
+			productReference = 883589A01C50475A00F96EC8 /* Multiplayer Pong */;
 			productType = "com.apple.product-type.tool";
 		};
 		4603A86F1C5036C900F2D26C /* Server */ = {
@@ -123,7 +123,7 @@
 			);
 			name = Server;
 			productName = Server;
-			productReference = 4603A8701C5036C900F2D26C /* Server */;
+			productReference = 883589A11C50475A00F96EC8 /* Server */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
