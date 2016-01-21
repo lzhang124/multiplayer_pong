@@ -6,7 +6,8 @@
 
 #include "pong.h"
 
-void pong() {
+void pong()
+{
     // insert code here...
     printf("Hello, World!\n");
 }
