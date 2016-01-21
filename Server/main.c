@@ -29,14 +29,16 @@ void server()
     int master_socket;
     master_socket = socket(AF_INET, SOCK_STREAM, 0); // address domain, socket type, protocol
     if (master_socket < 0)
+    {
         perror("Error opening socket");
+    }
     
     // set up server address and port
     struct sockaddr_in server_addr;
     bzero((char *) &server_addr, sizeof(server_addr));
     server_addr.sin_family = AF_INET;
     server_addr.sin_port = htons(SERVER_PORT);
-    server_addr.sin_addr.s_addr = INADDR_ANY; // IP address of host
+    server_addr.sin_addr.s_addr = INADDR_ANY; // IP address of host aka IP address of my machine
     
     // bind socket to server address + serverPort
     if (bind(master_socket, (struct sockaddr *) &server_addr, sizeof(server_addr)) < 0)
@@ -74,35 +76,35 @@ void server()
             // socket descriptor
             sd = client_sockets[i];
             
-            // if valid socket descriptor then add to read list
-            if (sd > 0)
+            //if valid socket descriptor then add to read list
+            if(sd > 0)
             {
-                FD_SET(sd, &readfds);
+                FD_SET( sd , &readfds);
             }
             
-            // highest file descriptor number, need it for the select function
-            if (sd > max_sd)
+            //highest file descriptor number, need it for the select function
+            if(sd > max_sd)
             {
                 max_sd = sd;
             }
         }
         
-        // wait for an activity on one of the sockets, timeout is NULL, so wait indefinitely
-        int activity = select(max_sd + 1, &readfds, NULL, NULL, NULL);
-        
+        //wait for an activity on one of the sockets , timeout is NULL , so wait indefinitely
+        int activity = select(max_sd + 1 , &readfds , NULL , NULL , NULL);
         if (activity < 0)
         {
             printf("select error");
         }
         
+        //If something happened on the master socket , then its an incoming connection
         int new_socket;
         
         // if something happened on the master socket, then it's an incoming connection
         if (FD_ISSET(master_socket, &readfds))
         {
-            if ((new_socket = accept(master_socket, (struct sockaddr *) &cli_addr, &clilen)) < 0)
+            if ((new_socket = accept(master_socket, (struct sockaddr *)&cli_addr, &clilen)) < 0)
             {
-                perror("accept");
+                perror("accept error");
                 exit(EXIT_FAILURE);
             }
             
@@ -112,8 +114,8 @@ void server()
             // add new socket to array of sockets
             for (i = 0; i < MAX_CLIENTS; i++)
             {
-                // if position is empty
-                if (client_sockets[i] == 0)
+                //if position is empty
+                if(client_sockets[i] == 0 )
                 {
                     client_sockets[i] = new_socket;
                     printf("Adding to list of sockets as %d\n", i);
