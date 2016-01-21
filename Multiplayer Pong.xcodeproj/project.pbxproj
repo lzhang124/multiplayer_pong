@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		4603A85D1C5026EC00F2D26C /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 4603A85C1C5026EC00F2D26C /* main.c */; };
-		4603A8641C50293F00F2D26C /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 4603A8631C50293F00F2D26C /* README.md */; };
 		4603A8731C5036C900F2D26C /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 4603A8721C5036C900F2D26C /* main.c */; };
 		4603A8971C50392D00F2D26C /* pong.c in Sources */ = {isa = PBXBuildFile; fileRef = 4603A8951C50392D00F2D26C /* pong.c */; };
 		462B42491C517F9F005889C7 /* server.c in Sources */ = {isa = PBXBuildFile; fileRef = 462B42471C517F9F005889C7 /* server.c */; settings = {ASSET_TAGS = (); }; };
@@ -38,7 +37,6 @@
 
 /* Begin PBXFileReference section */
 		4603A85C1C5026EC00F2D26C /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
-		4603A8631C50293F00F2D26C /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		4603A8721C5036C900F2D26C /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		4603A8951C50392D00F2D26C /* pong.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pong.c; sourceTree = "<group>"; };
 		4603A8961C50392D00F2D26C /* pong.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pong.h; sourceTree = "<group>"; };
@@ -73,7 +71,6 @@
 			children = (
 				4603A85B1C5026EC00F2D26C /* Multiplayer Pong */,
 				4603A8711C5036C900F2D26C /* Server */,
-				4603A8631C50293F00F2D26C /* README.md */,
 				462B42451C51720F005889C7 /* Multiplayer Pong */,
 				462B42461C51720F005889C7 /* Server */,
 			);
@@ -178,7 +175,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				4603A8971C50392D00F2D26C /* pong.c in Sources */,
-				4603A8641C50293F00F2D26C /* README.md in Sources */,
 				4603A85D1C5026EC00F2D26C /* main.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
