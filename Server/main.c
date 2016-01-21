@@ -126,7 +126,7 @@ void server()
             }
         }
         
-        // else it's some IO operation on some other socket
+        // it's some IO operation on some other socket
         for (i = 0; i < MAX_CLIENTS; i++)
         {
             sd = client_sockets[i];
