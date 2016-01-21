@@ -38,7 +38,7 @@ void server()
     bzero((char *) &server_addr, sizeof(server_addr));
     server_addr.sin_family = AF_INET;
     server_addr.sin_port = htons(SERVER_PORT);
-    server_addr.sin_addr.s_addr = INADDR_ANY; // IP address of host aka IP address of my machine
+    server_addr.sin_addr.s_addr = INADDR_ANY; // IP address of host
     
     // bind socket to server address + serverPort
     if (bind(master_socket, (struct sockaddr *) &server_addr, sizeof(server_addr)) < 0)
@@ -61,7 +61,8 @@ void server()
     char buffer[256];
     bzero(buffer, 256);
     
-    while(1)
+    int counter = 0;
+    while(counter < MAX_CLIENTS)
     {
         // clear the socket set
         FD_ZERO(&readfds);
@@ -76,21 +77,22 @@ void server()
             // socket descriptor
             sd = client_sockets[i];
             
-            //if valid socket descriptor then add to read list
-            if(sd > 0)
+            // if valid socket descriptor then add to read list
+            if (sd > 0)
             {
-                FD_SET( sd , &readfds);
+                FD_SET(sd, &readfds);
             }
             
-            //highest file descriptor number, need it for the select function
-            if(sd > max_sd)
+            // highest file descriptor number, need it for the select function
+            if (sd > max_sd)
             {
                 max_sd = sd;
             }
         }
         
-        //wait for an activity on one of the sockets , timeout is NULL , so wait indefinitely
-        int activity = select(max_sd + 1 , &readfds , NULL , NULL , NULL);
+        // wait for an activity on one of the sockets, timeout is NULL, so wait indefinitely
+        int activity = select(max_sd + 1, &readfds, NULL, NULL, NULL);
+        
         if (activity < 0)
         {
             printf("select error");
@@ -98,24 +100,23 @@ void server()
         
         //If something happened on the master socket , then its an incoming connection
         int new_socket;
-        
-        // if something happened on the master socket, then it's an incoming connection
         if (FD_ISSET(master_socket, &readfds))
         {
-            if ((new_socket = accept(master_socket, (struct sockaddr *)&cli_addr, &clilen)) < 0)
+            if ((new_socket = accept(master_socket, (struct sockaddr *) &cli_addr, &clilen)) < 0)
             {
                 perror("accept error");
                 exit(EXIT_FAILURE);
             }
             
-            // inform user of socket number - used in send and receive commands
-            printf("New connection, socket fd is %d, port : %d \n", new_socket, ntohs(cli_addr.sin_port));
+            counter++;
+            //inform user of socket number - used in send and receive commands
+            printf("New connection , socket fd is %d , port : %d \n" , new_socket , ntohs(cli_addr.sin_port));
             
             // add new socket to array of sockets
             for (i = 0; i < MAX_CLIENTS; i++)
             {
-                //if position is empty
-                if(client_sockets[i] == 0 )
+                // if position is empty
+                if (client_sockets[i] == 0)
                 {
                     client_sockets[i] = new_socket;
                     printf("Adding to list of sockets as %d\n", i);
@@ -126,34 +127,32 @@ void server()
         }
         
         // else it's some IO operation on some other socket
-        else
+        for (i = 0; i < MAX_CLIENTS; i++)
         {
-            for (i = 0; i < MAX_CLIENTS; i++)
+            sd = client_sockets[i];
+            
+            if (FD_ISSET(sd, &readfds))
             {
-                sd = client_sockets[i];
-                
-                if (FD_ISSET(sd, &readfds))
+                //Check if it was for closing , and also read the incoming message
+                long valread = read( sd , buffer, 255);
+                if (valread == 0)
                 {
-                    // check if it was for closing, and also read the incoming message
-                    long valread = read(sd, buffer, 255);
-                    if (valread == 0)
-                    {
-                        // somebody disconnected, get his details and print
-                        getpeername(sd, (struct sockaddr *) &cli_addr, &clilen);
-                        printf("Host disconnected, port %d \n", ntohs(cli_addr.sin_port));
-                        
-                        // close the socket and mark as 0 in list for reuse
-                        close(sd);
-                        client_sockets[i] = 0;
-                    }
+                    //Somebody disconnected , get his details and print
+                    getpeername(sd , (struct sockaddr*)&cli_addr , &clilen);
+                    printf("Host disconnected , port %d \n" , ntohs(cli_addr.sin_port));
+                    counter--;
                     
-                    // echo back the message that came in
-                    else
-                    {
-                        // set the string terminating NULL byte on the end of the data read
-                        buffer[valread] = '\0';
-                        send(sd, buffer, strlen(buffer), 0);
-                    }
+                    // close the socket and mark as 0 in list for reuse
+                    close(sd);
+                    client_sockets[i] = 0;
+                }
+                
+                // echo back the message that came in
+                else
+                {
+                    // set the string terminating NULL byte on the end of the data read
+                    buffer[valread] = '\0';
+                    send(sd, buffer, strlen(buffer), 0);
                 }
             }
         }
