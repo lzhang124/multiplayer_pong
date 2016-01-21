@@ -100,6 +100,8 @@ void server()
         
         //If something happened on the master socket , then its an incoming connection
         int new_socket;
+        
+        // If something happened on the master socket, then it's an incoming connection
         if (FD_ISSET(master_socket, &readfds))
         {
             if ((new_socket = accept(master_socket, (struct sockaddr *) &cli_addr, &clilen)) < 0)
@@ -108,9 +110,9 @@ void server()
                 exit(EXIT_FAILURE);
             }
             
+            // inform user of socket number - used in send and receive commands
             counter++;
-            //inform user of socket number - used in send and receive commands
-            printf("New connection , socket fd is %d , port : %d \n" , new_socket , ntohs(cli_addr.sin_port));
+            printf("New connection, socket fd is %d, port : %d \n", new_socket, ntohs(cli_addr.sin_port));
             
             // add new socket to array of sockets
             for (i = 0; i < MAX_CLIENTS; i++)
@@ -133,13 +135,13 @@ void server()
             
             if (FD_ISSET(sd, &readfds))
             {
-                //Check if it was for closing , and also read the incoming message
-                long valread = read( sd , buffer, 255);
+                // check if it was for closing, and also read the incoming message
+                long valread = read(sd, buffer, 255);
                 if (valread == 0)
                 {
-                    //Somebody disconnected , get his details and print
-                    getpeername(sd , (struct sockaddr*)&cli_addr , &clilen);
-                    printf("Host disconnected , port %d \n" , ntohs(cli_addr.sin_port));
+                    // somebody disconnected, get his details and print
+                    getpeername(sd, (struct sockaddr *) &cli_addr, &clilen);
+                    printf("Host disconnected, port %d \n", ntohs(cli_addr.sin_port));
                     counter--;
                     
                     // close the socket and mark as 0 in list for reuse
