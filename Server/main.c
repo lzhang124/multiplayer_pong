@@ -11,46 +11,159 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
+#include <sys/time.h>
 
-//const int serverPort = 9000;
+#define SERVER_PORT 9000
+#define TRUE 1
+#define FALSE 0
+#define MAX_CLIENTS 10
 
 void server()
 {
-    // open socket
-    int sockfd;
-    sockfd = socket(AF_INET6, SOCK_STREAM, 0); // address domain, socket type, protocol
-    if (sockfd < 0)
+    // client sockets initialized to 0
+    int client_sockets[MAX_CLIENTS], i;
+    for (i = 0; i < MAX_CLIENTS; i++)
+    {
+        client_sockets[i] = 0;
+    }
+    
+    // create server socket
+    int master_socket;
+    master_socket = socket(AF_INET, SOCK_STREAM, 0); // address domain, socket type, protocol
+    if (master_socket < 0)
         perror("Error opening socket");
     
     // set up server address and port
     struct sockaddr_in server_addr;
-    bzero(&server_addr, sizeof(server_addr));
-    server_addr.sin_family = AF_INET6;
-    server_addr.sin_port = htons(9000);
+    bzero((char *) &server_addr, sizeof(server_addr));
+    server_addr.sin_family = AF_INET;
+    server_addr.sin_port = htons(SERVER_PORT);
     server_addr.sin_addr.s_addr = INADDR_ANY; // IP address of host aka IP address of my machine
     
+    
+    
+//    //set master socket to allow multiple connections , this is just a good habit, it will work without this
+//    if( setsockopt(master_socket, SOL_SOCKET, SO_REUSEADDR, (char *)&opt, sizeof(opt)) < 0 )
+//    {
+//        perror("setsockopt");
+//        exit(EXIT_FAILURE);
+//    }
+    
+    
     // bind socket to server address + serverPort
-    if (bind(sockfd, (struct sockaddr *) &server_addr, sizeof(server_addr)) < 0)
+    if (bind(master_socket, (struct sockaddr *) &server_addr, sizeof(server_addr)) < 0)
         perror("Error binding socket");
     
     // listen
-    listen(sockfd, 5); // listen on socket for at most 5 backlog queue
+    listen(master_socket, 5); // listen on socket for at most 5 backlog queue
     
-    // accept incoming connection, need client address
+    // accept incoming connections, need client address
     struct sockaddr_in cli_addr;
+    socklen_t clilen = sizeof(cli_addr);
 
-    int newsocketfd = accept(sockfd, (struct sockaddr *) &cli_addr, sizeof(cli_addr));
-    while (newsocketfd > 0)
+    //set of socket descriptors
+    fd_set readfds;
+    int max_sd, sd;
+    
+    // read from socket into buffer
+    char buffer[256];
+    bzero(buffer, 256);
+    
+    while(TRUE)
     {
-        // read from socket into buffer
-        char buffer[256];
-        bzero(buffer, 256);
-        int n = read(newsocketfd, buffer, 255);
-        if (n < 0)
-            perror("Error in reading");
+        //clear the socket set
+        FD_ZERO(&readfds);
         
-        close(newsocketfd);
-        newsocketfd = accept(sockfd, (struct sockaddr *) &cli_addr, sizeof(cli_addr));
+        //add master socket to set
+        FD_SET(master_socket, &readfds);
+        max_sd = master_socket;
+        
+        //add child sockets to set
+        for (i = 0 ; i < MAX_CLIENTS ; i++)
+        {
+            //socket descriptor
+            sd = client_sockets[i];
+            
+            //if valid socket descriptor then add to read list
+            if(sd > 0)
+                FD_SET( sd , &readfds);
+            
+            //highest file descriptor number, need it for the select function
+            if(sd > max_sd)
+                max_sd = sd;
+        }
+        
+        //wait for an activity on one of the sockets , timeout is NULL , so wait indefinitely
+        int activity = select(max_sd + 1 , &readfds , NULL , NULL , NULL);
+        
+        if ((activity < 0))
+        {
+            printf("select error");
+        }
+        
+        int new_socket;
+        //If something happened on the master socket , then its an incoming connection
+        if (FD_ISSET(master_socket, &readfds))
+        {
+            if ((new_socket = accept(master_socket, (struct sockaddr *)&cli_addr, &clilen))<0)
+            {
+                perror("accept");
+                exit(EXIT_FAILURE);
+            }
+            
+            //inform user of socket number - used in send and receive commands
+            printf("New connection , socket fd is %d , port : %d \n" , new_socket , ntohs(cli_addr.sin_port));
+            
+            if (send(new_socket, "hi", 2, 0) < 0)
+            {
+                perror("send error");
+            }
+            
+            printf("Welcome message good");
+            
+            //add new socket to array of sockets
+            for (i = 0; i < MAX_CLIENTS; i++)
+            {
+                //if position is empty
+                if( client_sockets[i] == 0 )
+                {
+                    client_sockets[i] = new_socket;
+                    printf("Adding to list of sockets as %d\n" , i);
+                    
+                    break;
+                }
+            }
+        }
+        
+        //else its some IO operation on some other socket
+        for (i = 0; i < MAX_CLIENTS; i++)
+        {
+            sd = client_sockets[i];
+            
+            if (FD_ISSET( sd , &readfds))
+            {
+                //Check if it was for closing , and also read the incoming message
+                int valread = read( sd , buffer, 255);
+                if (valread == 0)
+                {
+                    //Somebody disconnected , get his details and print
+                    getpeername(sd , (struct sockaddr*)&cli_addr , &clilen);
+                    printf("Host disconnected , port %d \n" , ntohs(cli_addr.sin_port));
+                    
+                    //Close the socket and mark as 0 in list for reuse
+                    close( sd );
+                    client_sockets[i] = 0;
+                }
+                
+                //Echo back the message that came in
+                else
+                {
+                    //set the string terminating NULL byte on the end of the data read
+                    buffer[valread] = '\0';
+                    send(sd , buffer , strlen(buffer) , 0 );
+                }
+            }
+        }
     }
 }
 
