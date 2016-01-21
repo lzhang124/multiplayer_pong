@@ -55,7 +55,7 @@ void server()
     struct sockaddr_in cli_addr;
     socklen_t clilen = sizeof(cli_addr);
 
-    //set of socket descriptors
+    //s et of socket descriptors
     fd_set readfds;
     int max_sd, sd;
     
@@ -66,17 +66,17 @@ void server()
     int counter = 0;
     while(counter < MAX_CLIENTS)
     {
-        //clear the socket set
+        // clear the socket set
         FD_ZERO(&readfds);
         
-        //add master socket to set
+        // add master socket to set
         FD_SET(master_socket, &readfds);
         max_sd = master_socket;
         
-        //add child sockets to set
-        for (i = 0 ; i < MAX_CLIENTS ; i++)
+        // add child sockets to set
+        for (i = 0; i < MAX_CLIENTS; i++)
         {
-            //socket descriptor
+            // socket descriptor
             sd = client_sockets[i];
             
             //if valid socket descriptor then add to read list
@@ -120,19 +120,19 @@ void server()
                 if(client_sockets[i] == 0 )
                 {
                     client_sockets[i] = new_socket;
-                    printf("Adding to list of sockets as %d\n" , i);
+                    printf("Adding to list of sockets as %d\n", i);
                     
                     break;
                 }
             }
         }
         
-        //else its some IO operation on some other socket
+        // else it's some IO operation on some other socket
         for (i = 0; i < MAX_CLIENTS; i++)
         {
             sd = client_sockets[i];
             
-            if (FD_ISSET( sd , &readfds))
+            if (FD_ISSET(sd, &readfds))
             {
                 //Check if it was for closing , and also read the incoming message
                 long valread = read( sd , buffer, 255);
@@ -143,33 +143,25 @@ void server()
                     printf("Host disconnected , port %d \n" , ntohs(cli_addr.sin_port));
                     counter--;
                     
-                    //Close the socket and mark as 0 in list for reuse
-                    close( sd );
+                    // close the socket and mark as 0 in list for reuse
+                    close(sd);
                     client_sockets[i] = 0;
                 }
                 
-                //Echo back the message that came in
+                // echo back the message that came in
                 else
                 {
-                    //set the string terminating NULL byte on the end of the data read
+                    // set the string terminating NULL byte on the end of the data read
                     buffer[valread] = '\0';
-                    send(sd , buffer , strlen(buffer) , 0 );
+                    send(sd, buffer, strlen(buffer), 0);
                 }
             }
         }
     }
 }
 
-int main(int argc, char *argv[])
+int main()
 {
     server();
     return 0;
 }
-
-//struct sockaddr_in
-//{
-//    short   sin_family; /* must be AF_INET */
-//    u_short sin_port;
-//    struct  in_addr sin_addr;
-//    char    sin_zero[8]; /* Not used, must be zero */
-//};
