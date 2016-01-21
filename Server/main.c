@@ -53,7 +53,7 @@ void server()
     struct sockaddr_in cli_addr;
     socklen_t clilen = sizeof(cli_addr);
 
-    //s et of socket descriptors
+    // set of socket descriptors
     fd_set readfds;
     int max_sd, sd;
     
@@ -98,10 +98,8 @@ void server()
             printf("select error");
         }
         
-        //If something happened on the master socket , then its an incoming connection
+        // if something happened on the master socket, then it's an incoming connection
         int new_socket;
-        
-        // If something happened on the master socket, then it's an incoming connection
         if (FD_ISSET(master_socket, &readfds))
         {
             if ((new_socket = accept(master_socket, (struct sockaddr *) &cli_addr, &clilen)) < 0)
