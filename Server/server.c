@@ -113,7 +113,6 @@ void start_server(int port_num)
         
         // wait for an activity on one of the sockets, timeout is NULL, so wait indefinitely
         int activity = select(max_sd + 1, &readfds, NULL, NULL, NULL);
-        
         if (activity < 0)
         {
             printf("select error");
