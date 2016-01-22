@@ -16,18 +16,14 @@
 #include <netinet/in.h>
 #include <sys/time.h>
 
-#define MAX_PLAYERS 10
+#include "pong.h"
 
-struct socket_manager
-{
-    int serverSocket;
-    int serverPort;
-    int numberConnections;
-    int players[MAX_PLAYERS];
-};
+#define MAX_PLAYERS 4
 
-void server();
+void startServer(int port_num);
 
-void closeSocket(int socket, struct socket_manager *manager);
+void startGame(Game *game);
+
+void endGame(Game *game);
 
 #endif /* server_h */

@@ -6,7 +6,37 @@
 
 #include "server.h"
 
-void server()
+typedef struct game
+{
+    int server_socket;
+    int server_port;
+    int number_players;
+    struct player *players[MAX_PLAYERS];
+    
+    
+    
+    // may not need these
+    int max_score;
+    int max_player;
+} Game;
+
+void start_game()
+{
+    
+}
+
+void end_game()
+{
+    
+}
+
+void error(const char *msg)
+{
+    perror(msg);
+    exit(0);
+}
+
+void start_server(int port_num)
 {
     // client sockets initialized to 0
     int client_sockets[MAX_PLAYERS], i;
@@ -27,7 +57,8 @@ void server()
     struct sockaddr_in server_addr;
     bzero((char *) &server_addr, sizeof(server_addr));
     server_addr.sin_family = AF_INET;
-    server_addr.sin_port = htons(SERVER_PORT);
+    ///CHANGE PORTS FOR GAMES
+    server_addr.sin_port = htons(port_num);
     server_addr.sin_addr.s_addr = INADDR_ANY; // IP address of host
     
     // bind socket to server address + serverPort
@@ -94,7 +125,8 @@ void server()
         {
             if ((new_socket = accept(master_socket, (struct sockaddr *) &cli_addr, &clilen)) < 0)
             {
-                error("accept error");
+                perror("accept error");
+                exit(EXIT_FAILURE);
             }
             
             // inform user of socket number - used in send and receive commands

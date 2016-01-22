@@ -6,8 +6,10 @@
 
 #include "server.h"
 
-int main()
+#define SERVER_PORT 9000
+
+int main(int argc, char *argv[])
 {
-    server();
+    startServer(SERVER_PORT);
     return 0;
 }
