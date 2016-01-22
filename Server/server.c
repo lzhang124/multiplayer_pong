@@ -14,7 +14,6 @@ typedef struct game
     struct player *players[MAX_PLAYERS];
     
     
-    
     // may not need these
     int max_score;
     int max_player;
@@ -38,8 +37,6 @@ void error(const char *msg)
 
 void start_server(int port_num)
 {
-    int i;
-    
     // client sockets initialized to 0
     int client_sockets[MAX_PLAYERS] = {0};
     
@@ -89,6 +86,7 @@ void start_server(int port_num)
         FD_SET(master_socket, &readfds);
         max_sd = master_socket;
         
+        int i;
         // add child sockets to set
         for (i = 0; i < MAX_PLAYERS; i++)
         {
