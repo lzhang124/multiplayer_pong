@@ -16,6 +16,6 @@
 #include <netinet/in.h>
 #include <netdb.h>
 
-void client(int argc, char *argv[]);
+void client(char *server_name[], int port_number);
 
 #endif /* client_h */
