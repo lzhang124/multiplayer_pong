@@ -12,7 +12,7 @@ void error(const char *msg)
     exit(0);
 }
 
-void client(char *server_name[], int port_number)
+void start_client(char *server_name[], int port_num)
 {
     // create client socket
     int master_socket;
@@ -33,7 +33,7 @@ void client(char *server_name[], int port_number)
     }
     bzero((char *) &serv_addr, sizeof(serv_addr));
     serv_addr.sin_family = AF_INET;
-    serv_addr.sin_port = htons(port_number);
+    serv_addr.sin_port = htons(port_num);
     bcopy((char *)server->h_addr,
           (char *)&serv_addr.sin_addr.s_addr,
           server->h_length);

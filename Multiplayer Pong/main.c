@@ -16,6 +16,6 @@ int main(int argc, char *argv[])
     }
     
     // second argument is the server name
-    client(&argv[1], SERVER_PORT);
+    start_client(&argv[1], SERVER_PORT);
     return 0;
 }
