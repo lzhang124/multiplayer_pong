@@ -174,5 +174,11 @@ void start_server(int port_num)
                 }
             }
         }
+        
+        // close the server after everyone has left
+        if (counter == 0) {
+            close(master_socket);
+            break;
+        }
     }
 }
