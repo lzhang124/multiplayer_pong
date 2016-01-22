@@ -10,6 +10,6 @@
 
 int main(int argc, char *argv[])
 {
-    startServer(SERVER_PORT);
+    start_server(SERVER_PORT);
     return 0;
 }

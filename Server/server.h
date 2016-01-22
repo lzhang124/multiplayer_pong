@@ -20,6 +20,6 @@
 
 #define MAX_PLAYERS 4
 
-void startServer(int port_num);
+void start_server(int port_num);
 
 #endif /* server_h */

@@ -176,8 +176,3 @@ void start_server(int port_num)
         }
     }
 }
-
-void closeSocket(int socket, struct socket_manager *manager)
-{
-    close(socket);
-}
