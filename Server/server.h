@@ -22,8 +22,4 @@
 
 void startServer(int port_num);
 
-void startGame(Game *game);
-
-void endGame(Game *game);
-
 #endif /* server_h */

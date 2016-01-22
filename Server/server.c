@@ -38,12 +38,10 @@ void error(const char *msg)
 
 void start_server(int port_num)
 {
+    int i;
+    
     // client sockets initialized to 0
-    int client_sockets[MAX_PLAYERS], i;
-    for (i = 0; i < MAX_PLAYERS; i++)
-    {
-        client_sockets[i] = 0;
-    }
+    int client_sockets[MAX_PLAYERS] = {0};
     
     // create server socket
     int master_socket;
@@ -57,7 +55,6 @@ void start_server(int port_num)
     struct sockaddr_in server_addr;
     bzero((char *) &server_addr, sizeof(server_addr));
     server_addr.sin_family = AF_INET;
-    ///CHANGE PORTS FOR GAMES
     server_addr.sin_port = htons(port_num);
     server_addr.sin_addr.s_addr = INADDR_ANY; // IP address of host
     
