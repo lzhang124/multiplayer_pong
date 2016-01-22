@@ -140,6 +140,7 @@ void server()
                     client_sockets[i] = 0;
                 }
                 
+                // CHANGE TO
                 // echo back the message that came in
                 else
                 {
