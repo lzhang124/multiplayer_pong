@@ -52,7 +52,8 @@ void start_client(char *server_name[], int port_num)
         bzero(buffer, 256);
         fgets(buffer, 255, stdin);
         
-        if (strcmp(buffer, "logout\n") == 0) {
+        if (strcmp(buffer, "logout\n") == 0)
+        {
             printf("Bye bye\n");
             break;
         }
