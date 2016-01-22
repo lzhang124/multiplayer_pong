@@ -9,6 +9,12 @@
 #define SERVER_PORT 9000
 #define MAX_CLIENTS 10
 
+void error(const char *msg)
+{
+    perror(msg);
+    exit(0);
+}
+
 void server()
 {
     // client sockets initialized to 0
@@ -23,7 +29,7 @@ void server()
     master_socket = socket(AF_INET, SOCK_STREAM, 0); // address domain, socket type, protocol
     if (master_socket < 0)
     {
-        perror("Error opening socket");
+        error("Error opening socket");
     }
     
     // set up server address and port
@@ -36,7 +42,7 @@ void server()
     // bind socket to server address + serverPort
     if (bind(master_socket, (struct sockaddr *) &server_addr, sizeof(server_addr)) < 0)
     {
-        perror("Error binding socket");
+        error("Error binding socket");
     }
     
     // listen
@@ -97,8 +103,7 @@ void server()
         {
             if ((new_socket = accept(master_socket, (struct sockaddr *) &cli_addr, &clilen)) < 0)
             {
-                perror("accept error");
-                exit(EXIT_FAILURE);
+                error("accept error");
             }
             
             // inform user of socket number - used in send and receive commands
