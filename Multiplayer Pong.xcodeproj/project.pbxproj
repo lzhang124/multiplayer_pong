@@ -15,7 +15,6 @@
 		462B424F1C5181A0005889C7 /* client.c in Sources */ = {isa = PBXBuildFile; fileRef = 462B424D1C5181A0005889C7 /* client.c */; settings = {ASSET_TAGS = (); }; };
 		469FE9801C528E76007B64E8 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 469FE97F1C528E76007B64E8 /* OpenGL.framework */; };
 		469FE9821C528EDF007B64E8 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 469FE9811C528EDF007B64E8 /* GLUT.framework */; };
-		469FE9991C528FCC007B64E8 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 469FE9981C528FCC007B64E8 /* Cocoa.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -54,7 +53,6 @@
 		462B424E1C5181A0005889C7 /* client.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = client.h; sourceTree = "<group>"; };
 		469FE97F1C528E76007B64E8 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		469FE9811C528EDF007B64E8 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
-		469FE9981C528FCC007B64E8 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,7 +60,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				469FE9991C528FCC007B64E8 /* Cocoa.framework in Frameworks */,
 				469FE9821C528EDF007B64E8 /* GLUT.framework in Frameworks */,
 				469FE9801C528E76007B64E8 /* OpenGL.framework in Frameworks */,
 			);
@@ -81,7 +78,6 @@
 		4603A8501C5026EC00F2D26C = {
 			isa = PBXGroup;
 			children = (
-				469FE9981C528FCC007B64E8 /* Cocoa.framework */,
 				469FE9811C528EDF007B64E8 /* GLUT.framework */,
 				469FE97F1C528E76007B64E8 /* OpenGL.framework */,
 				4603A85B1C5026EC00F2D26C /* Multiplayer Pong */,
