@@ -9,4 +9,16 @@
 
 #include <stdio.h>
 
+struct player
+{
+    int socket;
+    int score;
+};
+
+struct paddle
+{
+    double xCoord;
+    double yCoord;
+};
+
 #endif /* pong_h */

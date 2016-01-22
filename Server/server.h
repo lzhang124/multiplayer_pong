@@ -16,6 +16,18 @@
 #include <netinet/in.h>
 #include <sys/time.h>
 
+#define MAX_PLAYERS 10
+
+struct socket_manager
+{
+    int serverSocket;
+    int serverPort;
+    int numberConnections;
+    int players[MAX_PLAYERS];
+};
+
 void server();
+
+void closeSocket(int socket, struct socket_manager *manager);
 
 #endif /* server_h */

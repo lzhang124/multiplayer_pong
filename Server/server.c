@@ -6,14 +6,11 @@
 
 #include "server.h"
 
-#define SERVER_PORT 9000
-#define MAX_CLIENTS 10
-
 void server()
 {
     // client sockets initialized to 0
-    int client_sockets[MAX_CLIENTS], i;
-    for (i = 0; i < MAX_CLIENTS; i++)
+    int client_sockets[MAX_PLAYERS], i;
+    for (i = 0; i < MAX_PLAYERS; i++)
     {
         client_sockets[i] = 0;
     }
@@ -55,7 +52,7 @@ void server()
     bzero(buffer, 256);
     
     int counter = 0;
-    while(counter < MAX_CLIENTS)
+    while(counter < MAX_PLAYERS)
     {
         // clear the socket set
         FD_ZERO(&readfds);
@@ -65,7 +62,7 @@ void server()
         max_sd = master_socket;
         
         // add child sockets to set
-        for (i = 0; i < MAX_CLIENTS; i++)
+        for (i = 0; i < MAX_PLAYERS; i++)
         {
             // socket descriptor
             sd = client_sockets[i];
@@ -106,7 +103,7 @@ void server()
             printf("New connection, socket fd is %d, port : %d \n", new_socket, ntohs(cli_addr.sin_port));
             
             // add new socket to array of sockets
-            for (i = 0; i < MAX_CLIENTS; i++)
+            for (i = 0; i < MAX_PLAYERS; i++)
             {
                 // if position is empty
                 if (client_sockets[i] == 0)
@@ -120,7 +117,7 @@ void server()
         }
         
         // some IO operation on some other socket
-        for (i = 0; i < MAX_CLIENTS; i++)
+        for (i = 0; i < MAX_PLAYERS; i++)
         {
             sd = client_sockets[i];
             
@@ -140,7 +137,7 @@ void server()
                     client_sockets[i] = 0;
                 }
                 
-                // CHANGE TO
+                // CHANGE TO OUTPUTTING NEW LOCATIONS OF PADDLES AND BALLS
                 // echo back the message that came in
                 else
                 {
@@ -151,4 +148,9 @@ void server()
             }
         }
     }
+}
+
+void closeSocket(int socket, struct socket_manager *manager)
+{
+    close(socket);
 }
