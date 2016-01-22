@@ -12,6 +12,7 @@
 		4603A8971C50392D00F2D26C /* pong.c in Sources */ = {isa = PBXBuildFile; fileRef = 4603A8951C50392D00F2D26C /* pong.c */; };
 		462B42491C517F9F005889C7 /* server.c in Sources */ = {isa = PBXBuildFile; fileRef = 462B42471C517F9F005889C7 /* server.c */; settings = {ASSET_TAGS = (); }; };
 		462B424C1C518080005889C7 /* pong.c in Sources */ = {isa = PBXBuildFile; fileRef = 462B424A1C518080005889C7 /* pong.c */; settings = {ASSET_TAGS = (); }; };
+		462B424F1C5181A0005889C7 /* client.c in Sources */ = {isa = PBXBuildFile; fileRef = 462B424D1C5181A0005889C7 /* client.c */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -46,6 +47,8 @@
 		462B42481C517F9F005889C7 /* server.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = server.h; sourceTree = "<group>"; };
 		462B424A1C518080005889C7 /* pong.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pong.c; sourceTree = "<group>"; };
 		462B424B1C518080005889C7 /* pong.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pong.h; sourceTree = "<group>"; };
+		462B424D1C5181A0005889C7 /* client.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = client.c; sourceTree = "<group>"; };
+		462B424E1C5181A0005889C7 /* client.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = client.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,6 +83,8 @@
 			isa = PBXGroup;
 			children = (
 				4603A85C1C5026EC00F2D26C /* main.c */,
+				462B424D1C5181A0005889C7 /* client.c */,
+				462B424E1C5181A0005889C7 /* client.h */,
 				4603A8951C50392D00F2D26C /* pong.c */,
 				4603A8961C50392D00F2D26C /* pong.h */,
 			);
@@ -176,6 +181,7 @@
 			files = (
 				4603A8971C50392D00F2D26C /* pong.c in Sources */,
 				4603A85D1C5026EC00F2D26C /* main.c in Sources */,
+				462B424F1C5181A0005889C7 /* client.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
