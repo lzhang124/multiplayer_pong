@@ -91,7 +91,6 @@ void server()
         
         // wait for an activity on one of the sockets, timeout is NULL, so wait indefinitely
         int activity = select(max_sd + 1, &readfds, NULL, NULL, NULL);
-        
         if (activity < 0)
         {
             printf("select error");
@@ -103,7 +102,8 @@ void server()
         {
             if ((new_socket = accept(master_socket, (struct sockaddr *) &cli_addr, &clilen)) < 0)
             {
-                error("accept error");
+                perror("accept error");
+                exit(EXIT_FAILURE);
             }
             
             // inform user of socket number - used in send and receive commands
