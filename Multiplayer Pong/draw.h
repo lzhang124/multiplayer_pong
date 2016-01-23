@@ -2,8 +2,6 @@
 //  draw.h
 //  Multiplayer Pong
 //
-//  Created by Larry Zhang on 1/22/16.
-//
 //
 
 #ifndef draw_h

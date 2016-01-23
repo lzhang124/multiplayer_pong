@@ -73,23 +73,20 @@ void disconnect_player(Game *game, int sd)
 
 void pong(int port_num)
 {
-    int server_socket = start_server(port_num);
-    Game *game = init_game(server_socket, port_num);
+    int master_socket = start_server(port_num);
+    fd_set *readfds = init_readfds();
+    
+    Game *game = init_game(master_socket, port_num);
     
     // zero out all client_sockets
     int client_sockets[MAX_PLAYERS] = {0};
     
     while(game->number_players < MAX_PLAYERS)
     {
-        // set of socket descriptors
-        fd_set readfds;
-        // clear the socket set
-        FD_ZERO(&readfds);
-        
         // wait for players to join game
-        if (wait_for_connection(server_socket, MAX_PLAYERS, &readfds, client_sockets) == 1)
+        if (wait_for_connection(master_socket, MAX_PLAYERS, readfds, client_sockets) == 1)
         {
-            int player_socket = add_connection(server_socket, client_sockets, MAX_PLAYERS);
+            int player_socket = add_connection(master_socket, client_sockets, MAX_PLAYERS);
             add_player(game, player_socket);
         }
         else
@@ -98,7 +95,7 @@ void pong(int port_num)
             // read from socket into buffer
             char buffer[256] = {0};
             
-            long valread = handle_connection(&readfds, client_sockets, MAX_PLAYERS, &sd, buffer);
+            long valread = handle_connection(readfds, client_sockets, MAX_PLAYERS, &sd, buffer);
             // somebody disconnected
             if (valread == 0)
             {
@@ -117,7 +114,7 @@ void pong(int port_num)
         if (game->number_players == 0)
         {
             free(game);
-            close(server_socket);
+            end_connection(master_socket, readfds);
             break;
         }
     }

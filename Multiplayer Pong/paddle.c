@@ -2,8 +2,6 @@
 //  paddle.c
 //  Multiplayer Pong
 //
-//  Created by Larry Zhang on 1/22/16.
-//
 //
 
 #include "paddle.h"
