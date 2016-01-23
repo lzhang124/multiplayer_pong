@@ -28,11 +28,8 @@ void add_player(Game *game, int player_number)
     game->players[player_number] = player;
     game->number_players++;
     
-    int i;
-    for (i = 0; i <= player_number - 1; i++)
-    {
-        send_number(i, game->number_players);
-    }
+    // notify other players of new player through updated num_players
+    notify_clients_number(player_number, game->number_players);
 }
 
 void remove_player(Game *game, int player_number)
@@ -71,8 +68,7 @@ void pong(int port_num)
         else
         {
             int player_number = check_socket();
-            char *buffer;
-            buffer = read_string(player_number);
+            char *buffer = read_string(player_number);
             if (buffer == NULL)
             {
                 remove_player(game, player_number);

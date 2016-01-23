@@ -155,14 +155,19 @@ void disconnect(int client_number)
 
 void end_connection(int master_socket)
 {
-    int sd = client_sockets[player_number];
-    char *buffer = malloc(sizeof(*buffer) * 8);
-    long n = read(sd, buffer, sizeof(*buffer));
-    if (n == 0)
+    close(master_socket);
+}
+
+void notify_clients_string(int client_number, char *buffer)
+{
+    int i;
+    for (i = 0; i < MAX_PLAYERS; i++)
     {
-        // disconnect
-        disconnect(player_number);
-        buffer = NULL;
+        int sd = client_sockets[i];
+        if (i != client_number && sd != 0)
+        {
+            send(sd, buffer, sizeof(buffer), 0);
+        }
     }
     free(buffer);
 }
