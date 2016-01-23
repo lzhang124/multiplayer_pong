@@ -15,6 +15,7 @@
 		462B424F1C5181A0005889C7 /* client.c in Sources */ = {isa = PBXBuildFile; fileRef = 462B424D1C5181A0005889C7 /* client.c */; settings = {ASSET_TAGS = (); }; };
 		469FE9801C528E76007B64E8 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 469FE97F1C528E76007B64E8 /* OpenGL.framework */; };
 		469FE9821C528EDF007B64E8 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 469FE9811C528EDF007B64E8 /* GLUT.framework */; };
+		469FE99F1C52EF67007B64E8 /* paddle.c in Sources */ = {isa = PBXBuildFile; fileRef = 469FE99D1C52EF67007B64E8 /* paddle.c */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -53,6 +54,8 @@
 		462B424E1C5181A0005889C7 /* client.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = client.h; sourceTree = "<group>"; };
 		469FE97F1C528E76007B64E8 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		469FE9811C528EDF007B64E8 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
+		469FE99D1C52EF67007B64E8 /* paddle.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = paddle.c; sourceTree = "<group>"; };
+		469FE99E1C52EF67007B64E8 /* paddle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = paddle.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,6 +97,8 @@
 				462B424D1C5181A0005889C7 /* client.c */,
 				462B424E1C5181A0005889C7 /* client.h */,
 				4603A8951C50392D00F2D26C /* pong.c */,
+				469FE99D1C52EF67007B64E8 /* paddle.c */,
+				469FE99E1C52EF67007B64E8 /* paddle.h */,
 				4603A8961C50392D00F2D26C /* pong.h */,
 			);
 			path = "Multiplayer Pong";
@@ -190,6 +195,7 @@
 				4603A8971C50392D00F2D26C /* pong.c in Sources */,
 				4603A85D1C5026EC00F2D26C /* main.c in Sources */,
 				462B424F1C5181A0005889C7 /* client.c in Sources */,
+				469FE99F1C52EF67007B64E8 /* paddle.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -241,7 +247,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
@@ -277,7 +283,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = macosx;
 			};

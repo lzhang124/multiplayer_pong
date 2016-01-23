@@ -5,245 +5,194 @@
 //
 
 #include "pong.h"
+#include "paddle.h"
+#include "client.h"
 
-#define MIN_LINEAR 0
-#define MIN_NEAREST 1
-#define MAG_LINEAR 2
-#define MAG_NEAREST 3
-#define S_REPEAT 4
-#define S_CLAMP 5
-#define T_REPEAT 6
-#define T_CLAMP 7
-#define ENV_MODULATE 8
-#define ENV_REPLACE 9
+#define FALSE 0
+#define TRUE 1
 
-static int minFilter = GL_LINEAR;
-static int magFilter = GL_LINEAR;
-static int wrapS = GL_REPEAT;
-static int wrapT = GL_REPEAT;
-static int envMode = GL_MODULATE;
+const char* NAME = "Pong";
+unsigned const int WINDOW_START_X = 300;
+unsigned const int WINDOW_START_Y = 50;
 
-void menuCallback(int);
-void setCamera(void);
-void drawScene(void);
+int master_socket;
+Paddle *paddle;
 
-static int win = 0;
-static GLfloat whiteLight[3] = {1.0f, 1.0f, 1.0f};
-static GLfloat greenLight[3] = {0.0f, 1.0f, 0.0f};
-static GLfloat lightPosition[4] = {0.0f, 0.0f, 0.0f, 1.0f};
-static GLuint teaTex;
+unsigned int ball_x = 400;
+unsigned int ball_y = 400;
 
-const int texture_width = 256;
-const int texture_height = 256;
-GLubyte texture_image[256][256][3];
+int down_pressed = FALSE;
+int up_pressed = FALSE;
+int left_pressed = FALSE;
+int right_pressed = FALSE;
 
-void generate_texture()
+
+int count = 0;
+void update()
 {
-    for(int i=0; i<texture_width; i++)
-        for(int j=0; j<texture_width; j++)
+    ++count;
+    if (count == 5000)
+    {
+        count = 0;
+        
+        // move the paddle
+        if (down_pressed)
         {
-            texture_image[i][j][0] = 255;
-            texture_image[i][j][1] = 255*(i & 0x04);
-            texture_image[i][j][2] = 255*(j & 0x04);
+            move_down(paddle);
         }
-}
-
-void loadTextures()
-{
-    generate_texture();
-    
-    glGenTextures(2, &teaTex);
-    glBindTexture(GL_TEXTURE_2D, teaTex);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, magFilter);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, minFilter);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrapS);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrapT);
-    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, envMode);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, texture_width, texture_height, 0, GL_RGB, GL_UNSIGNED_BYTE, texture_image);
+        else if (up_pressed)
+        {
+            move_up(paddle);
+        }
+        else if (left_pressed)
+        {
+            move_left(paddle);
+        }
+        else if (right_pressed)
+        {
+            move_right(paddle);
+        }
+        
+        // redraw the window
+        glutPostRedisplay();
+    }
 }
 
 void display()
 {
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT);
+    glColor3f(1.0, 1.0, 1.0);
+
+    // paddles
+    if (paddle->loc == LEFT || paddle->loc == RIGHT) {
+        glRecti(paddle->x, paddle->y, paddle->x + PADDLE_W, paddle->y + PADDLE_H);
+    }
+    else if (paddle->loc == TOP || paddle->loc == BOTTOM)
+    {
+        glRecti(paddle->x, paddle->y, paddle->x + PADDLE_H, paddle->y + PADDLE_W);
+    }
     
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
+    // ball
     
-    glPushMatrix();
-    glTranslatef(0.0f, 10.0f, 0.0f);
-    glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
-    glPopMatrix();
-    
-    setCamera();
-    
-    drawScene();
     
     glutSwapBuffers();
 }
 
-void drawScene()
+//void mouse_function(int button, int state, int xscr, int yscr)
+//{
+//    if (state == GLUT_DOWN) {
+//        if (button == GLUT_LEFT_BUTTON)
+//        {
+//            printf("Left mouse clicked.\n");
+//        }
+//        else if (button == GLUT_RIGHT_BUTTON)
+//        {
+//            printf("Right mouse clicked.\n");
+//        }
+//    }
+//}
+//
+//void motion_function(int xscr, int yscr)
+//{
+//    printf("Motion (%d, %d).\n", xscr, yscr);
+//}
+//
+void key_pressed(unsigned char key, int xscr, int yscr)
 {
-    // Draw Teapot
-    glPushMatrix();
-    glMaterialfv(GL_FRONT, GL_DIFFUSE, greenLight);
-    glMaterialfv(GL_FRONT, GL_SPECULAR, whiteLight);
-    glMaterialf(GL_FRONT, GL_SHININESS, 25.0);
-    glTranslatef(0.0f, 0.5f, 0.0f);
-    glutSolidTeapot(1.0f);
-    glPopMatrix();
-    
-    // Draw Floor
-    glPushMatrix();
-    glMaterialfv(GL_FRONT, GL_DIFFUSE, whiteLight);
-    glMaterialfv(GL_FRONT, GL_SPECULAR, whiteLight);
-    glMaterialf(GL_FRONT, GL_SHININESS, 25.0);
-    glBegin(GL_QUADS);
-    glNormal3f(0.0f, 1.0f, 0.0f);
-    glTexCoord2f(0.0f, 0.0f); glVertex3f(2.0f, 0.0f, 2.0f);
-    glTexCoord2f(0.0f, 2.0f); glVertex3f(2.0f, 0.0f, -2.0f);
-    glTexCoord2f(2.0f, 2.0f); glVertex3f(-2.0f, 0.0f, -2.0f);
-    glTexCoord2f(2.0f, 0.0f); glVertex3f(-2.0f, 0.0f, 2.0f);
-    glEnd();
-    glPopMatrix();
+    printf("Key %c pressed.\n", key);
 }
 
-void idle()
+void special_pressed(int key, int xscr, int yscr)
 {
-    glutPostRedisplay();
-}
-
-void setCamera()
-{
-    glTranslatef(0.0f,-0.75f, -2.0f);
-    glRotatef(0.0f, 0.0f, 1.0f, 0.0f);
-}
-
-void makeMenu()
-{
-    int menu, min, mag, sDir, tDir, env;
-    
-    min = glutCreateMenu(menuCallback);
-    glutAddMenuEntry("linear", MIN_LINEAR);
-    glutAddMenuEntry("nearest", MIN_NEAREST);
-    
-    mag = glutCreateMenu(menuCallback);
-    glutAddMenuEntry("linear", MAG_LINEAR);
-    glutAddMenuEntry("nearest", MAG_NEAREST);
-    
-    sDir = glutCreateMenu(menuCallback);
-    glutAddMenuEntry("repeat", S_REPEAT);
-    glutAddMenuEntry("clamp", S_CLAMP);
-    
-    tDir = glutCreateMenu(menuCallback);
-    glutAddMenuEntry("repeat", T_REPEAT);
-    glutAddMenuEntry("clamp", T_CLAMP);
-    
-    env = glutCreateMenu(menuCallback);
-    glutAddMenuEntry("modulate", ENV_MODULATE);
-    glutAddMenuEntry("replace", ENV_REPLACE);
-    
-    menu = glutCreateMenu(menuCallback);
-    glutAddSubMenu("texture min filter", min);
-    glutAddSubMenu("texture mag filter", mag);
-    glutAddSubMenu("wrap s direction", sDir);
-    glutAddSubMenu("wrap t direction", tDir);
-    glutAddSubMenu("texture env mode", env);
-    glutAttachMenu(GLUT_RIGHT_BUTTON);
-}
-
-void menuCallback(int option)
-{
-    switch (option) {
-        case MIN_LINEAR:
-            minFilter = GL_LINEAR;
-            break;
-        case MIN_NEAREST:
-            minFilter = GL_NEAREST;
-            break;
-        case MAG_LINEAR:
-            magFilter = GL_LINEAR;
-            break;
-        case MAG_NEAREST:
-            magFilter = GL_NEAREST;
-            break;
-        case S_REPEAT:
-            wrapS = GL_REPEAT;
-            break;
-        case S_CLAMP:
-            wrapS = GL_CLAMP;
-            break;
-        case T_REPEAT:
-            wrapT = GL_REPEAT;
-            break;
-        case T_CLAMP:
-            wrapT = GL_CLAMP;
-            break;
-        case ENV_MODULATE:
-            envMode = GL_MODULATE;
-            break;
-        case ENV_REPLACE:
-            envMode = GL_REPLACE;
-            break;
-        default:
-            break;
+    if (key == GLUT_KEY_UP)
+    {
+        up_pressed = TRUE;
     }
-    
-    glDeleteTextures(1, &teaTex); // De-allocate current texture
-    loadTextures(); // Re-load texture
-    glutPostRedisplay();
+    else if (key == GLUT_KEY_DOWN)
+    {
+        down_pressed = TRUE;
+    }
+    else if (key == GLUT_KEY_LEFT)
+    {
+        left_pressed = TRUE;
+    }
+    else if (key == GLUT_KEY_RIGHT)
+    {
+        right_pressed = TRUE;
+    }
 }
 
-void CreateGlutWindow()
+void special_released(int key, int xscr, int yscr)
 {
-    glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
-    glutInitWindowPosition (10, 10);
-    glutInitWindowSize (512, 512);
-    win = glutCreateWindow ("Butcher, Andrew");
+    if (key == GLUT_KEY_UP)
+    {
+        up_pressed = FALSE;
+    }
+    else if (key == GLUT_KEY_DOWN)
+    {
+        down_pressed = FALSE;
+    }
+    else if (key == GLUT_KEY_LEFT)
+    {
+        left_pressed = FALSE;
+    }
+    else if (key == GLUT_KEY_RIGHT)
+    {
+        right_pressed = FALSE;
+    }
 }
 
-void CreateGlutCallbacks()
+void close_window()
 {
-    glutDisplayFunc(display);
-    glutIdleFunc(idle);
-}
-
-void InitOpenGL()
-{
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    gluPerspective(90.0, 1.0, 0.1, 100);
-    glMatrixMode(GL_MODELVIEW);
-    
-    glEnable(GL_DEPTH_TEST);
-    glEnable(GL_TEXTURE_2D);
-    loadTextures();
-    
-    glEnable(GL_NORMALIZE);
-    glShadeModel(GL_SMOOTH);
-    glEnable(GL_LIGHTING);
-    glLightfv(GL_LIGHT0, GL_DIFFUSE, whiteLight);
-    glLightfv(GL_LIGHT0, GL_SPECULAR, whiteLight);
-    glEnable(GL_LIGHT0);
-    
-    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-}
-
-void ExitGlut()
-{
-    glutDestroyWindow(win);
+    free(paddle);
+    end_connection(master_socket);
     exit(0);
 }
 
-void pong(int argc, char *argv[])
+void set_viewport()
 {
-    glutInit(&argc, argv); 
-    CreateGlutWindow();
-    CreateGlutCallbacks();
-    InitOpenGL();
+    glViewport(0, 0, WINDOW_W, WINDOW_H);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluOrtho2D(0, WINDOW_W, WINDOW_H, 0);
+    glMatrixMode(GL_MODELVIEW);
+}
+
+void pong(int argc, char *argv[], char *server_name[], int port_num)
+{
+    master_socket = start_client(server_name, port_num);
     
-    makeMenu();
+    // get paddle number
+//    int paddle_number = read_number(master_socket);
+//    paddle = set_paddle(paddle_number);
+    paddle = set_paddle(TOP);
     
+    // init glut
+    glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
+    
+    // window
+    glutInitWindowSize(WINDOW_W, WINDOW_H);
+    glutInitWindowPosition(WINDOW_START_X, WINDOW_START_Y);
+    glutCreateWindow(NAME);
+    
+    // background
+    glClearColor(0.0, 0.0, 0.0, 0.0);
+    
+    glShadeModel(GL_SMOOTH);
+    set_viewport();
+    
+    // define functions
+    glutIgnoreKeyRepeat(1);
+    glutIdleFunc(update);
+    glutDisplayFunc(display);
+//    glutMouseFunc(mouse_function);
+//    glutMotionFunc(motion_function);
+    glutKeyboardFunc(key_pressed);
+    glutSpecialFunc(special_pressed);
+    glutSpecialUpFunc(special_released);
+    glutWMCloseFunc(close_window);
+    
+    // start
     glutMainLoop();
-    
-    ExitGlut();
 }

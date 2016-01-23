@@ -16,6 +16,9 @@
 #include <netinet/in.h>
 #include <netdb.h>
 
-void start_client(char *server_name[], int port_number);
+int start_client(char *server_name[], int port_num);
+void write_number(int master_socket, int position);
+int read_number(int master_socket);
+void end_connection(int master_socket);
 
 #endif /* client_h */

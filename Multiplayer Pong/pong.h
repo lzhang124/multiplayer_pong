@@ -24,6 +24,6 @@
 #include <GL/gl.h>
 #endif
 
-void pong(int argc, char *argv[]);
+void pong(int argc, char *argv[], char *server_name[], int port_num);
 
 #endif /* pong_h */
