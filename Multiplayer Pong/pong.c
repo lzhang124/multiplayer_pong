@@ -12,20 +12,25 @@
 #define TRUE 1
 
 const char* NAME = "Pong";
-unsigned const int WINDOW_START_X = 300;
-unsigned const int WINDOW_START_Y = 50;
+const int WINDOW_START_X = 300;
+const int WINDOW_START_Y = 50;
+const int MAX_PLAYERS = 4;
 
 int master_socket;
-Paddle *paddle;
+int paddle_num;
+int num_players;
+Paddle paddles[MAX_PLAYERS];
 
-unsigned int ball_x = 400;
-unsigned int ball_y = 400;
+int ball_x = 400;
+int ball_y = 400;
 
+int started = FALSE;
 int down_pressed = FALSE;
 int up_pressed = FALSE;
 int left_pressed = FALSE;
 int right_pressed = FALSE;
 
+int i;
 
 int count = 0;
 void update()
@@ -35,26 +40,31 @@ void update()
     {
         count = 0;
         
-        // move the paddle
-        if (down_pressed)
+        if (started)
         {
-            move_down(paddle);
+            Paddle *paddle = &paddles[paddle_num];
+            
+            // move the paddle
+            if (down_pressed)
+            {
+                move_down(paddle);
+            }
+            else if (up_pressed)
+            {
+                move_up(paddle);
+            }
+            else if (left_pressed)
+            {
+                move_left(paddle);
+            }
+            else if (right_pressed)
+            {
+                move_right(paddle);
+            }
+            
+            // redraw the window
+            glutPostRedisplay();
         }
-        else if (up_pressed)
-        {
-            move_up(paddle);
-        }
-        else if (left_pressed)
-        {
-            move_left(paddle);
-        }
-        else if (right_pressed)
-        {
-            move_right(paddle);
-        }
-        
-        // redraw the window
-        glutPostRedisplay();
     }
 }
 
@@ -64,12 +74,24 @@ void display()
     glColor3f(1.0, 1.0, 1.0);
 
     // paddles
-    if (paddle->loc == LEFT || paddle->loc == RIGHT) {
-        glRecti(paddle->x, paddle->y, paddle->x + PADDLE_W, paddle->y + PADDLE_H);
-    }
-    else if (paddle->loc == TOP || paddle->loc == BOTTOM)
-    {
-        glRecti(paddle->x, paddle->y, paddle->x + PADDLE_H, paddle->y + PADDLE_W);
+    if (started) {
+        for (i = 0; i < num_players; i++)
+        {
+            Paddle *paddle = &paddles[i];
+            if (i == paddle_num)
+            {
+                glColor3f(1.0, 0.0, 0.0);
+            }
+            
+            if (paddle->loc == LEFT || paddle->loc == RIGHT)
+            {
+                glRecti(paddle->x, paddle->y, paddle->x + PADDLE_W, paddle->y + PADDLE_H);
+            }
+            else if (paddle->loc == TOP || paddle->loc == BOTTOM)
+            {
+                glRecti(paddle->x, paddle->y, paddle->x + PADDLE_H, paddle->y + PADDLE_W);
+            }
+        }
     }
     
     // ball
@@ -78,25 +100,14 @@ void display()
     glutSwapBuffers();
 }
 
-//void mouse_function(int button, int state, int xscr, int yscr)
-//{
-//    if (state == GLUT_DOWN) {
-//        if (button == GLUT_LEFT_BUTTON)
-//        {
-//            printf("Left mouse clicked.\n");
-//        }
-//        else if (button == GLUT_RIGHT_BUTTON)
-//        {
-//            printf("Right mouse clicked.\n");
-//        }
-//    }
-//}
-//
-//void motion_function(int xscr, int yscr)
-//{
-//    printf("Motion (%d, %d).\n", xscr, yscr);
-//}
-//
+void mouse_function(int button, int state, int xscr, int yscr)
+{
+    if (state == GLUT_DOWN && button == GLUT_LEFT_BUTTON)
+    {
+        printf("Left mouse clicked.\n");
+    }
+}
+
 void key_pressed(unsigned char key, int xscr, int yscr)
 {
     printf("Key %c pressed.\n", key);
@@ -144,7 +155,10 @@ void special_released(int key, int xscr, int yscr)
 
 void close_window()
 {
-    free(paddle);
+    for (i = 0; i < num_players; i++) {
+        Paddle *paddle = &paddles[i];
+        free(paddle);
+    }
     end_connection(master_socket);
     exit(0);
 }
@@ -163,9 +177,14 @@ void pong(int argc, char *argv[], char *server_name[], int port_num)
     master_socket = start_client(server_name, port_num);
     
     // get paddle number
-//    int paddle_number = read_number(master_socket);
-//    paddle = set_paddle(paddle_number);
-    paddle = set_paddle(TOP);
+    paddle_num = read_number(master_socket);
+    
+    // get number of players
+    num_players = read_number(master_socket);
+    
+    for (i = 0; i < num_players; i++) {
+        paddles[i] = *set_paddle(i);
+    }
     
     // init glut
     glutInit(&argc, argv);
@@ -186,8 +205,7 @@ void pong(int argc, char *argv[], char *server_name[], int port_num)
     glutIgnoreKeyRepeat(1);
     glutIdleFunc(update);
     glutDisplayFunc(display);
-//    glutMouseFunc(mouse_function);
-//    glutMotionFunc(motion_function);
+    glutMouseFunc(mouse_function);
     glutKeyboardFunc(key_pressed);
     glutSpecialFunc(special_pressed);
     glutSpecialUpFunc(special_released);

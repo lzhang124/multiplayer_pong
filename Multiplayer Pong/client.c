@@ -44,47 +44,32 @@ int start_client(char *server_name[], int port_num)
         error("ERROR connecting");
     }
     
+    fcntl(master_socket, F_SETFL, O_NONBLOCK);
     return master_socket;
 }
 
 void write_string(int master_socket, char * buffer)
 {
-    long n = read(master_socket, buffer, sizeof(*buffer));
-    if (n < 0)
-    {
-        error("ERROR reading from socket");
-    }
+    write(master_socket, buffer, sizeof(*buffer));
     free(buffer);
 }
 
 char * read_string(int master_socket)
 {
     char *buffer = malloc(sizeof(*buffer) * 8);
-    long n = read(master_socket, buffer, sizeof(*buffer));
-    if (n < 0)
-    {
-        error("ERROR reading from socket");
-    }
+    read(master_socket, buffer, sizeof(*buffer));
     return buffer;
 }
 
 void write_number(int master_socket, int position)
 {
-    long n = write(master_socket, &position, sizeof(position));
-    if (n < 0)
-    {
-        error("ERROR writing to socket");
-    }
+    write(master_socket, &position, sizeof(position));
 }
 
 int read_number (int master_socket)
 {
     int position;
-    long n = read(master_socket, &position, sizeof(position));
-    if (n < 0)
-    {
-        error("ERROR reading from socket");
-    }
+    read(master_socket, &position, sizeof(position));
     return position;
 }
 

@@ -8,11 +8,11 @@
 
 #include "paddle.h"
 
-unsigned const int WINDOW_W = 800;
-unsigned const int WINDOW_H = 800;
-unsigned const int PADDLE_W = 5;
-unsigned const int PADDLE_H = 100;
-unsigned const int DEFAULT_MOVEMENT = 20;
+const int WINDOW_W = 800;
+const int WINDOW_H = 800;
+const int PADDLE_W = 5;
+const int PADDLE_H = 100;
+const int DEFAULT_MOVEMENT = 20;
 
 Paddle * set_paddle(int paddle_number)
 {

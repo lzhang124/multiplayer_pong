@@ -14,20 +14,20 @@
 
 typedef struct
 {
-    unsigned int x;
-    unsigned int y;
-    unsigned int loc;
+    int x;
+    int y;
+    int loc;
 } Paddle;
 
-enum paddle_number
+enum paddle_type
 {
     LEFT, RIGHT, TOP, BOTTOM
 };
 
-extern unsigned const int WINDOW_W;
-extern unsigned const int WINDOW_H;
-extern unsigned const int PADDLE_W;
-extern unsigned const int PADDLE_H;
+extern const int WINDOW_W;
+extern const int WINDOW_H;
+extern const int PADDLE_W;
+extern const int PADDLE_H;
 
 Paddle * set_paddle(int paddle_number);
 void move_up(Paddle * paddle);
