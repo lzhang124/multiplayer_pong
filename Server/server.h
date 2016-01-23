@@ -17,10 +17,15 @@
 #include <sys/time.h>
 
 int start_server(int port_num);
-int add_connection(int master_socket, int client_sockets[], int max_connections);
-long handle_connection(fd_set *readfds, int client_sockets[], int max_connections, int *sd, char buffer[]);
-int wait_for_connection(int master_socket, int max_connections, fd_set *readfds, int client_sockets[]);
+int wait_for_connection(int master_socket);
+int add_connection(int master_socket);
+int check_socket();
+void disconnect(int client_number);
+void end_connection(int master_socket);
 
-void error(const char *msg);
+void send_string(int client_number, char *buffer);
+char *read_string(int client_number);
+void send_number(int client_number, int number);
+int read_number(int client_number);
 
 #endif /* server_h */

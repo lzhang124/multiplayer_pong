@@ -29,22 +29,20 @@ typedef struct
 
 typedef struct
 {
+    enum paddle_type paddle_type;
     double x_coord;
     double y_coord;
 } Paddle;
 
 typedef struct
 {
-    int player_socket;
+    int player_number;
     int score;
-    enum paddle_type paddle_type;
     Paddle *paddle;
 } Player;
 
 typedef struct game
 {
-    int server_socket;
-    int server_port;
     int number_players;
     Player *players[MAX_PLAYERS];
     Ball *ball;
@@ -54,12 +52,12 @@ typedef struct game
     int max_player;
 } Game;
 
-void pong(int port_num);
-Game *init_game(int server_socket, int server_port);
-void wait_for_players(Game *game);
+Game *init_game();
 void add_player(Game *game, int player_socket);
-void disconnect_player(Game *game, int sd);
-
-
+void remove_player(Game *game, int sd);
+void end_game(Game *game);
+void notify_players_number(int message, int from_player_number);
+void notify_players_string(char *message, int from_player_number);
+void pong(int port_num);
 
 #endif /* pong_h */

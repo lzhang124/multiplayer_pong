@@ -25,14 +25,18 @@
 #include <GL/gl.h>
 #endif
 
+void generate_texture();
+void loadTextures();
+void display();
+void drawScene();
+void idle();
+void setCamera();
+void makeMenu();
+void menuCallback(int option);
+void CreateGlutWindow();
+void CreateGlutCallbacks();
+void InitOpenGL();
+void ExitGlut();
 void pong(int argc, char *argv[]);
-
-
-void displayfunct()
-{
-    glClear(GL_COLOR_BUFFER_BIT);
-    
-    glBegin(GL_POINTS);
-}
 
 #endif /* pong_h */

@@ -7,117 +7,113 @@
 #include "pong.h"
 #include "server.h"
 
-Game *init_game(int server_socket, int server_port)
+Game *init_game()
 {
-    // create and start game
+    Ball *ball = malloc(sizeof(*ball));
     Game *game = malloc(sizeof(*game));
-    game->server_port = server_port;
-    game->server_socket = server_socket;
-    game->number_players = 0;
+    *game = (Game) {0, {NULL}, ball};
     
     return game;
 }
 
-void add_player(Game *game, int player_socket)
+void add_player(Game *game, int player_number)
+{
+    // MODIFY COORDS
+    Paddle *paddle = malloc(sizeof(*paddle));
+    *paddle = (Paddle) {10, 10, LEFT + player_number};
+    
+    Player *player = malloc(sizeof(*player));
+    *player = (Player) {player_number, 0, paddle};
+    
+    game->players[player_number] = player;
+    game->number_players++;
+    
+    // notify other players of new player through updated num_players
+    // GUI: adds in new paddle
+    notify_players_number(game->number_players, player_number);
+}
+
+void remove_player(Game *game, int player_number)
+{
+    // free paddle and player
+    Player *player = game->players[player_number];
+    free(player->paddle);
+    free(player);
+    
+    game->players[player_number] = NULL;
+    game->number_players--;
+    
+    // notify other players of new player through updated num_players
+    // GUI: converts to wall
+    notify_players_number(game->number_players, player_number);
+}
+
+void end_game(Game *game)
+{
+    free(game->ball);
+    free(game);
+}
+
+void notify_players_number(int message, int from_player_number)
 {
     int i;
     for (i = 0; i < MAX_PLAYERS; i++)
     {
-        //find free spot in players array
-        if (game->players[i] == NULL || game->players[i]->player_socket == 0)
+        if (i != from_player_number)
         {
-            // MODIFY COORDS
-            Paddle *paddle = malloc(sizeof(*paddle));
-            paddle->x_coord = 10;
-            paddle->y_coord = 10;
-            
-            Player *player = malloc(sizeof(*player));
-            player->player_socket = player_socket;
-            player->paddle_type = LEFT + i;
-            player->score = 0;
-            player->paddle = paddle;
-            
-            game->players[i] = player;
-            game->number_players++;
-            break;
+        	send_number(i, message);
         }
     }
 }
 
-void disconnect_player(Game *game, int sd)
+void notify_players_string(char *message, int from_player_number)
 {
-    // get his details and print
-    struct sockaddr_in cli_addr;
-    socklen_t clilen = sizeof(cli_addr);
-    getpeername(sd, (struct sockaddr *) &cli_addr, &clilen);
-    printf("Host disconnected, port %d \n", ntohs(cli_addr.sin_port));
-    
     int i;
     for (i = 0; i < MAX_PLAYERS; i++)
     {
-        if (game->players[i]->player_socket == sd)
+        if (i != from_player_number)
         {
-            // free paddle and player
-            Player *player = game->players[i];
-            free(player->paddle);
-            free(player);
-            
-            game->number_players--;
-            break;
+            send_string(i, message);
         }
     }
-    
-    // close the socket
-    close(sd);
 }
 
 void pong(int port_num)
 {
-    int server_socket = start_server(port_num);
-    Game *game = init_game(server_socket, port_num);
-    
-    // zero out all client_sockets
-    int client_sockets[MAX_PLAYERS] = {0};
+    int master_socket = start_server(port_num);
+    Game *game = init_game();
     
     while(game->number_players < MAX_PLAYERS)
-    {
-        // set of socket descriptors
-        fd_set readfds;
-        // clear the socket set
-        FD_ZERO(&readfds);
-        
+    {     
         // wait for players to join game
-        if (wait_for_connection(server_socket, MAX_PLAYERS, &readfds, client_sockets) == 1)
+        if (wait_for_connection(master_socket) == 1)
         {
-            int player_socket = add_connection(server_socket, client_sockets, MAX_PLAYERS);
-            add_player(game, player_socket);
+            int player_number = add_connection(master_socket);
+            add_player(game, player_number);
+            
+            // send paddle type to new player
+            send_number(player_number, player_number);
         }
         else
         {
-            int sd;
-            // read from socket into buffer
-            char buffer[256] = {0};
-            
-            long valread = handle_connection(&readfds, client_sockets, MAX_PLAYERS, &sd, buffer);
-            // somebody disconnected
-            if (valread == 0)
+            int player_number = check_socket();
+            char *buffer = read_string(player_number);
+            if (buffer == NULL)
             {
-                disconnect_player(game, sd);
+                remove_player(game, player_number);
             }
             else
             {
-                // use buffer to update position
-                // echo message back
-                buffer[valread] = '\0';
-                send(sd , buffer , strlen(buffer) , 0 );
+                // send info to other players
+                notify_players_string(buffer, player_number);
             }
         }
         
         // close the server when no more clients
         if (game->number_players == 0)
         {
-            free(game);
-            close(server_socket);
+            end_game(game);
+            end_connection(master_socket);
             break;
         }
     }

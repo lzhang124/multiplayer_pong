@@ -5,102 +5,15 @@
 //
 
 #include "server.h"
+#include "constants.h"
+
+fd_set readfds;
+int client_sockets[MAX_PLAYERS] = {0}; // holds client sd
 
 void error(const char *msg)
 {
     perror(msg);
     exit(0);
-}
-
-int add_connection(int master_socket, int client_sockets[], int max_connections)
-{
-    // accept incoming connections, need client address
-    struct sockaddr_in cli_addr;
-    socklen_t clilen = sizeof(cli_addr);
-    
-    int new_socket;
-    if ((new_socket = accept(master_socket, (struct sockaddr *) &cli_addr, &clilen)) < 0)
-    {
-        perror("accept error");
-        exit(EXIT_FAILURE);
-    }
-    
-    // inform user of socket number - used in send and receive commands
-    printf("New client, socket fd is %d, port : %d \n", new_socket, ntohs(cli_addr.sin_port));
-    
-    // add new socket to array of clients
-    int i;
-    for (i = 0; i < max_connections; i++)
-    {
-        // if position is empty
-        if (*(client_sockets+i) == 0)
-        {
-            printf("Adding to list of clients as %d\n", i);
-            *(client_sockets+i) = new_socket;
-            break;
-        }
-    }
-    return new_socket;
-}
-
-long handle_connection(fd_set *readfds, int client_sockets[], int max_connections, int *sd, char buffer[])
-{
-    int i;
-    for (i = 0; i < max_connections; i++)
-    {
-        *sd = *(client_sockets+i);
-        
-        if (FD_ISSET(*sd, readfds))
-        {
-            // return the incoming message
-            return read(*sd, buffer, 255);
-        }
-    }
-    return -1;
-}
-
-int wait_for_connection(int master_socket, int max_connections, fd_set *readfds, int client_sockets[])
-{
-    int max_sd, sd;
-    
-    // add server socket to set
-    FD_SET(master_socket, readfds);
-    max_sd = master_socket;
-    
-    int i;
-    // add child sockets to set
-    for (i = 0; i < max_connections; i++)
-    {
-        // socket descriptor
-        sd = *(client_sockets+i);
-        
-        // if valid socket descriptor then add to read list
-        if (sd > 0)
-        {
-            FD_SET(sd, readfds);
-        }
-        
-        // highest file descriptor number, need it for the select function
-        if (sd > max_sd)
-        {
-            max_sd = sd;
-        }
-    }
-    
-    // wait for an activity on one of the sockets, timeout is NULL, so wait indefinitely
-    int activity = select(max_sd + 1, readfds, NULL, NULL, NULL);
-    if (activity < 0)
-    {
-        printf("select error");
-    }
-    
-    // if something happened on the master socket, then it's an incoming connection
-    if (FD_ISSET(master_socket, readfds))
-    {
-        return 1;
-    }
-    // some IO operation on some other socket
-    return 0;
 }
 
 int start_server(int port_num)
@@ -130,4 +43,156 @@ int start_server(int port_num)
     listen(master_socket, 5); // listen on socket for at most 5 backlog queue
     
     return master_socket;
+}
+
+int wait_for_connection(int master_socket)
+{
+    int max_sd, sd;
+    
+    // clear the socket set
+    FD_ZERO(&readfds);
+    
+    // add server socket to set
+    FD_SET(master_socket, &readfds);
+    max_sd = master_socket;
+    
+    int i;
+    // add child sockets to set
+    for (i = 0; i < MAX_PLAYERS; i++)
+    {
+        // socket descriptor
+        sd = *(client_sockets+i);
+        
+        // if valid socket descriptor then add to read list
+        if (sd > 0)
+        {
+            FD_SET(sd, &readfds);
+        }
+        
+        // highest file descriptor number, need it for the select function
+        if (sd > max_sd)
+        {
+            max_sd = sd;
+        }
+    }
+    
+    // wait for an activity on one of the sockets, timeout is NULL, so wait indefinitely
+    int activity = select(max_sd + 1, &readfds, NULL, NULL, NULL);
+    if (activity < 0)
+    {
+        printf("select error");
+    }
+    
+    // if something happened on the master socket, then it's an incoming connection
+    if (FD_ISSET(master_socket, &readfds))
+    {
+        return 1;
+    }
+    // some IO operation on some other socket
+    return 0;
+}
+
+int add_connection(int master_socket)
+{
+    // accept incoming connections, need client address
+    struct sockaddr_in cli_addr;
+    socklen_t clilen = sizeof(cli_addr);
+    
+    int new_socket;
+    if ((new_socket = accept(master_socket, (struct sockaddr *) &cli_addr, &clilen)) < 0)
+    {
+        perror("accept error");
+        exit(EXIT_FAILURE);
+    }
+    
+    // inform user of socket number - used in send and receive commands
+    printf("New client, socket fd is %d, port : %d \n", new_socket, ntohs(cli_addr.sin_port));
+    
+    // add new socket to array of clients
+    int i;
+    for (i = 0; i < MAX_PLAYERS; i++)
+    {
+        // if position is empty
+        if (*(client_sockets+i) == 0)
+        {
+            printf("Adding to list of clients as %d\n", i);
+            *(client_sockets+i) = new_socket;
+            break;
+        }
+    }
+    return i;
+}
+
+int check_socket()
+{
+    int i, sd;
+    for (i = 0; i < MAX_PLAYERS; i++)
+    {
+        sd = *(client_sockets+i);
+        
+        if (FD_ISSET(sd, &readfds))
+        {
+            return i;
+        }
+    }
+    error("ERROR socket is not in fd_set");
+    return -1;
+}
+
+void disconnect(int client_number)
+{
+    // get his details and print
+    struct sockaddr_in cli_addr;
+    socklen_t clilen = sizeof(cli_addr);
+    
+    int sd = client_sockets[client_number];
+    getpeername(sd, (struct sockaddr *) &cli_addr, &clilen);
+    printf("Host disconnected, port %d \n", ntohs(cli_addr.sin_port));
+    
+    // close the socket
+    close(sd);
+    client_sockets[client_number] = 0;
+}
+
+void end_connection(int master_socket)
+{
+    close(master_socket);
+}
+
+void send_string(int client_number, char *buffer)
+{
+    int sd = client_sockets[client_number];
+    send(sd, buffer, sizeof(buffer), 0);
+    free(buffer);
+}
+
+char *read_string(int client_number)
+{
+    int sd = client_sockets[client_number];
+    char *buffer = malloc(sizeof(*buffer) * 8);
+    long n = read(sd, buffer, sizeof(buffer));
+    if (n == 0)
+    {
+        disconnect(client_number);
+        buffer = NULL;
+    }
+    return buffer;
+}
+
+void send_number(int client_number, int number)
+{
+    int sd = client_sockets[client_number];
+    send(sd, &number, sizeof(number), 0);
+}
+
+int read_number(int client_number)
+{
+    int sd = client_sockets[client_number];
+    int number;
+    long n = read(sd, &number, sizeof(number));
+    if (n == 0)
+    {
+        disconnect(client_number);
+    }
+    return number;
 }
