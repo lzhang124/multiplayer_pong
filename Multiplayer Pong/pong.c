@@ -9,6 +9,7 @@
 #include "paddle.h"
 #include "ball.h"
 #include "client.h"
+#include "draw.h"
 
 #define FALSE 0
 #define TRUE 1
@@ -62,17 +63,6 @@ void update()
     }
 }
 
-void draw_text(char *string, float x, float y)
-{
-    char *c;
-    glRasterPos2f(x, y);
-    
-    for (c = string; *c != '\0'; c++)
-    {
-        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, *c);
-    }
-}
-
 void display()
 {
     glClear(GL_COLOR_BUFFER_BIT);
@@ -80,7 +70,7 @@ void display()
     if (!started)
     {
         glColor3f(1.0, 1.0, 1.0);
-        draw_text("Start", 400, 410);
+        draw_text("Start", 400, 420);
     }
     
     // paddles
@@ -107,6 +97,7 @@ void display()
     
     // ball
     if (started) {
+        glColor3f(1.0, 1.0, 1.0);
         glRecti(ball->x, ball->y, ball->x + BALL_W, ball->y + BALL_H);
     }
     
@@ -118,7 +109,7 @@ void mouse_function(int button, int state, int xscr, int yscr)
 {
     if (!started)
     {
-        if (xscr > 400 && xscr < 440 && yscr > 395 && yscr < 415) {
+        if (xscr > 400 && xscr < 440 && yscr > 405 && yscr < 425) {
             started = TRUE;
             ball = add_ball();
         }

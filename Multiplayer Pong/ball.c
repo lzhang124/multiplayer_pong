@@ -12,7 +12,10 @@
 Ball * add_ball()
 {
     Ball *ball = malloc(sizeof(*ball));
-    *ball = (Ball) {400, 400};
+    srand((unsigned int) time(NULL));
+    int x = 255 + 20 * (rand() % 16);
+    int y = 255 + 20 * (rand() % 16);
+    *ball = (Ball) {x, y};
     return ball;
 }
 
