@@ -60,16 +60,16 @@ char * read_string(int master_socket)
     return buffer;
 }
 
-void write_number(int master_socket, int position)
+void write_number(int master_socket, int number)
 {
-    write(master_socket, &position, sizeof(position));
+    write(master_socket, &number, sizeof(number));
 }
 
 int read_number (int master_socket)
 {
-    int position;
-    read(master_socket, &position, sizeof(position));
-    return position;
+    int number;
+    read(master_socket, &number, sizeof(number));
+    return number;
 }
 
 void end_connection(int master_socket)

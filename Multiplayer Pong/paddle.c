@@ -31,7 +31,7 @@ Paddle * add_paddle(int paddle_number)
 
 void move_up(Paddle * paddle)
 {
-    if (paddle->loc == LEFT || paddle->loc == RIGHT)
+    if (paddle->type == LEFT || paddle->type == RIGHT)
     {
         if (paddle->y >= MARGIN + PADDLE_MOVEMENT)
         {
@@ -42,7 +42,7 @@ void move_up(Paddle * paddle)
 
 void move_down(Paddle * paddle)
 {
-    if (paddle->loc == LEFT || paddle->loc == RIGHT)
+    if (paddle->type == LEFT || paddle->type == RIGHT)
     {
         if (paddle->y <= WINDOW_H - MARGIN - PADDLE_H - PADDLE_MOVEMENT)
         {
@@ -53,7 +53,7 @@ void move_down(Paddle * paddle)
 
 void move_left(Paddle * paddle)
 {
-    if (paddle->loc == TOP || paddle->loc == BOTTOM)
+    if (paddle->type == TOP || paddle->type == BOTTOM)
     {
         if (paddle->x >= MARGIN + PADDLE_MOVEMENT)
         {
@@ -64,7 +64,7 @@ void move_left(Paddle * paddle)
 
 void move_right(Paddle * paddle)
 {
-    if (paddle->loc == TOP || paddle->loc == BOTTOM)
+    if (paddle->type == TOP || paddle->type == BOTTOM)
     {
         if (paddle->x <= WINDOW_W - MARGIN - PADDLE_H - PADDLE_MOVEMENT)
         {

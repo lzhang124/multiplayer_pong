@@ -17,7 +17,7 @@
 const char* NAME = "Pong";
 
 int master_socket;
-int paddle_num;
+int paddle_number;
 int num_players;
 Paddle paddles[MAX_PLAYERS];
 Ball *ball;
@@ -39,7 +39,7 @@ void update()
         count = 0;
     
         // move the paddle
-        Paddle *paddle = &paddles[paddle_num];
+        Paddle *paddle = &paddles[paddle_number];
         if (down_pressed)
         {
             move_down(paddle);
@@ -81,7 +81,7 @@ void display()
     for (i = 0; i < num_players; i++)
     {
         Paddle *paddle = &paddles[i];
-        if (i == paddle_num)
+        if (i == paddle_number)
         {
             glColor3f(1.0, 1.0, 1.0);
         }
@@ -89,11 +89,11 @@ void display()
             glColor3f(0.3, 0.3, 0.3);
         }
         
-        if (paddle->loc == LEFT || paddle->loc == RIGHT)
+        if (paddle->type == LEFT || paddle->type == RIGHT)
         {
             glRecti(paddle->x, paddle->y, paddle->x + PADDLE_W, paddle->y + PADDLE_H);
         }
-        else if (paddle->loc == TOP || paddle->loc == BOTTOM)
+        else if (paddle->type == TOP || paddle->type == BOTTOM)
         {
             glRecti(paddle->x, paddle->y, paddle->x + PADDLE_H, paddle->y + PADDLE_W);
         }
@@ -190,8 +190,7 @@ void pong(int argc, char *argv[], char *server_name[], int port_num)
     master_socket = start_client(server_name, port_num);
     
     // get paddle number
-//    paddle_num = read_number(master_socket);
-    paddle_num = RIGHT;
+    paddle_number = read_number(master_socket);
     
     // set master_socket so that reads/writes don't block
     fcntl(master_socket, F_SETFL, O_NONBLOCK);

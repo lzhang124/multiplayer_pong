@@ -8,8 +8,22 @@
 #define pong_h
 
 #include <stdio.h>
+#include "constants.h"
 
-#define MAX_PLAYERS 4
+enum ball_dir
+{
+    DOWN_RIGHT,
+    DOWN_LEFT,
+    UP_LEFT,
+    UP_RIGHT
+};
+
+typedef struct
+{
+    int x;
+    int y;
+    enum ball_dir direction;
+} Ball;
 
 enum paddle_type
 {
@@ -21,45 +35,25 @@ enum paddle_type
 
 typedef struct
 {
-    int speed;
-    double direction;
-    double xCoord;
-    double yCoord;
-} Ball;
-
-typedef struct
-{
-    double x_coord;
-    double y_coord;
+    int x;
+    int y;
+    enum paddle_type type;
 } Paddle;
 
 typedef struct
 {
-    int player_socket;
+    int player_number;
     int score;
-    enum paddle_type paddle_type;
     Paddle *paddle;
 } Player;
 
-typedef struct game
+typedef struct
 {
-    int server_socket;
-    int server_port;
     int number_players;
     Player *players[MAX_PLAYERS];
     Ball *ball;
-    
-    // may not need these
-    int max_score;
-    int max_player;
 } Game;
 
 void pong(int port_num);
-Game *init_game(int server_socket, int server_port);
-void wait_for_players(Game *game);
-void add_player(Game *game, int player_socket);
-void disconnect_player(Game *game, int sd);
-
-
 
 #endif /* pong_h */

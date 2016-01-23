@@ -9,17 +9,20 @@
 
 #include <stdlib.h>
 
+enum paddle_type
+{
+    LEFT,
+    RIGHT,
+    TOP,
+    BOTTOM
+};
+
 typedef struct
 {
     int x;
     int y;
-    int loc;
+    enum paddle_type type;
 } Paddle;
-
-enum paddle_type
-{
-    LEFT, RIGHT, TOP, BOTTOM
-};
 
 Paddle * add_paddle(int paddle_number);
 void move_up(Paddle * paddle);

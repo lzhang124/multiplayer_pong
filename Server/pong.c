@@ -7,114 +7,73 @@
 #include "pong.h"
 #include "server.h"
 
-Game *init_game(int server_socket, int server_port)
+Game * init_game()
 {
-    // create and start game
+    Ball *ball = malloc(sizeof(*ball));
     Game *game = malloc(sizeof(*game));
-    game->server_port = server_port;
-    game->server_socket = server_socket;
-    game->number_players = 0;
+    *game = (Game) {0, {NULL}, ball};
     
     return game;
 }
 
-void add_player(Game *game, int player_socket)
+void add_player(Game * game, int player_number)
 {
-    int i;
-    for (i = 0; i < MAX_PLAYERS; i++)
-    {
-        //find free spot in players array
-        if (game->players[i] == NULL || game->players[i]->player_socket == 0)
-        {
-            // MODIFY COORDS
-            Paddle *paddle = malloc(sizeof(*paddle));
-            paddle->x_coord = 10;
-            paddle->y_coord = 10;
-            
-            Player *player = malloc(sizeof(*player));
-            player->player_socket = player_socket;
-            player->paddle_type = LEFT + i;
-            player->score = 0;
-            player->paddle = paddle;
-            
-            game->players[i] = player;
-            game->number_players++;
-            break;
-        }
-    }
+    Paddle *paddle = malloc(sizeof(*paddle));
+    Player *player = malloc(sizeof(*player));
+    *player = (Player) {player_number, 0, paddle};
+    
+    game->players[player_number] = player;
+    game->number_players++;
 }
 
-void disconnect_player(Game *game, int sd)
+void remove_player(Game * game, int player_number)
 {
-    // get his details and print
-    struct sockaddr_in cli_addr;
-    socklen_t clilen = sizeof(cli_addr);
-    getpeername(sd, (struct sockaddr *) &cli_addr, &clilen);
-    printf("Host disconnected, port %d \n", ntohs(cli_addr.sin_port));
-    
-    int i;
-    for (i = 0; i < MAX_PLAYERS; i++)
-    {
-        if (game->players[i]->player_socket == sd)
-        {
-            // free paddle and player
-            Player *player = game->players[i];
-            free(player->paddle);
-            free(player);
-            
-            game->number_players--;
-            break;
-        }
-    }
-    
-    // close the socket
-    close(sd);
+    Player *player = game->players[player_number];
+    free(player->paddle);
+    free(player);
+    game->players[player_number] = NULL;
+    game->number_players--;
+}
+
+void end_game(Game * game)
+{
+    free(game->ball);
+    free(game);
 }
 
 void pong(int port_num)
 {
     int master_socket = start_server(port_num);
-    fd_set *readfds = init_readfds();
     
-    Game *game = init_game(master_socket, port_num);
-    
-    // zero out all client_sockets
-    int client_sockets[MAX_PLAYERS] = {0};
+    Game *game = init_game();
     
     while(game->number_players < MAX_PLAYERS)
     {
         // wait for players to join game
-        if (wait_for_connection(master_socket, MAX_PLAYERS, readfds, client_sockets) == 1)
+        if (wait_for_connection(master_socket) == 1)
         {
-            int player_socket = add_connection(master_socket, client_sockets, MAX_PLAYERS);
-            add_player(game, player_socket);
+            int player_number = add_connection(master_socket);
+            add_player(game, player_number);
+            
+            // send paddle number
+            send_number(player_number, player_number);
         }
         else
         {
-            int sd;
-            // read from socket into buffer
-            char buffer[256] = {0};
-            
-            long valread = handle_connection(readfds, client_sockets, MAX_PLAYERS, &sd, buffer);
-            // somebody disconnected
-            if (valread == 0)
-            {
-                disconnect_player(game, sd);
-            }
-            else
-            {
-                // use buffer to update position
-                // echo message back
-                buffer[valread] = '\0';
-                send(sd , buffer , strlen(buffer) , 0 );
+            int player_number = check_socket();
+            char *buffer;
+            buffer = read_string(player_number);
+            if (buffer == '\0') {
+                printf(")disconnect");
+                remove_player(game, player_number);
             }
         }
         
         // close the server when no more clients
         if (game->number_players == 0)
         {
-            free(game);
-            end_connection(master_socket, readfds);
+            end_game(game);
+            end_connection(master_socket);
             break;
         }
     }
