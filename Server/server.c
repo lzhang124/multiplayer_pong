@@ -124,7 +124,8 @@ int add_connection(int master_socket)
 int check_socket()
 {
     int i;
-    for (i = 0; i < MAX_PLAYERS; i++) {
+    for (i = 0; i < MAX_PLAYERS; i++)
+    {
         int sd = client_sockets[i];
         if (FD_ISSET(sd, &readfds))
         {
@@ -147,10 +148,11 @@ char * read_string(int player_number)
     int sd = client_sockets[player_number];
     char *buffer = malloc(sizeof(*buffer) * 8);
     long n = read(sd, buffer, sizeof(*buffer));
-    if (n == 0) {
+    if (n == 0)
+    {
         // disconnect
         disconnect(player_number);
-        *buffer = '\0';
+        buffer = NULL;
     }
     return buffer;
 }

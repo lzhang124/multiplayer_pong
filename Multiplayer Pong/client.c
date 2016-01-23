@@ -34,9 +34,7 @@ int start_client(char *server_name[], int port_num)
     bzero((char *) &serv_addr, sizeof(serv_addr));
     serv_addr.sin_family = AF_INET;
     serv_addr.sin_port = htons(port_num);
-    bcopy((char *) server->h_addr,
-          (char *) &serv_addr.sin_addr.s_addr,
-          server->h_length);
+    bcopy((char *) server->h_addr, (char *) &serv_addr.sin_addr.s_addr, server->h_length);
     
     // connect
     if (connect(master_socket, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0)

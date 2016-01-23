@@ -126,7 +126,8 @@ void mouse_function(int button, int state, int xscr, int yscr)
 {
     if (!started)
     {
-        if (xscr > 400 && xscr < 440 && yscr > 405 && yscr < 425) {
+        if (xscr > 400 && xscr < 440 && yscr > 405 && yscr < 425)
+        {
             started = TRUE;
             ball = add_ball();
         }
@@ -207,7 +208,8 @@ void pong(int argc, char *argv[], char *server_name[], int port_num)
     paddle_number = read_number(master_socket);
     num_players = paddle_number + 1;
     
-    for (i = 0; i <= paddle_number; i++) {
+    for (i = 0; i <= paddle_number; i++)
+    {
         paddles[i] = add_paddle(i);
     }
     
