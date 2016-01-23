@@ -56,8 +56,12 @@ void write_string(int master_socket, char * buffer)
 char * read_string(int master_socket)
 {
     char *buffer = malloc(sizeof(*buffer) * 8);
-    read(master_socket, buffer, sizeof(*buffer));
-    return buffer;
+    long n = read(master_socket, buffer, sizeof(*buffer));
+    if (n != -1)
+    {
+        return buffer;
+    }
+    return NULL;
 }
 
 void write_number(int master_socket, int number)
@@ -65,11 +69,15 @@ void write_number(int master_socket, int number)
     write(master_socket, &number, sizeof(number));
 }
 
-int read_number (int master_socket)
+int read_number(int master_socket)
 {
     int number;
-    read(master_socket, &number, sizeof(number));
-    return number;
+    long n = read(master_socket, &number, sizeof(number));
+    if (n != -1)
+    {
+        return number;
+    }
+    return -1;
 }
 
 void end_connection(int master_socket)

@@ -43,23 +43,37 @@ void update()
         if (down_pressed)
         {
             move_down(paddle);
+//            write_number(master_socket, paddle->y);
         }
         else if (up_pressed)
         {
             move_up(paddle);
+//            write_number(master_socket, paddle->y);
         }
         else if (left_pressed)
         {
             move_left(paddle);
+//            write_number(master_socket, paddle->x);
         }
         else if (right_pressed)
         {
             move_right(paddle);
+//            write_number(master_socket, paddle->x);
         }
         
         // move the ball
-        if (started) {
+        if (started)
+        {
             update_ball(ball);
+        }
+        else
+        {
+            int new_num_players = read_number(master_socket);
+            if (new_num_players != -1)
+            {
+                num_players = new_num_players;
+                paddles[num_players - 1] = add_paddle(num_players - 1);
+            }
         }
         
         // redraw the window
@@ -105,7 +119,6 @@ void display()
         glRecti(ball->x, ball->y, ball->x + BALL_W, ball->y + BALL_H);
     }
     
-    
     glutSwapBuffers();
 }
 
@@ -120,10 +133,10 @@ void mouse_function(int button, int state, int xscr, int yscr)
     }
 }
 
-void key_pressed(unsigned char key, int xscr, int yscr)
-{
-    printf("Key %c pressed.\n", key);
-}
+//void key_pressed(unsigned char key, int xscr, int yscr)
+//{
+//    printf("Key %c pressed.\n", key);
+//}
 
 void special_pressed(int key, int xscr, int yscr)
 {
@@ -168,7 +181,8 @@ void special_released(int key, int xscr, int yscr)
 void close_window()
 {
     free(ball);
-    for (i = 0; i < num_players; i++) {
+    for (i = 0; i < num_players; i++)
+    {
         Paddle *paddle = paddles[i];
         free(paddle);
     }
@@ -191,17 +205,14 @@ void pong(int argc, char *argv[], char *server_name[], int port_num)
     
     // get paddle number
     paddle_number = read_number(master_socket);
+    num_players = paddle_number + 1;
+    
+    for (i = 0; i <= paddle_number; i++) {
+        paddles[i] = add_paddle(i);
+    }
     
     // set master_socket so that reads/writes don't block
     fcntl(master_socket, F_SETFL, O_NONBLOCK);
-    
-    // get number of players
-//    num_players = read_number(master_socket);
-    num_players = 4;
-    
-    for (i = 0; i < num_players; i++) {
-        paddles[i] = add_paddle(i);
-    }
     
     // init glut
     glutInit(&argc, argv);
@@ -223,7 +234,7 @@ void pong(int argc, char *argv[], char *server_name[], int port_num)
     glutIdleFunc(update);
     glutDisplayFunc(display);
     glutMouseFunc(mouse_function);
-    glutKeyboardFunc(key_pressed);
+//    glutKeyboardFunc(key_pressed);
     glutSpecialFunc(special_pressed);
     glutSpecialUpFunc(special_released);
     glutWMCloseFunc(close_window);

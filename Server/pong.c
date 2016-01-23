@@ -24,6 +24,11 @@ void add_player(Game * game, int player_number)
     
     game->players[player_number] = player;
     game->number_players++;
+    
+    int i;
+    for (i = 0; i <= player_number - 1; i++) {
+        send_number(i, game->number_players);
+    }
 }
 
 void remove_player(Game * game, int player_number)
