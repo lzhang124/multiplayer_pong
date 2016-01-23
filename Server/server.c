@@ -38,7 +38,7 @@ int start_server(int port_num)
     // bind socket to server address + serverPort
     if (bind(master_socket, (struct sockaddr *) &server_addr, sizeof(server_addr)) < 0)
     {
-        error("Error binding socket");
+        error("ERROR binding socket");
     }
     
     // listen
@@ -82,7 +82,7 @@ int wait_for_connection(int master_socket)
     int activity = select(max_sd + 1, &readfds, NULL, NULL, NULL);
     if (activity < 0)
     {
-        printf("select error");
+        printf("ERROR in waiting for activity");
     }
     
     // if something happened on the master socket, then it's an incoming connection
@@ -99,7 +99,7 @@ int add_connection(int master_socket)
     int new_socket;
     if ((new_socket = accept(master_socket, (struct sockaddr *) &cli_addr, &clilen)) < 0)
     {
-        perror("accept error");
+        perror("ERROR cannot accept connection");
         exit(EXIT_FAILURE);
     }
     
@@ -131,7 +131,7 @@ int check_socket()
             return i;
         }
     }
-    error("ERROR IO in a socket that is not in fd_set");
+    error("ERROR socket is not in fd_set");
     return -1;
 }
 

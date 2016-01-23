@@ -8,6 +8,7 @@
 #define pong_h
 
 #include <stdio.h>
+#include <string.h>
 #include "constants.h"
 
 enum ball_dir

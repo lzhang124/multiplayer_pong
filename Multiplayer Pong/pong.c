@@ -19,7 +19,7 @@ const char* NAME = "Pong";
 int master_socket;
 int paddle_number;
 int num_players;
-Paddle paddles[MAX_PLAYERS];
+Paddle *paddles[MAX_PLAYERS];
 Ball *ball;
 
 int started = FALSE;
@@ -39,7 +39,7 @@ void update()
         count = 0;
     
         // move the paddle
-        Paddle *paddle = &paddles[paddle_number];
+        Paddle *paddle = paddles[paddle_number];
         if (down_pressed)
         {
             move_down(paddle);
@@ -80,7 +80,7 @@ void display()
     // paddles
     for (i = 0; i < num_players; i++)
     {
-        Paddle *paddle = &paddles[i];
+        Paddle *paddle = paddles[i];
         if (i == paddle_number)
         {
             glColor3f(1.0, 1.0, 1.0);
@@ -169,7 +169,7 @@ void close_window()
 {
     free(ball);
     for (i = 0; i < num_players; i++) {
-        Paddle *paddle = &paddles[i];
+        Paddle *paddle = paddles[i];
         free(paddle);
     }
     end_connection(master_socket);
@@ -200,7 +200,7 @@ void pong(int argc, char *argv[], char *server_name[], int port_num)
     num_players = 4;
     
     for (i = 0; i < num_players; i++) {
-        paddles[i] = *add_paddle(i);
+        paddles[i] = add_paddle(i);
     }
     
     // init glut

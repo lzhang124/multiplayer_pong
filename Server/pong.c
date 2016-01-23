@@ -63,8 +63,7 @@ void pong(int port_num)
             int player_number = check_socket();
             char *buffer;
             buffer = read_string(player_number);
-            if (buffer == '\0') {
-                printf(")disconnect");
+            if (strcmp(buffer, "\0") == 0) {
                 remove_player(game, player_number);
             }
         }
