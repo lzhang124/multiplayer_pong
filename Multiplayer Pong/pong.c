@@ -38,9 +38,8 @@ void update()
     {
         count = 0;
     
-        Paddle *paddle = &paddles[paddle_num];
-        
         // move the paddle
+        Paddle *paddle = &paddles[paddle_num];
         if (down_pressed)
         {
             move_down(paddle);
@@ -56,6 +55,11 @@ void update()
         else if (right_pressed)
         {
             move_right(paddle);
+        }
+        
+        // move the ball
+        if (started) {
+            update_ball(ball);
         }
         
         // redraw the window

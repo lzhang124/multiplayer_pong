@@ -46,7 +46,7 @@ void move_down(Paddle * paddle)
 {
     if (paddle->loc == LEFT || paddle->loc == RIGHT)
     {
-        if (paddle->y <= WINDOW_H - PADDLE_H - MARGIN - PADDLE_MOVEMENT)
+        if (paddle->y <= WINDOW_H - MARGIN - PADDLE_H - PADDLE_MOVEMENT)
         {
             paddle->y += PADDLE_MOVEMENT;
         }
@@ -68,7 +68,7 @@ void move_right(Paddle * paddle)
 {
     if (paddle->loc == TOP || paddle->loc == BOTTOM)
     {
-        if (paddle->x <= WINDOW_W - PADDLE_H - MARGIN - PADDLE_MOVEMENT)
+        if (paddle->x <= WINDOW_W - MARGIN - PADDLE_H - PADDLE_MOVEMENT)
         {
             paddle->x += PADDLE_MOVEMENT;
         }
