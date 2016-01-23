@@ -179,6 +179,11 @@ void special_released(int key, int xscr, int yscr)
     }
 }
 
+void resize(int width, int height)
+{
+    glutReshapeWindow(WINDOW_W, WINDOW_H);
+}
+
 void close_window()
 {
     free(ball);
@@ -239,6 +244,7 @@ void pong(int argc, char *argv[], char *server_name[], int port_num)
 //    glutKeyboardFunc(key_pressed);
     glutSpecialFunc(special_pressed);
     glutSpecialUpFunc(special_released);
+    glutReshapeFunc(resize);
     glutWMCloseFunc(close_window);
     
     // start
