@@ -9,35 +9,56 @@
 
 #include <stdio.h>
 
-struct ball
+#define MAX_PLAYERS 4
+
+enum paddle_type
+{
+    LEFT,
+    RIGHT,
+    TOP,
+    BOTTOM
+};
+
+typedef struct
 {
     int speed;
     double direction;
     double xCoord;
     double yCoord;
-};
+} Ball;
 
-struct paddle
+typedef struct
 {
-    double xCoord;
-    double yCoord;
-};
+    double x_coord;
+    double y_coord;
+} Paddle;
 
-struct player
+typedef struct
 {
     int player_socket;
     int score;
-    struct paddle *paddle;
-};
+    enum paddle_type paddle_type;
+    Paddle *paddle;
+} Player;
 
-// calculates new paddle coordinates
-void moveLeft(struct player* player, struct paddle *paddle);
+typedef struct game
+{
+    int server_socket;
+    int server_port;
+    int number_players;
+    Player *players;
+    Ball *ball;
+    
+    // may not need these
+    int max_score;
+    int max_player;
+} Game;
 
-void moveRight(struct player* player, struct paddle *paddle);
-
-// calculates the location of the ball
-void calculateBallLocation(struct ball *ball);
-
+void pong(int port_num);
+Game *init_game(int server_socket, int server_port);
+void wait_for_players(Game *game);
+void add_player(Game *game, int player_socket);
+void disconnect_player(Game *game, int sd);
 
 
 

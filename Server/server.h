@@ -16,10 +16,11 @@
 #include <netinet/in.h>
 #include <sys/time.h>
 
-#include "pong.h"
+int start_server(int port_num);
+int add_connection(int master_socket, int client_sockets[], int max_connections);
+long handle_connection(fd_set *readfds, int client_sockets[], int max_connections, int *sd, char buffer[]);
+int wait_for_connection(int master_socket, int max_connections, fd_set *readfds, int client_sockets[]);
 
-#define MAX_PLAYERS 4
-
-void start_server(int port_num);
+void error(const char *msg);
 
 #endif /* server_h */

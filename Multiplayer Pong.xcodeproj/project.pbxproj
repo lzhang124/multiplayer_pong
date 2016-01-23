@@ -10,9 +10,11 @@
 		4603A85D1C5026EC00F2D26C /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 4603A85C1C5026EC00F2D26C /* main.c */; };
 		4603A8731C5036C900F2D26C /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 4603A8721C5036C900F2D26C /* main.c */; };
 		4603A8971C50392D00F2D26C /* pong.c in Sources */ = {isa = PBXBuildFile; fileRef = 4603A8951C50392D00F2D26C /* pong.c */; };
-		462B42491C517F9F005889C7 /* server.c in Sources */ = {isa = PBXBuildFile; fileRef = 462B42471C517F9F005889C7 /* server.c */; settings = {ASSET_TAGS = (); }; };
-		462B424C1C518080005889C7 /* pong.c in Sources */ = {isa = PBXBuildFile; fileRef = 462B424A1C518080005889C7 /* pong.c */; settings = {ASSET_TAGS = (); }; };
-		462B424F1C5181A0005889C7 /* client.c in Sources */ = {isa = PBXBuildFile; fileRef = 462B424D1C5181A0005889C7 /* client.c */; settings = {ASSET_TAGS = (); }; };
+		462B42491C517F9F005889C7 /* server.c in Sources */ = {isa = PBXBuildFile; fileRef = 462B42471C517F9F005889C7 /* server.c */; };
+		462B424C1C518080005889C7 /* pong.c in Sources */ = {isa = PBXBuildFile; fileRef = 462B424A1C518080005889C7 /* pong.c */; };
+		462B424F1C5181A0005889C7 /* client.c in Sources */ = {isa = PBXBuildFile; fileRef = 462B424D1C5181A0005889C7 /* client.c */; };
+		883589B71C5291DB00F96EC8 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 883589B61C5291DB00F96EC8 /* GLUT.framework */; };
+		883589B91C5291E500F96EC8 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 883589B81C5291E500F96EC8 /* OpenGL.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -49,6 +51,8 @@
 		462B424B1C518080005889C7 /* pong.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pong.h; sourceTree = "<group>"; };
 		462B424D1C5181A0005889C7 /* client.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = client.c; sourceTree = "<group>"; };
 		462B424E1C5181A0005889C7 /* client.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = client.h; sourceTree = "<group>"; };
+		883589B61C5291DB00F96EC8 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
+		883589B81C5291E500F96EC8 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +60,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				883589B91C5291E500F96EC8 /* OpenGL.framework in Frameworks */,
+				883589B71C5291DB00F96EC8 /* GLUT.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -72,6 +78,8 @@
 		4603A8501C5026EC00F2D26C = {
 			isa = PBXGroup;
 			children = (
+				883589B81C5291E500F96EC8 /* OpenGL.framework */,
+				883589B61C5291DB00F96EC8 /* GLUT.framework */,
 				4603A85B1C5026EC00F2D26C /* Multiplayer Pong */,
 				4603A8711C5036C900F2D26C /* Server */,
 				462B42451C51720F005889C7 /* Multiplayer Pong */,
@@ -233,7 +241,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
@@ -269,7 +277,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = macosx;
 			};
@@ -278,6 +286,7 @@
 		4603A8611C5026EC00F2D26C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -285,6 +294,7 @@
 		4603A8621C5026EC00F2D26C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
