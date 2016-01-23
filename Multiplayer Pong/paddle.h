@@ -9,7 +9,6 @@
 #ifndef paddle_h
 #define paddle_h
 
-#include <stdio.h>
 #include <stdlib.h>
 
 typedef struct
@@ -24,12 +23,7 @@ enum paddle_type
     LEFT, RIGHT, TOP, BOTTOM
 };
 
-extern const int WINDOW_W;
-extern const int WINDOW_H;
-extern const int PADDLE_W;
-extern const int PADDLE_H;
-
-Paddle * set_paddle(int paddle_number);
+Paddle * add_paddle(int paddle_number);
 void move_up(Paddle * paddle);
 void move_down(Paddle * paddle);
 void move_left(Paddle * paddle);

@@ -44,7 +44,6 @@ int start_client(char *server_name[], int port_num)
         error("ERROR connecting");
     }
     
-    fcntl(master_socket, F_SETFL, O_NONBLOCK);
     return master_socket;
 }
 
