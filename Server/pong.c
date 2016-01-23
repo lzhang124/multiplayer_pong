@@ -7,7 +7,7 @@
 #include "pong.h"
 #include "server.h"
 
-Game * init_game()
+Game *init_game()
 {
     Ball *ball = malloc(sizeof(*ball));
     Game *game = malloc(sizeof(*game));
@@ -16,9 +16,12 @@ Game * init_game()
     return game;
 }
 
-void add_player(Game * game, int player_number)
+void add_player(Game *game, int player_number)
 {
+    // MODIFY COORDS
     Paddle *paddle = malloc(sizeof(*paddle));
+    *paddle = (Paddle) {10, 10, LEFT + player_number};
+    
     Player *player = malloc(sizeof(*player));
     *player = (Player) {player_number, 0, paddle};
     
@@ -32,16 +35,18 @@ void add_player(Game * game, int player_number)
     }
 }
 
-void remove_player(Game * game, int player_number)
+void remove_player(Game *game, int player_number)
 {
+    // free paddle and player
     Player *player = game->players[player_number];
     free(player->paddle);
     free(player);
+    
     game->players[player_number] = NULL;
     game->number_players--;
 }
 
-void end_game(Game * game)
+void end_game(Game *game)
 {
     free(game->ball);
     free(game);
@@ -50,7 +55,6 @@ void end_game(Game * game)
 void pong(int port_num)
 {
     int master_socket = start_server(port_num);
-    
     Game *game = init_game();
     
     while(game->number_players < MAX_PLAYERS)
@@ -60,8 +64,8 @@ void pong(int port_num)
         {
             int player_number = add_connection(master_socket);
             add_player(game, player_number);
-            
-            // send paddle number
+    
+            // send paddle type to new player
             send_number(player_number, player_number);
         }
         else
@@ -72,6 +76,11 @@ void pong(int port_num)
             if (buffer == NULL)
             {
                 remove_player(game, player_number);
+            }
+            else
+            {
+                // send info to other players
+                notify_clients_string(player_number, buffer);
             }
         }
         

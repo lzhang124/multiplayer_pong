@@ -8,9 +8,7 @@
 #include "constants.h"
 
 fd_set readfds;
-int client_sockets[MAX_PLAYERS] = {0};
-struct sockaddr_in cli_addr;
-socklen_t clilen = sizeof(cli_addr);
+int client_sockets[MAX_PLAYERS] = {0}; // holds client sd
 
 void error(const char *msg)
 {
@@ -96,6 +94,10 @@ int wait_for_connection(int master_socket)
 
 int add_connection(int master_socket)
 {
+    // accept incoming connections, need client address
+    struct sockaddr_in cli_addr;
+    socklen_t clilen = sizeof(cli_addr);
+    
     int new_socket;
     if ((new_socket = accept(master_socket, (struct sockaddr *) &cli_addr, &clilen)) < 0)
     {
@@ -136,14 +138,22 @@ int check_socket()
     return -1;
 }
 
-void send_string(int player_number, char * buffer)
+void disconnect(int client_number)
 {
-    int sd = client_sockets[player_number];
-    send(sd, buffer, sizeof(*buffer), 0);
-    free(buffer);
+    // get his details and print
+    struct sockaddr_in cli_addr;
+    socklen_t clilen = sizeof(cli_addr);
+    
+    int sd = client_sockets[client_number];
+    getpeername(sd, (struct sockaddr *) &cli_addr, &clilen);
+    printf("Host disconnected, port %d \n", ntohs(cli_addr.sin_port));
+    
+    // close the socket
+    close(sd);
+    client_sockets[client_number] = 0;
 }
 
-char * read_string(int player_number)
+void end_connection(int master_socket)
 {
     int sd = client_sockets[player_number];
     char *buffer = malloc(sizeof(*buffer) * 8);
@@ -154,34 +164,56 @@ char * read_string(int player_number)
         disconnect(player_number);
         buffer = NULL;
     }
+    free(buffer);
+}
+
+void send_string(int client_number, char *buffer)
+{
+    int sd = client_sockets[client_number];
+    send(sd, buffer, sizeof(buffer), 0);
+    free(buffer);
+}
+
+char *read_string(int client_number)
+{
+    int sd = client_sockets[client_number];
+    char *buffer = malloc(sizeof(*buffer) * 8);
+    long n = read(sd, buffer, sizeof(buffer));
+    if (n == 0)
+    {
+        disconnect(client_number);
+        buffer = NULL;
+    }
     return buffer;
 }
 
-void send_number(int player_number, int number)
+void notify_clients_number(int client_number, int number)
 {
-    int sd = client_sockets[player_number];
+    int i;
+    for (i = 0; i < MAX_PLAYERS; i++)
+    {
+        int sd = client_sockets[i];
+        if (i != client_number && sd != 0)
+        {
+            send_number(i, number);
+        }
+    }
+}
+
+void send_number(int client_number, int number)
+{
+    int sd = client_sockets[client_number];
     send(sd, &number, sizeof(number), 0);
 }
 
-int read_number (int player_number)
+int read_number(int client_number)
 {
-    int sd = client_sockets[player_number];
+    int sd = client_sockets[client_number];
     int number;
-    read(sd, &number, sizeof(number));
+    long n = read(sd, &number, sizeof(number));
+    if (n == 0)
+    {
+        disconnect(client_number);
+    }
     return number;
-}
-
-void disconnect(int player_number)
-{
-    int sd = client_sockets[player_number];
-    getpeername(sd, (struct sockaddr *) &cli_addr, &clilen);
-    printf("Host disconnected, port %d \n", ntohs(cli_addr.sin_port));
-    
-    close(sd);
-    client_sockets[player_number] = 0;
-}
-
-void end_connection(int master_socket)
-{
-    close(master_socket);
 }

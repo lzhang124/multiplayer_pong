@@ -20,11 +20,15 @@ int start_server(int port_num);
 int wait_for_connection(int master_socket);
 int add_connection(int master_socket);
 int check_socket();
-void send_string(int player_number, char * buffer);
-char * read_string(int player_number);
-void send_number(int player_number, int number);
-int read_number(int player_number);
-void disconnect(int player_number);
+void disconnect(int client_number);
 void end_connection(int master_socket);
+
+void notify_clients_string(int client_number, char *buffer);
+void send_string(int client_number, char *buffer);
+char *read_string(int client_number);
+
+void notify_clients_number(int client_number, int number);
+void send_number(int client_number, int number);
+int read_number(int client_number);
 
 #endif /* server_h */

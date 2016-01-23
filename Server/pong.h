@@ -55,6 +55,10 @@ typedef struct
     Ball *ball;
 } Game;
 
+Game *init_game();
+void add_player(Game *game, int player_socket);
+void remove_player(Game *game, int sd);
+void end_game(Game *game);
 void pong(int port_num);
 
 #endif /* pong_h */

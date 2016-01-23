@@ -51,7 +51,7 @@ void write_string(int master_socket, char * buffer)
     free(buffer);
 }
 
-char * read_string(int master_socket)
+char *read_string(int master_socket)
 {
     char *buffer = malloc(sizeof(*buffer) * 8);
     long n = read(master_socket, buffer, sizeof(*buffer));
