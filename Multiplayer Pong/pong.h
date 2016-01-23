@@ -18,6 +18,7 @@
 #include <GLUT/glut.h>
 #include <OpenGL/gl.h>
 #include <OpenGL/glu.h>
+#include <GLUT/glut.h>
 #else
 #include <GL/glut.h>
 #include <GL/glu.h>
@@ -25,5 +26,13 @@
 #endif
 
 void pong(int argc, char *argv[], char *server_name[], int port_num);
+
+
+void displayfunct()
+{
+    glClear(GL_COLOR_BUFFER_BIT);
+    
+    glBegin(GL_POINTS);
+}
 
 #endif /* pong_h */

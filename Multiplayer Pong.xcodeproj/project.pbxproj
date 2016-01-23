@@ -70,8 +70,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				469FE9821C528EDF007B64E8 /* GLUT.framework in Frameworks */,
-				469FE9801C528E76007B64E8 /* OpenGL.framework in Frameworks */,
+				883589B91C5291E500F96EC8 /* OpenGL.framework in Frameworks */,
+				883589B71C5291DB00F96EC8 /* GLUT.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -88,8 +88,8 @@
 		4603A8501C5026EC00F2D26C = {
 			isa = PBXGroup;
 			children = (
-				469FE9811C528EDF007B64E8 /* GLUT.framework */,
-				469FE97F1C528E76007B64E8 /* OpenGL.framework */,
+				883589B81C5291E500F96EC8 /* OpenGL.framework */,
+				883589B61C5291DB00F96EC8 /* GLUT.framework */,
 				4603A85B1C5026EC00F2D26C /* Multiplayer Pong */,
 				4603A8711C5036C900F2D26C /* Server */,
 				462B42451C51720F005889C7 /* Multiplayer Pong */,
@@ -306,6 +306,7 @@
 		4603A8611C5026EC00F2D26C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -313,6 +314,7 @@
 		4603A8621C5026EC00F2D26C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
