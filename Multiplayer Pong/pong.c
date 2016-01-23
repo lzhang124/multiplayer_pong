@@ -34,7 +34,7 @@ int count = 0;
 void update()
 {
     ++count;
-    if (count == 5000)
+    if (count == 1000)
     {
         count = 0;
     

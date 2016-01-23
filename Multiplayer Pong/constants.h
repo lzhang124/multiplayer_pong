@@ -16,10 +16,10 @@
 #define MAX_PLAYERS 4
 #define PADDLE_W 5
 #define PADDLE_H 105
-#define PADDLE_MOVEMENT 20
+#define PADDLE_MOVEMENT 4
 #define BALL_W 5
 #define BALL_H 5
-#define BALL_MOVEMENT 25
+#define BALL_MOVEMENT 5
 #define MARGIN 15
 
 #endif /* constants_h */
