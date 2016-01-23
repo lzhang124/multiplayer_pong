@@ -46,7 +46,6 @@ void generate_texture()
             texture_image[i][j][1] = 255*(i & 0x04);
             texture_image[i][j][2] = 255*(j & 0x04);
         }
-}
 
 void loadTextures()
 {
@@ -246,4 +245,5 @@ void pong(int argc, char *argv[])
     glutMainLoop();
     
     ExitGlut();
+}
 }

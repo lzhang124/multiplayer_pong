@@ -18,6 +18,7 @@
 #include <GLUT/glut.h>
 #include <OpenGL/gl.h>
 #include <OpenGL/glu.h>
+#include <GLUT/glut.h>
 #else
 #include <GL/glut.h>
 #include <GL/glu.h>
@@ -25,21 +26,6 @@
 #endif
 
 void pong(int argc, char *argv[]);
-
-#ifndef __MAC__
-#define __MAC__ 1
-#endif
-
-#ifdef __MAC__
-#include <OpenGL/gl.h>
-#include <OpenGL/glu.h>
-#include <GLUT/glut.h>
-#else
-#include <GL/glut.h>
-#endif
-
-unsigned window_x = 800;
-unsigned window_y = 800;
 
 
 void displayfunct()

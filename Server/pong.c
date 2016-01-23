@@ -15,7 +15,6 @@ Game *init_game(int server_socket, int server_port)
     game->server_socket = server_socket;
     game->number_players = 0;
     
-    game->players = (Player *)calloc(MAX_PLAYERS, sizeof(Player));
     return game;
 }
 
@@ -25,7 +24,7 @@ void add_player(Game *game, int player_socket)
     for (i = 0; i < MAX_PLAYERS; i++)
     {
         //find free spot in players array
-        if (game->players[i].player_socket == 0)
+        if (game->players[i] == NULL || game->players[i]->player_socket == 0)
         {
             // MODIFY COORDS
             Paddle *paddle = malloc(sizeof(*paddle));
@@ -38,7 +37,7 @@ void add_player(Game *game, int player_socket)
             player->score = 0;
             player->paddle = paddle;
             
-            game->players[i] = *player;
+            game->players[i] = player;
             game->number_players++;
             break;
         }
@@ -56,12 +55,12 @@ void disconnect_player(Game *game, int sd)
     int i;
     for (i = 0; i < MAX_PLAYERS; i++)
     {
-        if (game->players[i].player_socket == sd)
+        if (game->players[i]->player_socket == sd)
         {
             // free paddle and player
-            Player player = game->players[i];
-            free(player.paddle);
-            free(&player);
+            Player *player = game->players[i];
+            free(player->paddle);
+            free(player);
             
             game->number_players--;
             break;
@@ -107,14 +106,17 @@ void pong(int port_num)
             }
             else
             {
-                // use valread to update
-                
+                // use buffer to update position
+                // echo message back
+                buffer[valread] = '\0';
+                send(sd , buffer , strlen(buffer) , 0 );
             }
         }
         
         // close the server when no more clients
         if (game->number_players == 0)
         {
+            free(game);
             close(server_socket);
             break;
         }

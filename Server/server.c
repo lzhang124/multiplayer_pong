@@ -72,7 +72,7 @@ int wait_for_connection(int master_socket, int max_connections, fd_set *readfds,
     for (i = 0; i < max_connections; i++)
     {
         // socket descriptor
-        sd = client_sockets[i];
+        sd = *(client_sockets+i);
         
         // if valid socket descriptor then add to read list
         if (sd > 0)

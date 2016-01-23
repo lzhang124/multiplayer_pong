@@ -46,7 +46,7 @@ typedef struct game
     int server_socket;
     int server_port;
     int number_players;
-    Player *players;
+    Player *players[MAX_PLAYERS];
     Ball *ball;
     
     // may not need these
