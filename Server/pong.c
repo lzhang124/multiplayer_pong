@@ -69,7 +69,7 @@ void pong(int port_num)
             int player_number = check_socket();
             char *buffer;
             buffer = read_string(player_number);
-            if (buffer != NULL)
+            if (buffer == NULL)
             {
                 remove_player(game, player_number);
             }
