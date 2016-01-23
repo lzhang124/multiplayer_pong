@@ -27,12 +27,4 @@
 
 void pong(int argc, char *argv[], char *server_name[], int port_num);
 
-
-void displayfunct()
-{
-    glClear(GL_COLOR_BUFFER_BIT);
-    
-    glBegin(GL_POINTS);
-}
-
 #endif /* pong_h */
