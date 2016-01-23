@@ -29,8 +29,7 @@ void add_player(Game *game, int player_number)
     game->number_players++;
     
     // notify other players of new player through updated num_players
-    // GUI: adds in new paddle
-    notify_players_number(game->number_players, player_number);
+    notify_clients_number(player_number, game->number_players);
 }
 
 void remove_player(Game *game, int player_number)
@@ -42,10 +41,6 @@ void remove_player(Game *game, int player_number)
     
     game->players[player_number] = NULL;
     game->number_players--;
-    
-    // notify other players of new player through updated num_players
-    // GUI: converts to wall
-    notify_players_number(game->number_players, player_number);
 }
 
 void end_game(Game *game)
@@ -54,43 +49,19 @@ void end_game(Game *game)
     free(game);
 }
 
-void notify_players_number(int message, int from_player_number)
-{
-    int i;
-    for (i = 0; i < MAX_PLAYERS; i++)
-    {
-        if (i != from_player_number)
-        {
-        	send_number(i, message);
-        }
-    }
-}
-
-void notify_players_string(char *message, int from_player_number)
-{
-    int i;
-    for (i = 0; i < MAX_PLAYERS; i++)
-    {
-        if (i != from_player_number)
-        {
-            send_string(i, message);
-        }
-    }
-}
-
 void pong(int port_num)
 {
     int master_socket = start_server(port_num);
     Game *game = init_game();
     
     while(game->number_players < MAX_PLAYERS)
-    {     
+    {
         // wait for players to join game
         if (wait_for_connection(master_socket) == 1)
         {
             int player_number = add_connection(master_socket);
             add_player(game, player_number);
-            
+    
             // send paddle type to new player
             send_number(player_number, player_number);
         }
@@ -105,7 +76,7 @@ void pong(int port_num)
             else
             {
                 // send info to other players
-                notify_players_string(buffer, player_number);
+                notify_clients_string(player_number, buffer);
             }
         }
         

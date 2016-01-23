@@ -4,7 +4,6 @@
 //
 //
 
-#include "client.h"
 #include "pong.h"
 
 #define SERVER_PORT 9000
@@ -18,8 +17,6 @@ int main(int argc, char *argv[])
     }
     
     // second argument is the server name
-    start_client(&argv[1], SERVER_PORT);
-    
-    pong(argc, argv);
+    pong(argc, argv, &argv[1], SERVER_PORT);
     return 0;
 }

@@ -37,6 +37,6 @@ void CreateGlutWindow();
 void CreateGlutCallbacks();
 void InitOpenGL();
 void ExitGlut();
-void pong(int argc, char *argv[]);
+void pong(int argc, char *argv[], char *server_name[], int port_num);
 
 #endif /* pong_h */

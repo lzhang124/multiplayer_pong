@@ -36,7 +36,7 @@ int start_server(int port_num)
     // bind socket to server address + serverPort
     if (bind(master_socket, (struct sockaddr *) &server_addr, sizeof(server_addr)) < 0)
     {
-        error("Error binding socket");
+        error("ERROR binding socket");
     }
     
     // listen
@@ -57,11 +57,11 @@ int wait_for_connection(int master_socket)
     max_sd = master_socket;
     
     int i;
-    // add child sockets to set
+    // add client sockets to set
     for (i = 0; i < MAX_PLAYERS; i++)
     {
         // socket descriptor
-        sd = *(client_sockets+i);
+        sd = client_sockets[i];
         
         // if valid socket descriptor then add to read list
         if (sd > 0)
@@ -80,7 +80,7 @@ int wait_for_connection(int master_socket)
     int activity = select(max_sd + 1, &readfds, NULL, NULL, NULL);
     if (activity < 0)
     {
-        printf("select error");
+        printf("ERROR in waiting for activity");
     }
     
     // if something happened on the master socket, then it's an incoming connection
@@ -101,7 +101,7 @@ int add_connection(int master_socket)
     int new_socket;
     if ((new_socket = accept(master_socket, (struct sockaddr *) &cli_addr, &clilen)) < 0)
     {
-        perror("accept error");
+        perror("ERROR cannot accept connection");
         exit(EXIT_FAILURE);
     }
     
@@ -113,23 +113,21 @@ int add_connection(int master_socket)
     for (i = 0; i < MAX_PLAYERS; i++)
     {
         // if position is empty
-        if (*(client_sockets+i) == 0)
+        if (*(client_sockets + i) == 0)
         {
             printf("Adding to list of clients as %d\n", i);
-            *(client_sockets+i) = new_socket;
-            break;
+            *(client_sockets + i) = new_socket;
+            return i;
         }
     }
-    return i;
+    return -1;
 }
 
 int check_socket()
 {
-    int i, sd;
-    for (i = 0; i < MAX_PLAYERS; i++)
-    {
-        sd = *(client_sockets+i);
-        
+    int i;
+    for (i = 0; i < MAX_PLAYERS; i++) {
+        int sd = client_sockets[i];
         if (FD_ISSET(sd, &readfds))
         {
             return i;
@@ -159,6 +157,20 @@ void end_connection(int master_socket)
     close(master_socket);
 }
 
+void notify_clients_string(int client_number, char *buffer)
+{
+    int i;
+    for (i = 0; i < MAX_PLAYERS; i++)
+    {
+        int sd = client_sockets[i];
+        if (i != client_number && sd != 0)
+        {
+            send(sd, buffer, sizeof(buffer), 0);
+        }
+    }
+    free(buffer);
+}
+
 void send_string(int client_number, char *buffer)
 {
     int sd = client_sockets[client_number];
@@ -177,6 +189,19 @@ char *read_string(int client_number)
         buffer = NULL;
     }
     return buffer;
+}
+
+void notify_clients_number(int client_number, int number)
+{
+    int i;
+    for (i = 0; i < MAX_PLAYERS; i++)
+    {
+        int sd = client_sockets[i];
+        if (i != client_number && sd != 0)
+        {
+            send_number(i, number);
+        }
+    }
 }
 
 void send_number(int client_number, int number)
