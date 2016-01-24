@@ -24,7 +24,7 @@ typedef struct
     enum paddle_type type;
 } Paddle;
 
-Paddle * add_paddle(int paddle_number);
+Paddle *add_paddle(int paddle_number);
 void move_up(Paddle * paddle);
 void move_down(Paddle * paddle);
 void move_left(Paddle * paddle);

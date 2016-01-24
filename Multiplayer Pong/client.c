@@ -45,10 +45,10 @@ int start_client(char *server_name[], int port_num)
     return master_socket;
 }
 
-void write_string(int master_socket, char * buffer)
+void write_string(int master_socket, char *buffer)
 {
     write(master_socket, buffer, sizeof(*buffer));
-    free(buffer);
+//    free(buffer);
 }
 
 char *read_string(int master_socket)

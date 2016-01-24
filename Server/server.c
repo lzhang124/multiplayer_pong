@@ -113,10 +113,10 @@ int add_connection(int master_socket)
     for (i = 0; i < MAX_PLAYERS; i++)
     {
         // if position is empty
-        if (*(client_sockets + i) == 0)
+        if (client_sockets[i] == 0)
         {
             printf("Adding to list of clients as %d\n", i);
-            *(client_sockets + i) = new_socket;
+            client_sockets[i] = new_socket;
             return i;
         }
     }

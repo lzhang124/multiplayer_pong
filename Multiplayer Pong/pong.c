@@ -23,10 +23,7 @@ Paddle *paddles[MAX_PLAYERS];
 Ball *ball;
 
 int started = FALSE;
-int down_pressed = FALSE;
-int up_pressed = FALSE;
-int left_pressed = FALSE;
-int right_pressed = FALSE;
+int mykey = -1;
 
 int i;
 
@@ -40,31 +37,48 @@ void update()
     
         // move the paddle
         Paddle *paddle = paddles[paddle_number];
-        if (down_pressed)
+        if (mykey != -1)
         {
-            move_down(paddle);
-//            write_number(master_socket, paddle->y);
-        }
-        else if (up_pressed)
-        {
-            move_up(paddle);
-//            write_number(master_socket, paddle->y);
-        }
-        else if (left_pressed)
-        {
-            move_left(paddle);
-//            write_number(master_socket, paddle->x);
-        }
-        else if (right_pressed)
-        {
-            move_right(paddle);
-//            write_number(master_socket, paddle->x);
+            switch (mykey)
+            {
+                case GLUT_KEY_DOWN :
+                    move_down(paddle);
+                    break;
+                case GLUT_KEY_UP :
+                    move_up(paddle);
+                    break;
+                case GLUT_KEY_LEFT :
+                    move_left(paddle);
+                    break;
+                case GLUT_KEY_RIGHT :
+                    move_right(paddle);
+                    break;
+            }
+            if (started)
+            {
+                Paddle *mypaddle = {0, 0, RIGHT};
+            	write_string(master_socket, (char *) mypaddle);
+            }
         }
         
         // move the ball
         if (started)
         {
             update_ball(ball);
+            Paddle *new_paddle_location = (Paddle *)read_string(master_socket );
+            if (new_paddle_location)
+            {
+                for (i = 0; i < num_players; i++)
+                {
+                    if (paddles[i]->type == new_paddle_location->type)
+                    {
+                        paddles[i]->x = new_paddle_location->x;
+                        paddles[i]->y = new_paddle_location->y;
+                        break;
+                    }
+                }
+                free(new_paddle_location);
+            }
         }
         else
         {
@@ -130,6 +144,8 @@ void mouse_function(int button, int state, int xscr, int yscr)
         {
             started = TRUE;
             ball = add_ball();
+            // send start message to server to send to other players
+            //?????
         }
     }
 }
@@ -141,42 +157,12 @@ void mouse_function(int button, int state, int xscr, int yscr)
 
 void special_pressed(int key, int xscr, int yscr)
 {
-    if (key == GLUT_KEY_UP)
-    {
-        up_pressed = TRUE;
-    }
-    else if (key == GLUT_KEY_DOWN)
-    {
-        down_pressed = TRUE;
-    }
-    else if (key == GLUT_KEY_LEFT)
-    {
-        left_pressed = TRUE;
-    }
-    else if (key == GLUT_KEY_RIGHT)
-    {
-        right_pressed = TRUE;
-    }
+    mykey = key;
 }
 
 void special_released(int key, int xscr, int yscr)
 {
-    if (key == GLUT_KEY_UP)
-    {
-        up_pressed = FALSE;
-    }
-    else if (key == GLUT_KEY_DOWN)
-    {
-        down_pressed = FALSE;
-    }
-    else if (key == GLUT_KEY_LEFT)
-    {
-        left_pressed = FALSE;
-    }
-    else if (key == GLUT_KEY_RIGHT)
-    {
-        right_pressed = FALSE;
-    }
+    mykey = -1;
 }
 
 void resize(int width, int height)
