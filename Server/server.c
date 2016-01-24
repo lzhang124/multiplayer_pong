@@ -182,7 +182,7 @@ void send_string(int client_number, Paddle *buffer)
 Paddle *read_string(int client_number)
 {
     int sd = client_sockets[client_number];
-    Paddle *buffer = malloc(sizeof(*buffer) * 256);
+    Paddle *buffer = malloc(sizeof(*buffer));
     long n = read(sd, buffer, sizeof(*buffer));
     if (n == 0)
     {

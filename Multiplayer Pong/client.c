@@ -53,7 +53,7 @@ void write_string(int master_socket, Paddle *buffer)
 
 Paddle *read_string(int master_socket)
 {
-    Paddle *buffer = malloc(sizeof(*buffer) * 256);
+    Paddle *buffer = malloc(sizeof(*buffer));
     long n = read(master_socket, buffer, sizeof(*buffer));
     if (n != -1)
     {
