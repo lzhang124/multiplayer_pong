@@ -45,15 +45,15 @@ int start_client(char *server_name[], int port_num)
     return master_socket;
 }
 
-void write_string(int master_socket, char *buffer)
+void write_string(int master_socket, Paddle *buffer)
 {
     write(master_socket, buffer, sizeof(*buffer));
 //    free(buffer);
 }
 
-char *read_string(int master_socket)
+Paddle *read_string(int master_socket)
 {
-    char *buffer = malloc(sizeof(*buffer) * 8);
+    Paddle *buffer = malloc(sizeof(*buffer) * 256);
     long n = read(master_socket, buffer, sizeof(*buffer));
     if (n != -1)
     {

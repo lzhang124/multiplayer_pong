@@ -68,15 +68,17 @@ void pong(int port_num)
         else
         {
             int player_number = check_socket();
-            char *buffer = read_string(player_number);
-            if (buffer == NULL)
+            Paddle *paddleToSend = (Paddle *) read_string(player_number);
+            printf("paddle to send: %d\n", paddleToSend->type);
+            printf("paddle coord to send: %d, %d\n", paddleToSend->x, paddleToSend->y);
+            if (paddleToSend == NULL)
             {
                 remove_player(game, player_number);
             }
             else
             {
                 // send info to other players
-                notify_clients_string(player_number, buffer);
+                notify_clients_string(player_number, paddleToSend);
             }
         }
         

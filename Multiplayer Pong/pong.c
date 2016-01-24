@@ -56,8 +56,9 @@ void update()
             }
             if (started)
             {
-                Paddle *mypaddle = {0, 0, RIGHT};
-            	write_string(master_socket, (char *) mypaddle);
+                printf("i am the changing paddle: %d\n", paddle->type);
+                printf("my new coordinates are: %d, %d\n", paddle->x, paddle->y);
+            	write_string(master_socket, paddle);
             }
         }
         
@@ -65,19 +66,21 @@ void update()
         if (started)
         {
             update_ball(ball);
-            Paddle *new_paddle_location = (Paddle *)read_string(master_socket );
-            if (new_paddle_location)
+            
+            Paddle *buffer = (Paddle *)read_string(master_socket);
+            if (buffer)
             {
+                printf("changed paddle is %d\n", buffer->type);
+                printf("the new coordinates are: %d, %d\n", buffer->x, buffer->y);
                 for (i = 0; i < num_players; i++)
                 {
-                    if (paddles[i]->type == new_paddle_location->type)
+                    if (paddles[i]->type == buffer->type)
                     {
-                        paddles[i]->x = new_paddle_location->x;
-                        paddles[i]->y = new_paddle_location->y;
+                        paddles[i]->x = buffer->x;
+                        paddles[i]->y = buffer->y;
                         break;
                     }
                 }
-                free(new_paddle_location);
             }
         }
         else

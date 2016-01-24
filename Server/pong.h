@@ -11,35 +11,37 @@
 #include <string.h>
 #include "constants.h"
 
-enum ball_dir
+typedef enum
 {
     DOWN_RIGHT,
     DOWN_LEFT,
     UP_LEFT,
     UP_RIGHT
-};
+} BallDir;
 
 typedef struct
 {
     int x;
     int y;
-    enum ball_dir direction;
+    BallDir direction;
 } Ball;
 
-enum paddle_type
+#pragma pack(1)
+typedef enum
 {
     LEFT,
     RIGHT,
     TOP,
     BOTTOM
-};
+} PaddleType;
 
 typedef struct
 {
     int x;
     int y;
-    enum paddle_type type;
+    PaddleType type;
 } Paddle;
+#pragma pack(0)
 
 typedef struct
 {

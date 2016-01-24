@@ -158,7 +158,7 @@ void end_connection(int master_socket)
     close(master_socket);
 }
 
-void notify_clients_string(int client_number, char *buffer)
+void notify_clients_string(int client_number, Paddle *buffer)
 {
     int i;
     for (i = 0; i < MAX_PLAYERS; i++)
@@ -166,24 +166,24 @@ void notify_clients_string(int client_number, char *buffer)
         int sd = client_sockets[i];
         if (i != client_number && sd != 0)
         {
-            send(sd, buffer, sizeof(buffer), 0);
+            send(sd, buffer, sizeof(*buffer), 0);
         }
     }
     free(buffer);
 }
 
-void send_string(int client_number, char *buffer)
+void send_string(int client_number, Paddle *buffer)
 {
     int sd = client_sockets[client_number];
-    send(sd, buffer, sizeof(buffer), 0);
+    send(sd, buffer, sizeof(*buffer), 0);
     free(buffer);
 }
 
-char *read_string(int client_number)
+Paddle *read_string(int client_number)
 {
     int sd = client_sockets[client_number];
-    char *buffer = malloc(sizeof(*buffer) * 8);
-    long n = read(sd, buffer, sizeof(buffer));
+    Paddle *buffer = malloc(sizeof(*buffer) * 256);
+    long n = read(sd, buffer, sizeof(*buffer));
     if (n == 0)
     {
         disconnect(client_number);
