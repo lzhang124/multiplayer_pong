@@ -50,7 +50,7 @@ void write_string(int master_socket, char *buffer)
     write(master_socket, buffer, sizeof(*buffer));
 }
 
-Paddle *read_string(int master_socket, Paddle *buffer)
+void read_string(int master_socket, char *buffer)
 {
     long n = read(master_socket, buffer, sizeof(*buffer));
     if (n < 0)

@@ -68,9 +68,9 @@ void pong(int port_num)
         else
         {
             int player_number = check_socket();
-            Paddle *paddleToSend = malloc(sizeof(*paddleToSend));
-            paddleToSend = read_string(player_number, paddleToSend);
-            if (paddleToSend == NULL)
+            char *buffer;
+            read_string(player_number, buffer);
+            if (buffer == NULL)
             {
                 remove_player(game, player_number);
             }
@@ -79,7 +79,6 @@ void pong(int port_num)
                 // send info to other players
                 notify_clients_string(player_number, buffer);
             }
-            free(paddleToSend);
         }
         
         // close the server when no more clients

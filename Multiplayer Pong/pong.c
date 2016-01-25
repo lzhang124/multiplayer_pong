@@ -54,23 +54,6 @@ void update()
                     move_right(paddle);
                     break;
             }
-            if (started)
-            {
-                printf("i am the changing paddle: %d\n", paddle->type);
-                printf("my new coordinates are: %d, %d\n", paddle->x, paddle->y);
-            	write_string(master_socket, paddle);
-                
-                Paddle *buffer = malloc(sizeof(*buffer));
-                buffer = read_string(master_socket, buffer);
-                if (buffer)
-                {
-                    printf("changed paddle is %d\n", buffer->type);
-                    printf("the new coordinates are: %d, %d\n", buffer->x, buffer->y);
-                    paddles[buffer->type]->x = buffer->x;
-                    paddles[buffer->type]->y = buffer->y;
-                }
-                free(buffer);
-            }
         }
         
         // move the ball
@@ -115,11 +98,11 @@ void display()
             glColor3f(0.3, 0.3, 0.3);
         }
         
-        if (paddle && (paddle->type == LEFT || paddle->type == RIGHT))
+        if (paddle->type == LEFT || paddle->type == RIGHT)
         {
             glRecti(paddle->x, paddle->y, paddle->x + PADDLE_W, paddle->y + PADDLE_H);
         }
-        else if (paddle && (paddle->type == TOP || paddle->type == BOTTOM))
+        else if (paddle->type == TOP || paddle->type == BOTTOM)
         {
             glRecti(paddle->x, paddle->y, paddle->x + PADDLE_H, paddle->y + PADDLE_W);
         }
