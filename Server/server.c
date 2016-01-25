@@ -171,7 +171,7 @@ void notify_clients_string(int client_number, Paddle *buffer)
     }
 }
 
-void send_string(int client_number, Paddle *buffer)
+void send_string(int client_number, char *buffer)
 {
     int sd = client_sockets[client_number];
     send(sd, buffer, sizeof(*buffer), 0);
@@ -184,9 +184,7 @@ Paddle *read_string(int client_number, Paddle *buffer)
     if (n == 0)
     {
         disconnect(client_number);
-        buffer = NULL;
     }
-    return buffer;
 }
 
 void notify_clients_number(int client_number, int number)

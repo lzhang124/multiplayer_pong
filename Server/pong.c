@@ -76,10 +76,8 @@ void pong(int port_num)
             }
             else
             {
-                printf("paddle to send: %d\n", paddleToSend->type);
-                printf("paddle coord to send: %d, %d\n", paddleToSend->x, paddleToSend->y);
                 // send info to other players
-                notify_clients_string(player_number, paddleToSend);
+                notify_clients_string(player_number, buffer);
             }
             free(paddleToSend);
         }

@@ -19,7 +19,7 @@ const char* NAME = "Pong";
 int master_socket;
 int paddle_number;
 int num_players;
-Paddle *paddles[MAX_PLAYERS];
+Paddle *paddles[MAX_PLAYERS] = {NULL};
 Ball *ball;
 
 int started = FALSE;
@@ -115,11 +115,11 @@ void display()
             glColor3f(0.3, 0.3, 0.3);
         }
         
-        if (paddle->type == LEFT || paddle->type == RIGHT)
+        if (paddle && (paddle->type == LEFT || paddle->type == RIGHT))
         {
             glRecti(paddle->x, paddle->y, paddle->x + PADDLE_W, paddle->y + PADDLE_H);
         }
-        else if (paddle->type == TOP || paddle->type == BOTTOM)
+        else if (paddle && (paddle->type == TOP || paddle->type == BOTTOM))
         {
             glRecti(paddle->x, paddle->y, paddle->x + PADDLE_H, paddle->y + PADDLE_W);
         }
