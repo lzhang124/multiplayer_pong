@@ -11,46 +11,8 @@
 #include <string.h>
 #include "constants.h"
 #include "message.h"
-
-typedef enum
-{
-    DOWN_RIGHT,
-    DOWN_LEFT,
-    UP_LEFT,
-    UP_RIGHT
-} BallDir;
-
-typedef struct
-{
-    int x;
-    int y;
-    BallDir direction;
-} Ball;
-
-typedef enum
-{
-    LEFT,
-    RIGHT,
-    TOP,
-    BOTTOM
-} PaddleType;
-
-typedef enum
-{
-    NORTH,
-    SOUTH,
-    EAST,
-    WEST,
-    NONE
-} PaddleDir;
-
-typedef struct
-{
-    int x;
-    int y;
-    PaddleType type;
-    PaddleDir direction;
-} Paddle;
+#include "ball.h"
+#include "paddle.h"
 
 typedef struct
 {

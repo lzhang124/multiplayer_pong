@@ -7,6 +7,7 @@
 #ifndef constants_h
 #define constants_h
 
+// client
 #define WINDOW_W 835
 #define WINDOW_H 835
 #define WINDOW_START_X 300
@@ -19,5 +20,8 @@
 #define BALL_H 5
 #define BALL_MOVEMENT 5
 #define MARGIN 15
+
+// server
+#define MAX_PLAYERS 4
 
 #endif /* constants_h */
