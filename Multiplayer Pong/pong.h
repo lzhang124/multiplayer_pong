@@ -26,6 +26,10 @@
 #include <GL/gl.h>
 #endif
 
+#define PADDLE first
+#define LOCATION second
+#define DIRECTION third
+
 void pong(int argc, char *argv[], char *server_name[], int port_num);
 
 #endif /* pong_h */

@@ -8,7 +8,6 @@
 #define paddle_h
 
 #include <stdlib.h>
-//#include <rpc/xdr.h>
 
 typedef enum
 {

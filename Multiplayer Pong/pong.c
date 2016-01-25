@@ -66,9 +66,9 @@ void update()
 
             Message *msg;
             read_message(master_socket, msg);
-            int message_paddle = msg->paddle;
-            int message_location = msg->location;
-            int message_direction = msg->direction;
+            int message_paddle = msg->PADDLE;
+//            int message_location = msg->LOCATION;
+//            int message_direction = msg->DIRECTION;
             
             if (message_paddle == -1)
             {
@@ -198,7 +198,7 @@ void pong(int argc, char *argv[], char *server_name[], int port_num)
     // get paddle number
     Message *msg;
 	read_message(master_socket, msg);
-    int paddle_number = msg->paddle;
+    int paddle_number = msg->PADDLE;
     num_players = paddle_number + 1;
     
     for (i = 0; i <= paddle_number; i++)

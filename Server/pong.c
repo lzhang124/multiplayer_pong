@@ -29,8 +29,8 @@ void add_player(Game *game, int player_number)
     game->number_players++;
     
     // notify all players of new player
-    Message *msg = {player_number, 400, NONE};
-    notify_all(msg);
+    Message msg = {player_number, 400, NONE};
+    notify_all(&msg);
 }
 
 void remove_player(Game *game, int player_number)

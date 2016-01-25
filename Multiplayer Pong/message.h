@@ -9,9 +9,9 @@
 
 typedef struct
 {
-    int paddle;
-    int location;
-    int direction;
+    int first;
+    int second;
+    int third;
 } Message;
 
 #endif /* message_h */
