@@ -10,14 +10,14 @@
 		4603A85D1C5026EC00F2D26C /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 4603A85C1C5026EC00F2D26C /* main.c */; };
 		4603A8731C5036C900F2D26C /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 4603A8721C5036C900F2D26C /* main.c */; };
 		4603A8971C50392D00F2D26C /* pong.c in Sources */ = {isa = PBXBuildFile; fileRef = 4603A8951C50392D00F2D26C /* pong.c */; };
-		462B42491C517F9F005889C7 /* server.c in Sources */ = {isa = PBXBuildFile; fileRef = 462B42471C517F9F005889C7 /* server.c */; settings = {ASSET_TAGS = (); }; };
-		462B424C1C518080005889C7 /* pong.c in Sources */ = {isa = PBXBuildFile; fileRef = 462B424A1C518080005889C7 /* pong.c */; settings = {ASSET_TAGS = (); }; };
-		462B424F1C5181A0005889C7 /* client.c in Sources */ = {isa = PBXBuildFile; fileRef = 462B424D1C5181A0005889C7 /* client.c */; settings = {ASSET_TAGS = (); }; };
-		467848CA1C53278B0026719C /* ball.c in Sources */ = {isa = PBXBuildFile; fileRef = 467848C81C53278B0026719C /* ball.c */; settings = {ASSET_TAGS = (); }; };
-		467848CF1C5335090026719C /* draw.c in Sources */ = {isa = PBXBuildFile; fileRef = 467848CD1C5335090026719C /* draw.c */; settings = {ASSET_TAGS = (); }; };
+		462B42491C517F9F005889C7 /* server.c in Sources */ = {isa = PBXBuildFile; fileRef = 462B42471C517F9F005889C7 /* server.c */; };
+		462B424C1C518080005889C7 /* pong.c in Sources */ = {isa = PBXBuildFile; fileRef = 462B424A1C518080005889C7 /* pong.c */; };
+		462B424F1C5181A0005889C7 /* client.c in Sources */ = {isa = PBXBuildFile; fileRef = 462B424D1C5181A0005889C7 /* client.c */; };
+		467848CA1C53278B0026719C /* ball.c in Sources */ = {isa = PBXBuildFile; fileRef = 467848C81C53278B0026719C /* ball.c */; };
+		467848CF1C5335090026719C /* draw.c in Sources */ = {isa = PBXBuildFile; fileRef = 467848CD1C5335090026719C /* draw.c */; };
 		469FE9801C528E76007B64E8 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 469FE97F1C528E76007B64E8 /* OpenGL.framework */; };
 		469FE9821C528EDF007B64E8 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 469FE9811C528EDF007B64E8 /* GLUT.framework */; };
-		469FE99F1C52EF67007B64E8 /* paddle.c in Sources */ = {isa = PBXBuildFile; fileRef = 469FE99D1C52EF67007B64E8 /* paddle.c */; settings = {ASSET_TAGS = (); }; };
+		469FE99F1C52EF67007B64E8 /* paddle.c in Sources */ = {isa = PBXBuildFile; fileRef = 469FE99D1C52EF67007B64E8 /* paddle.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -56,7 +56,7 @@
 		462B424E1C5181A0005889C7 /* client.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = client.h; sourceTree = "<group>"; };
 		467848C81C53278B0026719C /* ball.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ball.c; sourceTree = "<group>"; };
 		467848C91C53278B0026719C /* ball.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ball.h; path = "Multiplayer Pong/ball.h"; sourceTree = "<group>"; };
-		467848CC1C5330060026719C /* constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = constants.h; sourceTree = "<group>"; };
+		467848CC1C5330060026719C /* constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = constants.h; path = "Multiplayer Pong/constants.h"; sourceTree = "<group>"; };
 		467848CD1C5335090026719C /* draw.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = draw.c; sourceTree = "<group>"; };
 		467848CE1C5335090026719C /* draw.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = draw.h; sourceTree = "<group>"; };
 		469FE97F1C528E76007B64E8 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
@@ -64,7 +64,6 @@
 		469FE99D1C52EF67007B64E8 /* paddle.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = paddle.c; sourceTree = "<group>"; };
 		469FE99E1C52EF67007B64E8 /* paddle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = paddle.h; path = "Multiplayer Pong/paddle.h"; sourceTree = "<group>"; };
 		46F1B0CE1C56D6FB0021044E /* message.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = message.h; path = "Multiplayer Pong/message.h"; sourceTree = "<group>"; };
-		46F1B0CF1C56DBFB0021044E /* constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = constants.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,6 +94,7 @@
 				46F1B0CE1C56D6FB0021044E /* message.h */,
 				467848C91C53278B0026719C /* ball.h */,
 				469FE99E1C52EF67007B64E8 /* paddle.h */,
+				467848CC1C5330060026719C /* constants.h */,
 				4603A85B1C5026EC00F2D26C /* Multiplayer Pong */,
 				4603A8711C5036C900F2D26C /* Server */,
 				462B42451C51720F005889C7 /* Multiplayer Pong */,
@@ -109,7 +109,6 @@
 				467848C81C53278B0026719C /* ball.c */,
 				462B424D1C5181A0005889C7 /* client.c */,
 				462B424E1C5181A0005889C7 /* client.h */,
-				467848CC1C5330060026719C /* constants.h */,
 				467848CD1C5335090026719C /* draw.c */,
 				467848CE1C5335090026719C /* draw.h */,
 				469FE99D1C52EF67007B64E8 /* paddle.c */,
@@ -123,7 +122,6 @@
 			isa = PBXGroup;
 			children = (
 				4603A8721C5036C900F2D26C /* main.c */,
-				46F1B0CF1C56DBFB0021044E /* constants.h */,
 				462B424A1C518080005889C7 /* pong.c */,
 				462B424B1C518080005889C7 /* pong.h */,
 				462B42471C517F9F005889C7 /* server.c */,

@@ -20,4 +20,6 @@
 #define BALL_MOVEMENT 5
 #define MARGIN 15
 
+#define MAX_PLAYERS 4
+
 #endif /* constants_h */
