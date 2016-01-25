@@ -45,34 +45,18 @@ int start_client(char *server_name[], int port_num)
     return master_socket;
 }
 
-void write_string(int master_socket, char *buffer)
+void write_message(int master_socket, Message *msg)
 {
-    write(master_socket, buffer, sizeof(*buffer));
+    write(master_socket, msg, sizeof(*msg));
 }
 
-void read_string(int master_socket, char *buffer)
+void read_message(int master_socket, Message *msg)
 {
-    long n = read(master_socket, buffer, sizeof(*buffer));
+    long n = read(master_socket, msg, sizeof(*msg));
     if (n < 0)
     {
         error("ERROR reading");
     }
-}
-
-void write_number(int master_socket, int number)
-{
-    write(master_socket, &number, sizeof(number));
-}
-
-int read_number(int master_socket)
-{
-    int number;
-    long n = read(master_socket, &number, sizeof(number));
-    if (n != -1)
-    {
-        return number;
-    }
-    return -1;
 }
 
 void end_connection(int master_socket)

@@ -25,12 +25,9 @@ int check_socket();
 void disconnect(int client_number);
 void end_connection(int master_socket);
 
-void notify_clients_string(int client_number, char *buffer);
-void send_string(int client_number, char *buffer);
-void read_string(int client_number, char *buffer);
-
-void notify_clients_number(int client_number, int number);
-void send_number(int client_number, int number);
-int read_number(int client_number);
+void notify_others(int client_number, Message *msg);
+void notify_all(Message *msg);
+void send_message(int master_socket, Message *msg);
+void read_message(int master_socket, Message *msg);
 
 #endif /* server_h */

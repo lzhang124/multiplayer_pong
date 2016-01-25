@@ -28,8 +28,9 @@ void add_player(Game *game, int player_number)
     game->players[player_number] = player;
     game->number_players++;
     
-    // notify other players of new player through updated num_players
-    notify_clients_number(player_number, game->number_players);
+    // notify all players of new player
+    Message *msg = {player_number, 400, NONE};
+    notify_all(msg);
 }
 
 void remove_player(Game *game, int player_number)
@@ -61,23 +62,20 @@ void pong(int port_num)
         {
             int player_number = add_connection(master_socket);
             add_player(game, player_number);
-    
-            // send paddle type to new player
-            send_number(player_number, player_number);
         }
         else
         {
             int player_number = check_socket();
-            char *buffer;
-            read_string(player_number, buffer);
-            if (buffer == NULL)
+            Message *msg;
+            read_message(player_number, msg);
+            if (msg == NULL)
             {
                 remove_player(game, player_number);
             }
             else
             {
                 // send info to other players
-                notify_clients_string(player_number, buffer);
+                notify_others(player_number, msg);
             }
         }
         

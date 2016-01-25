@@ -63,11 +63,28 @@ void update()
         }
         else
         {
-            int new_num_players = read_number(master_socket);
-            if (new_num_players != -1)
+
+            Message *msg;
+            read_message(master_socket, msg);
+            int message_paddle = msg->paddle;
+            int message_location = msg->location;
+            int message_direction = msg->direction;
+            
+            if (message_paddle == -1)
             {
-                num_players = new_num_players;
-                paddles[num_players - 1] = add_paddle(num_players - 1);
+                started = TRUE;
+            }
+            else
+            {
+                if (!paddles[message_paddle])
+                {
+                    paddles[message_paddle] = add_paddle(message_paddle);
+                    num_players++;
+                }
+                else
+                {
+//                    update_paddle(message_paddle, message_location, message_direction);
+                }
             }
         }
         
@@ -127,7 +144,8 @@ void mouse_function(int button, int state, int xscr, int yscr)
             ball = add_ball();
             
             // send start message to server to send to other players
-            write_string(master_socket, "started");
+            Message msg = {-1, -1, -1};
+            write_message(master_socket, &msg);
         }
     }
 }
@@ -178,7 +196,9 @@ void pong(int argc, char *argv[], char *server_name[], int port_num)
     master_socket = start_client(server_name, port_num);
     
     // get paddle number
-    paddle_number = read_number(master_socket);
+    Message *msg;
+	read_message(master_socket, msg);
+    int paddle_number = msg->paddle;
     num_players = paddle_number + 1;
     
     for (i = 0; i <= paddle_number; i++)

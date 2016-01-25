@@ -158,7 +158,7 @@ void end_connection(int master_socket)
     close(master_socket);
 }
 
-void notify_clients_string(int client_number, char *buffer)
+void notify_others(int client_number, Message *msg)
 {
     int i;
     for (i = 0; i < MAX_PLAYERS; i++)
@@ -166,54 +166,36 @@ void notify_clients_string(int client_number, char *buffer)
         int sd = client_sockets[i];
         if (i != client_number && sd != 0)
         {
-            send(sd, buffer, sizeof(*buffer), 0);
+            send(sd, msg, sizeof(*msg), 0);
         }
     }
 }
 
-void send_string(int client_number, char *buffer)
-{
-    int sd = client_sockets[client_number];
-    send(sd, buffer, sizeof(*buffer), 0);
-}
-
-void read_string(int client_number, char *buffer)
-{
-    int sd = client_sockets[client_number];
-    long n = read(sd, buffer, sizeof(*buffer));
-    if (n == 0)
-    {
-        disconnect(client_number);
-    }
-}
-
-void notify_clients_number(int client_number, int number)
+void notify_all(Message *msg)
 {
     int i;
     for (i = 0; i < MAX_PLAYERS; i++)
     {
         int sd = client_sockets[i];
-        if (i != client_number && sd != 0)
+        if (sd != 0)
         {
-            send_number(i, number);
+            send(sd, msg, sizeof(*msg), 0);
         }
     }
 }
 
-void send_number(int client_number, int number)
+void send_message(int client_number, Message *msg)
 {
     int sd = client_sockets[client_number];
-    send(sd, &number, sizeof(number), 0);
+    send(sd, msg, sizeof(*msg), 0);
 }
 
-int read_number(int client_number)
+void read_string(int client_number, Message *msg)
 {
     int sd = client_sockets[client_number];
-    int number;
-    long n = read(sd, &number, sizeof(number));
+    long n = read(sd, msg, sizeof(*msg));
     if (n == 0)
     {
         disconnect(client_number);
     }
-    return number;
 }

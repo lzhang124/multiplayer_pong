@@ -20,10 +20,8 @@
 #include "message.h"
 
 int start_client(char *server_name[], int port_num);
-void write_string(int master_socket, char *buffer);
-void read_string(int master_socket, char *buffer);
-void write_number(int master_socket, int number);
-int read_number(int master_socket);
+void write_message(int master_socket, Message *msg);
+void read_message(int master_socket, Message *msg);
 void end_connection(int master_socket);
 
 #endif /* client_h */
