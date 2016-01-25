@@ -45,21 +45,18 @@ int start_client(char *server_name[], int port_num)
     return master_socket;
 }
 
-void write_string(int master_socket, Paddle *buffer)
+void write_string(int master_socket, char *buffer)
 {
     write(master_socket, buffer, sizeof(*buffer));
-//    free(buffer);
 }
 
-Paddle *read_string(int master_socket)
+void read_string(int master_socket, char *buffer)
 {
-    Paddle *buffer = malloc(sizeof(*buffer));
     long n = read(master_socket, buffer, sizeof(*buffer));
-    if (n != -1)
+    if (n < 0)
     {
-        return buffer;
+        error("ERROR reading");
     }
-    return NULL;
 }
 
 void write_number(int master_socket, int number)

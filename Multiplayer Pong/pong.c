@@ -19,7 +19,7 @@ const char* NAME = "Pong";
 int master_socket;
 int paddle_number;
 int num_players;
-Paddle *paddles[MAX_PLAYERS];
+Paddle *paddles[MAX_PLAYERS] = {NULL};
 Ball *ball;
 
 int started = FALSE;
@@ -54,34 +54,12 @@ void update()
                     move_right(paddle);
                     break;
             }
-            if (started)
-            {
-                printf("i am the changing paddle: %d\n", paddle->type);
-                printf("my new coordinates are: %d, %d\n", paddle->x, paddle->y);
-            	write_string(master_socket, paddle);
-            }
         }
         
         // move the ball
         if (started)
         {
             update_ball(ball);
-            
-            Paddle *buffer = (Paddle *)read_string(master_socket);
-            if (buffer)
-            {
-                printf("changed paddle is %d\n", buffer->type);
-                printf("the new coordinates are: %d, %d\n", buffer->x, buffer->y);
-                for (i = 0; i < num_players; i++)
-                {
-                    if (paddles[i]->type == buffer->type)
-                    {
-                        paddles[i]->x = buffer->x;
-                        paddles[i]->y = buffer->y;
-                        break;
-                    }
-                }
-            }
         }
         else
         {
@@ -120,11 +98,11 @@ void display()
             glColor3f(0.3, 0.3, 0.3);
         }
         
-        if (paddle->type == LEFT || paddle->type == RIGHT)
+        if (paddle && (paddle->type == LEFT || paddle->type == RIGHT))
         {
             glRecti(paddle->x, paddle->y, paddle->x + PADDLE_W, paddle->y + PADDLE_H);
         }
-        else if (paddle->type == TOP || paddle->type == BOTTOM)
+        else if (paddle && (paddle->type == TOP || paddle->type == BOTTOM))
         {
             glRecti(paddle->x, paddle->y, paddle->x + PADDLE_H, paddle->y + PADDLE_W);
         }

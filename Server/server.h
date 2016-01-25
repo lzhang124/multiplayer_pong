@@ -25,9 +25,9 @@ int check_socket();
 void disconnect(int client_number);
 void end_connection(int master_socket);
 
-void notify_clients_string(int client_number, Paddle *buffer);
-void send_string(int client_number, Paddle *buffer);
-Paddle *read_string(int client_number);
+void notify_clients_string(int client_number, char *buffer);
+void send_string(int client_number, char *buffer);
+void read_string(int client_number, char *buffer);
 
 void notify_clients_number(int client_number, int number);
 void send_number(int client_number, int number);
