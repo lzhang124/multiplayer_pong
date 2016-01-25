@@ -125,8 +125,9 @@ void mouse_function(int button, int state, int xscr, int yscr)
         {
             started = TRUE;
             ball = add_ball();
+            
             // send start message to server to send to other players
-            //?????
+            write_string(master_socket, "started");
         }
     }
 }
