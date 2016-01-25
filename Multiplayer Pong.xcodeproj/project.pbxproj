@@ -18,6 +18,8 @@
 		469FE9801C528E76007B64E8 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 469FE97F1C528E76007B64E8 /* OpenGL.framework */; };
 		469FE9821C528EDF007B64E8 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 469FE9811C528EDF007B64E8 /* GLUT.framework */; };
 		469FE99F1C52EF67007B64E8 /* paddle.c in Sources */ = {isa = PBXBuildFile; fileRef = 469FE99D1C52EF67007B64E8 /* paddle.c */; };
+		46F1B0D11C56E4B40021044E /* ball.c in Sources */ = {isa = PBXBuildFile; fileRef = 46F1B0D01C56E4B40021044E /* ball.c */; settings = {ASSET_TAGS = (); }; };
+		46F1B0D31C56E4E70021044E /* paddle.c in Sources */ = {isa = PBXBuildFile; fileRef = 46F1B0D21C56E4E70021044E /* paddle.c */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -64,6 +66,8 @@
 		469FE99D1C52EF67007B64E8 /* paddle.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = paddle.c; sourceTree = "<group>"; };
 		469FE99E1C52EF67007B64E8 /* paddle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = paddle.h; path = "Multiplayer Pong/paddle.h"; sourceTree = "<group>"; };
 		46F1B0CE1C56D6FB0021044E /* message.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = message.h; path = "Multiplayer Pong/message.h"; sourceTree = "<group>"; };
+		46F1B0D01C56E4B40021044E /* ball.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ball.c; sourceTree = "<group>"; };
+		46F1B0D21C56E4E70021044E /* paddle.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = paddle.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,6 +126,8 @@
 			isa = PBXGroup;
 			children = (
 				4603A8721C5036C900F2D26C /* main.c */,
+				46F1B0D01C56E4B40021044E /* ball.c */,
+				46F1B0D21C56E4E70021044E /* paddle.c */,
 				462B424A1C518080005889C7 /* pong.c */,
 				462B424B1C518080005889C7 /* pong.h */,
 				462B42471C517F9F005889C7 /* server.c */,
@@ -220,7 +226,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				462B424C1C518080005889C7 /* pong.c in Sources */,
+				46F1B0D31C56E4E70021044E /* paddle.c in Sources */,
 				462B42491C517F9F005889C7 /* server.c in Sources */,
+				46F1B0D11C56E4B40021044E /* ball.c in Sources */,
 				4603A8731C5036C900F2D26C /* main.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

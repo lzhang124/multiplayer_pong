@@ -64,28 +64,28 @@ void update()
         else
         {
 
-            Message *msg;
-            read_message(master_socket, msg);
-            int message_paddle = msg->PADDLE;
-//            int message_location = msg->LOCATION;
-//            int message_direction = msg->DIRECTION;
-            
-            if (message_paddle == -1)
-            {
-                started = TRUE;
-            }
-            else
-            {
-                if (!paddles[message_paddle])
-                {
-                    paddles[message_paddle] = add_paddle(message_paddle);
-                    num_players++;
-                }
-                else
-                {
-//                    update_paddle(message_paddle, message_location, message_direction);
-                }
-            }
+//            Message *msg;
+//            read_message(master_socket, msg);
+//            int message_paddle = msg->PADDLE;
+////            int message_location = msg->LOCATION;
+////            int message_direction = msg->DIRECTION;
+//            
+//            if (message_paddle == -1)
+//            {
+//                started = TRUE;
+//            }
+//            else
+//            {
+//                if (!paddles[message_paddle])
+//                {
+//                    paddles[message_paddle] = add_paddle(message_paddle);
+//                    num_players++;
+//                }
+//                else
+//                {
+////                    update_paddle(message_paddle, message_location, message_direction);
+//                }
+//            }
         }
         
         // redraw the window
@@ -142,10 +142,10 @@ void mouse_function(int button, int state, int xscr, int yscr)
         {
             started = TRUE;
             ball = add_ball();
-            
-            // send start message to server to send to other players
-            Message msg = {-1, -1, -1};
-            write_message(master_socket, &msg);
+//
+//            // send start message to server to send to other players
+//            Message msg = {-1, -1, -1};
+//            write_message(master_socket, &msg);
         }
     }
 }
@@ -172,13 +172,17 @@ void resize(int width, int height)
 
 void close_window()
 {
-    free(ball);
+    if (started)
+    {
+        free(ball);
+    }
+    
     for (i = 0; i < num_players; i++)
     {
         Paddle *paddle = paddles[i];
         free(paddle);
     }
-    end_connection(master_socket);
+//    end_connection(master_socket);
     exit(0);
 }
 
@@ -193,12 +197,13 @@ void set_viewport()
 
 void pong(int argc, char *argv[], char *server_name[], int port_num)
 {
-    master_socket = start_client(server_name, port_num);
+//    master_socket = start_client(server_name, port_num);
     
     // get paddle number
-    Message *msg;
-	read_message(master_socket, msg);
-    int paddle_number = msg->PADDLE;
+//    Message *msg;
+//	read_message(master_socket, msg);
+//    int paddle_number = msg->PADDLE;
+    paddle_number = 3;
     num_players = paddle_number + 1;
     
     for (i = 0; i <= paddle_number; i++)
@@ -207,7 +212,7 @@ void pong(int argc, char *argv[], char *server_name[], int port_num)
     }
     
     // set master_socket so that reads/writes don't block
-    fcntl(master_socket, F_SETFL, O_NONBLOCK);
+//    fcntl(master_socket, F_SETFL, O_NONBLOCK);
     
     // init glut
     glutInit(&argc, argv);

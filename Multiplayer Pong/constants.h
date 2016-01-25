@@ -7,9 +7,9 @@
 #ifndef constants_h
 #define constants_h
 
-#define WINDOW_W 835
+#define WINDOW_W 1235
 #define WINDOW_H 835
-#define WINDOW_START_X 300
+#define WINDOW_START_X 100
 #define WINDOW_START_Y 50
 #define MAX_PLAYERS 4
 #define PADDLE_W 5
