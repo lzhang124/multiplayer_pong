@@ -16,8 +16,6 @@
 #include <netinet/in.h>
 #include <sys/time.h>
 
-#include "pong.h"
-
 int start_server(int port_num);
 int wait_for_connection(int master_socket);
 int add_connection(int master_socket);

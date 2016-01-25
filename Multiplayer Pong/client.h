@@ -17,8 +17,6 @@
 #include <netdb.h>
 #include <fcntl.h>
 
-#include "paddle.h"
-
 int start_client(char *server_name[], int port_num);
 void write_string(int master_socket, char *buffer);
 void read_string(int master_socket, char *buffer);

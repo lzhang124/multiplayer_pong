@@ -158,7 +158,7 @@ void end_connection(int master_socket)
     close(master_socket);
 }
 
-void notify_clients_string(int client_number, Paddle *buffer)
+void notify_clients_string(int client_number, char *buffer)
 {
     int i;
     for (i = 0; i < MAX_PLAYERS; i++)
@@ -169,7 +169,6 @@ void notify_clients_string(int client_number, Paddle *buffer)
             send(sd, buffer, sizeof(*buffer), 0);
         }
     }
-    free(buffer);
 }
 
 void send_string(int client_number, char *buffer)
