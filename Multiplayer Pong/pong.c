@@ -99,8 +99,10 @@ void display()
 
     if (!started)
     {
+        glColor3f(1.0, 0, 0);
+        glRecti(595, 415, 635, 430);
         glColor3f(1.0, 1.0, 1.0);
-        draw_text("Start", 400, 420);
+        draw_text("Start", 595, 430);
     }
     
     // paddles
@@ -117,11 +119,11 @@ void display()
         
         if (paddle->type == LEFT || paddle->type == RIGHT)
         {
-            glRecti(paddle->x, paddle->y, paddle->x + PADDLE_W, paddle->y + PADDLE_H);
+            glRecti(paddle->x, paddle->y, paddle->x + V_PADDLE_W, paddle->y + V_PADDLE_H);
         }
         else if (paddle->type == TOP || paddle->type == BOTTOM)
         {
-            glRecti(paddle->x, paddle->y, paddle->x + PADDLE_H, paddle->y + PADDLE_W);
+            glRecti(paddle->x, paddle->y, paddle->x + H_PADDLE_W, paddle->y + H_PADDLE_H);
         }
     }
     
