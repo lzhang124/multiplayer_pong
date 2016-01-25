@@ -16,15 +16,15 @@ Paddle * add_paddle(int paddle_number)
     }
     else if (paddle_number == RIGHT)
     {
-        *paddle = (Paddle) {1220, 363, RIGHT, NONE};
+        *paddle = (Paddle) {1120, 363, RIGHT, NONE};
     }
     else if (paddle_number == TOP)
     {
-        *paddle = (Paddle) {543, 10, TOP, NONE};
+        *paddle = (Paddle) {495, 10, TOP, NONE};
     }
     else if (paddle_number == BOTTOM)
     {
-        *paddle = (Paddle) {543, 820, BOTTOM, NONE};
+        *paddle = (Paddle) {495, 820, BOTTOM, NONE};
     }
     return paddle;
 }

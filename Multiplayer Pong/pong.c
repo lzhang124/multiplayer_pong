@@ -100,9 +100,9 @@ void display()
     if (!started)
     {
         glColor3f(1.0, 0, 0);
-        glRecti(595, 415, 635, 430);
+        glRecti(550, 415, 590, 430);
         glColor3f(1.0, 1.0, 1.0);
-        draw_text("Start", 595, 430);
+        draw_text("Start", 550, 430);
     }
     
     // paddles
@@ -140,7 +140,7 @@ void mouse_function(int button, int state, int xscr, int yscr)
 {
     if (!started)
     {
-        if (xscr > 400 && xscr < 440 && yscr > 405 && yscr < 425)
+        if (xscr > 550 && xscr < 590 && yscr > 415 && yscr < 430)
         {
             started = TRUE;
             ball = add_ball();
