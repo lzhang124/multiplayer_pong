@@ -23,7 +23,7 @@ Paddle *paddles[MAX_PLAYERS];
 Ball *ball;
 
 int started = FALSE;
-int mykey = -1;
+int key_pressed = -1;
 
 int i;
 
@@ -37,9 +37,9 @@ void update()
     
         // move the paddle
         Paddle *paddle = paddles[paddle_number];
-        if (mykey != -1)
+        if (key_pressed != -1)
         {
-            switch (mykey)
+            switch (key_pressed)
             {
                 case GLUT_KEY_DOWN :
                     move_down(paddle);
@@ -59,6 +59,17 @@ void update()
                 printf("i am the changing paddle: %d\n", paddle->type);
                 printf("my new coordinates are: %d, %d\n", paddle->x, paddle->y);
             	write_string(master_socket, paddle);
+                
+                Paddle *buffer = malloc(sizeof(*buffer));
+                buffer = read_string(master_socket, buffer);
+                if (buffer)
+                {
+                    printf("changed paddle is %d\n", buffer->type);
+                    printf("the new coordinates are: %d, %d\n", buffer->x, buffer->y);
+                    paddles[buffer->type]->x = buffer->x;
+                    paddles[buffer->type]->y = buffer->y;
+                }
+                free(buffer);
             }
         }
         
@@ -66,22 +77,6 @@ void update()
         if (started)
         {
             update_ball(ball);
-            
-            Paddle *buffer = (Paddle *)read_string(master_socket);
-            if (buffer)
-            {
-                printf("changed paddle is %d\n", buffer->type);
-                printf("the new coordinates are: %d, %d\n", buffer->x, buffer->y);
-                for (i = 0; i < num_players; i++)
-                {
-                    if (paddles[i]->type == buffer->type)
-                    {
-                        paddles[i]->x = buffer->x;
-                        paddles[i]->y = buffer->y;
-                        break;
-                    }
-                }
-            }
         }
         else
         {
@@ -160,12 +155,12 @@ void mouse_function(int button, int state, int xscr, int yscr)
 
 void special_pressed(int key, int xscr, int yscr)
 {
-    mykey = key;
+    key_pressed = key;
 }
 
 void special_released(int key, int xscr, int yscr)
 {
-    mykey = -1;
+    key_pressed = -1;
 }
 
 void resize(int width, int height)

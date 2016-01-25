@@ -17,11 +17,12 @@
 #include <netdb.h>
 #include <fcntl.h>
 
+#include "message.h"
 #include "paddle.h"
 
 int start_client(char *server_name[], int port_num);
 void write_string(int master_socket, Paddle *buffer);
-Paddle *read_string(int master_socket);
+Paddle *read_string(int master_socket, Paddle *buffer);
 void write_number(int master_socket, int number);
 int read_number(int master_socket);
 void end_connection(int master_socket);

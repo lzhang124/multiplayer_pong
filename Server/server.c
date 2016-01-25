@@ -169,20 +169,17 @@ void notify_clients_string(int client_number, Paddle *buffer)
             send(sd, buffer, sizeof(*buffer), 0);
         }
     }
-    free(buffer);
 }
 
 void send_string(int client_number, Paddle *buffer)
 {
     int sd = client_sockets[client_number];
     send(sd, buffer, sizeof(*buffer), 0);
-    free(buffer);
 }
 
-Paddle *read_string(int client_number)
+Paddle *read_string(int client_number, Paddle *buffer)
 {
     int sd = client_sockets[client_number];
-    Paddle *buffer = malloc(sizeof(*buffer));
     long n = read(sd, buffer, sizeof(*buffer));
     if (n == 0)
     {

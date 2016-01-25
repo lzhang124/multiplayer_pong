@@ -10,19 +10,19 @@
 #include <stdlib.h>
 #include <time.h>
 
-enum ball_dir
+typedef enum
 {
     DOWN_RIGHT,
     DOWN_LEFT,
     UP_LEFT,
     UP_RIGHT
-};
+} BallDir;
 
 typedef struct
 {
     int x;
     int y;
-    enum ball_dir direction;
+    BallDir direction;
 } Ball;
 
 Ball * add_ball();

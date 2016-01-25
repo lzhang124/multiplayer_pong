@@ -64,6 +64,7 @@
 		469FE9811C528EDF007B64E8 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
 		469FE99D1C52EF67007B64E8 /* paddle.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = paddle.c; sourceTree = "<group>"; };
 		469FE99E1C52EF67007B64E8 /* paddle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = paddle.h; sourceTree = "<group>"; };
+		46F1B0CE1C56D6FB0021044E /* message.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = message.h; path = "Multiplayer Pong/message.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -91,6 +92,7 @@
 			children = (
 				469FE9811C528EDF007B64E8 /* GLUT.framework */,
 				469FE97F1C528E76007B64E8 /* OpenGL.framework */,
+				46F1B0CE1C56D6FB0021044E /* message.h */,
 				4603A85B1C5026EC00F2D26C /* Multiplayer Pong */,
 				4603A8711C5036C900F2D26C /* Server */,
 				462B42451C51720F005889C7 /* Multiplayer Pong */,

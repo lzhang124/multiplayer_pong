@@ -48,12 +48,10 @@ int start_client(char *server_name[], int port_num)
 void write_string(int master_socket, Paddle *buffer)
 {
     write(master_socket, buffer, sizeof(*buffer));
-//    free(buffer);
 }
 
-Paddle *read_string(int master_socket)
+Paddle *read_string(int master_socket, Paddle *buffer)
 {
-    Paddle *buffer = malloc(sizeof(*buffer));
     long n = read(master_socket, buffer, sizeof(*buffer));
     if (n != -1)
     {

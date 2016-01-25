@@ -10,6 +10,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "constants.h"
+#include "message.h"
 
 typedef enum
 {
@@ -26,7 +27,6 @@ typedef struct
     BallDir direction;
 } Ball;
 
-#pragma pack(1)
 typedef enum
 {
     LEFT,
@@ -35,13 +35,22 @@ typedef enum
     BOTTOM
 } PaddleType;
 
+typedef enum
+{
+    NORTH,
+    SOUTH,
+    EAST,
+    WEST,
+    NONE
+} PaddleDir;
+
 typedef struct
 {
     int x;
     int y;
     PaddleType type;
+    PaddleDir direction;
 } Paddle;
-#pragma pack(0)
 
 typedef struct
 {
