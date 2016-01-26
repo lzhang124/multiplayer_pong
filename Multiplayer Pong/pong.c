@@ -56,36 +56,37 @@ void update()
             }
         }
         
-        // move the ball
         if (started)
         {
+            // move the ball
             update_ball(ball);
         }
         else
         {
-
-//            Message *msg;
-//            read_message(master_socket, msg);
-//            int message_paddle = msg->PADDLE;
-////            int message_location = msg->LOCATION;
-////            int message_direction = msg->DIRECTION;
-//            
-//            if (message_paddle == -1)
-//            {
-//                started = TRUE;
-//            }
-//            else
-//            {
-//                if (!paddles[message_paddle])
-//                {
-//                    paddles[message_paddle] = add_paddle(message_paddle);
-//                    num_players++;
-//                }
-//                else
-//                {
-////                    update_paddle(message_paddle, message_location, message_direction);
-//                }
-//            }
+            Message msg;
+            read_message(master_socket, &msg);
+            
+            if (msg.first > MAX_PLAYERS)
+            {
+                // receiving ball location
+                started = TRUE;
+                ball = new_ball(msg.first, msg.second, msg.third);
+            }
+            else
+            {
+                // receiving paddle update
+                if (!paddles[msg.PADDLE])
+                {
+                    // new paddle
+                    paddles[msg.PADDLE] = new_paddle(msg.PADDLE, msg.LOCATION, msg.DIRECTION);
+                    num_players++;
+                }
+                else
+                {
+                    // update paddle
+                    update_paddle(paddles[msg.PADDLE], msg.LOCATION, msg.DIRECTION);
+                }
+            }
         }
         
         // redraw the window
@@ -140,8 +141,8 @@ void mouse_function(int button, int state, int xscr, int yscr)
     {
         if (xscr > 550 && xscr < 592 && yscr > 365 && yscr < 382)
         {
-            // send start message to server to send to other players
-            Message msg = {-1, -1, -1};
+            // send start message to server
+            Message msg = START_MESSAGE;
             write_message(master_socket, &msg);
         }
     }

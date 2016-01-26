@@ -23,5 +23,6 @@
 #define MARGIN 15
 
 #define MAX_PLAYERS 4
+#define START_MESSAGE {-1, -1, -1}
 
 #endif /* constants_h */
