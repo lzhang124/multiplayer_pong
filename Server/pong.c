@@ -98,10 +98,10 @@ void pong(int port_num)
     int master_socket = start_server(port_num);
     Game *game = init_game();
     
-    while(game->number_players < MAX_PLAYERS)
+    while(game->number_players <= MAX_PLAYERS)
     {
         // wait for players to join game
-        if (wait_for_connection(master_socket) && !game->started)
+        if (!game->started && wait_for_connection(master_socket))
         {
             int paddle_number = add_connection(master_socket);
             add_paddle(game, paddle_number);
@@ -134,7 +134,7 @@ void pong(int port_num)
                     {
                         Paddle *paddle = game->paddles[i];
                         reset_paddle(paddle);
-                        Message reset_msg;
+                        Message reset_msg;`
                         reset_msg = (Message) {i, paddle->coordinate, paddle->direction};
                         notify_all(&reset_msg);
                     }
