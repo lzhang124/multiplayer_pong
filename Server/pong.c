@@ -67,7 +67,7 @@ int check_start_signal(Message *msg)
 
 int check_ball_hit(Message *msg)
 {
-    return msg->second == -1;
+    return msg->second == -1 && msg->first != -1;
 }
 
 void update_scores(Game *game, int paddle_number)
@@ -172,7 +172,6 @@ void pong(int port_num)
                     notify_all(msg);
                     
                     reset_ball(game->ball);
-//                    sleep(3);
                     start_ball(game);
                     
                     if (game->max_score == MAX_SCORE)

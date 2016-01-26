@@ -20,10 +20,21 @@ Paddle *paddles[MAX_PLAYERS] = {NULL};
 Ball *ball;
 
 int started = FALSE;
+int session_ended = FALSE;
 
 int i;
 
 int count = 0;
+
+void delay(int length)
+{
+    int i;
+    while (i < length)
+    {
+        i++;
+    }
+}
+
 void update()
 {
     ++count;
@@ -61,6 +72,7 @@ void update()
                             }
                             reset_paddle(paddles[i]);
                         }
+                        session_ended = TRUE;
                     }
                     else
                     {
@@ -81,6 +93,12 @@ void update()
         if (started)
         {
             // move the ball
+            if (session_ended)
+            {
+//                delay(50000);
+                sleep(1);
+                session_ended = FALSE;
+            }
             if (move_ball(ball)) {
                 Paddle *paddle = paddles[paddle_number];
                 Message msg = {paddle_number, -1, -1};
