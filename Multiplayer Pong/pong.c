@@ -42,6 +42,16 @@ void update()
                 started = TRUE;
                 start_ball = TRUE;
                 ball = new_ball(msg->BALL_X, msg->BALL_Y, msg->DIRECTION);
+                
+                // reset paddles
+                for (i = 0; i < num_players; i++)
+                {
+                    if (i != msg->PADDLE)
+                    {
+                        paddles[i]->score++;
+                    }
+                    reset_paddle(paddles[i]);
+                }
             }
             else
             {
@@ -56,14 +66,6 @@ void update()
                     if (msg->second == -1)
                     {
                         start_ball = FALSE;
-                        for (i = 0; i < num_players; i++)
-                        {
-                            if (i != msg->PADDLE)
-                            {
-                                paddles[i]->score++;
-                            }
-                            reset_paddle(paddles[i]);
-                        }
                     }
                     else
                     {
@@ -169,14 +171,13 @@ void display()
         }
     }
     
-    // ball
-    if (started) {
+    if (started)
+    {
+        // ball
         glColor3f(1.0, 1.0, 1.0);
         glRecti(ball->x, ball->y, ball->x + BALL_W, ball->y + BALL_H);
-    }
-    
-    // scores
-    if (started) {
+        
+        // scores
         glColor3f(0.3, 0.3, 0.3);
         for (i = 0; i < num_players; i++)
         {

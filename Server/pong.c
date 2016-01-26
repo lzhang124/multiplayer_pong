@@ -67,7 +67,7 @@ int check_start_signal(Message *msg)
 
 int check_ball_hit(Message *msg)
 {
-    return msg->second == -1 && msg->first != -1;
+    return msg->second == -1;
 }
 
 void update_scores(Game *game, int paddle_number)
