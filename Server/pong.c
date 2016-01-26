@@ -19,8 +19,7 @@ Game *init_game()
 void add_player(Game *game, int player_number)
 {
     // MODIFY COORDS
-    Paddle *paddle = malloc(sizeof(*paddle));
-    *paddle = (Paddle) {10, 10, LEFT + player_number};
+    Paddle *paddle = add_paddle(player_number);
     
     Player *player = malloc(sizeof(*player));
     *player = (Player) {player_number, 0, paddle};
@@ -29,8 +28,14 @@ void add_player(Game *game, int player_number)
     game->number_players++;
     
     // notify all players of new player
+    // bogus location since all clients should know the initial location
     Message msg = {player_number, 400, NONE};
     notify_all(&msg);
+}
+
+void update_player(Game *game, int player_number)
+{
+    
 }
 
 void remove_player(Game *game, int player_number)
@@ -62,6 +67,7 @@ void pong(int port_num)
         {
             int player_number = add_connection(master_socket);
             add_player(game, player_number);
+            update_player(game, player_number);
         }
         else
         {
@@ -87,4 +93,9 @@ void pong(int port_num)
             break;
         }
     }
+}
+
+void send_start_signal()
+{
+    
 }
