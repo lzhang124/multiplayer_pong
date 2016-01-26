@@ -55,6 +55,7 @@ void update()
                 {
                     if (msg->second == -1)
                     {
+                        start_ball = FALSE;
                         for (i = 0; i < num_players; i++)
                         {
                             if (i != msg->PADDLE)
@@ -175,13 +176,11 @@ void display()
     }
     
     // scores
-    // TODO CHANGE THIS
-    if (!started) {
+    if (started) {
         glColor3f(0.3, 0.3, 0.3);
         for (i = 0; i < num_players; i++)
         {
-//            draw_number(paddles[i]->score, i);
-            draw_number(9, i);
+            draw_number(paddles[i]->score, i);
         }
     }
     
