@@ -32,7 +32,7 @@
 #define PADDLE_B 720
 
 #define MAX_PLAYERS 4
-#define MAX_SCORE 10
+#define MAX_SCORE 5
 #define START_MESSAGE {-1, -1, -1}
 
 #define BALL_X first
