@@ -27,7 +27,7 @@ void end_connection(int master_socket);
 
 void notify_others(int client_number, Message *msg);
 void notify_all(Message *msg);
-void send_message(int master_socket, Message *msg);
-void read_message(int master_socket, Message *msg);
+void send_message(int client_number, Message *msg);
+void read_message(int client_number, Message *msg);
 
 #endif /* server_h */

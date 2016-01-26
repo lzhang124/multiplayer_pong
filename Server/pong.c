@@ -9,7 +9,7 @@
 
 Game *init_game()
 {
-    Ball *ball = malloc(sizeof(*ball));
+    Ball *ball = new_ball();
     Game *game = malloc(sizeof(*game));
     *game = (Game) {0, {NULL}, ball};
     
@@ -19,7 +19,7 @@ Game *init_game()
 void add_player(Game *game, int player_number)
 {
     // MODIFY COORDS
-    Paddle *paddle = add_paddle(player_number);
+    Paddle *paddle = new_paddle(player_number);
     
     Player *player = malloc(sizeof(*player));
     *player = (Player) {player_number, 0, paddle};
@@ -35,7 +35,22 @@ void add_player(Game *game, int player_number)
 
 void update_player(Game *game, int player_number)
 {
-    
+    int i;
+    Message msg;
+    Player *players = game->players;
+    for (i = 0; i < player_number; i++)
+    {
+        Paddle *paddle = players->paddle;
+        if (paddle->type == LEFT || paddle->type == RIGHT)
+        {
+            msg = {paddle->type, paddle->y, paddle->direction};
+        }
+        else
+        {
+        	msg = {paddle->type, paddle->x, paddle->direction};
+        }
+        send_message(player_number, msg);
+    }
 }
 
 void remove_player(Game *game, int player_number)
@@ -53,6 +68,19 @@ void end_game(Game *game)
 {
     free(game->ball);
     free(game);
+}
+
+int check_start_signal(Message *msg)
+{
+    return msg->PADDLE == -1;
+}
+
+void init_ball(Game *game)
+{
+    // send all players ball location
+    Ball *ball = game->ball;
+    Message *msg = {ball->x, ball->y, ball->direction};
+    notify_all(msg);
 }
 
 void pong(int port_num)
@@ -80,8 +108,16 @@ void pong(int port_num)
             }
             else
             {
-                // send info to other players
-                notify_others(player_number, msg);
+                // check if message is a start signal
+                if (check_start_signal(msg) == TRUE)
+                {
+                    start_ball(game);
+                }
+                else
+                {
+                    // send info to other players
+                    notify_others(player_number, msg);
+                }
             }
         }
         
@@ -93,9 +129,4 @@ void pong(int port_num)
             break;
         }
     }
-}
-
-void send_start_signal()
-{
-    
 }
