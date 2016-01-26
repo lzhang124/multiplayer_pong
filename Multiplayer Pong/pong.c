@@ -140,10 +140,7 @@ void mouse_function(int button, int state, int xscr, int yscr)
     {
         if (xscr > 550 && xscr < 592 && yscr > 365 && yscr < 382)
         {
-            started = TRUE;
-            ball = add_ball();
-//
-//            // send start message to server to send to other players
+            // send start message to server to send to other players
             Message msg = {-1, -1, -1};
             write_message(master_socket, &msg);
         }
