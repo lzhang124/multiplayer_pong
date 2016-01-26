@@ -14,7 +14,7 @@ Ball * new_ball(int x, int y, BallDir direction)
     return ball;
 }
 
-void move_ball(Ball * ball)
+int move_ball(Ball * ball)
 {
     if (ball->direction == DOWN_RIGHT)
     {
@@ -23,14 +23,17 @@ void move_ball(Ball * ball)
         if (ball->x == WINDOW_W - MARGIN - BALL_W)
         {
             ball->direction = DOWN_LEFT;
+            return TRUE;
         }
         else if (ball->y == WINDOW_H - MARGIN - BALL_H)
         {
             ball->direction = UP_RIGHT;
+            return TRUE;
         }
         else if (ball->x == WINDOW_W - MARGIN - BALL_W && ball->y == WINDOW_H - MARGIN - BALL_H)
         {
             ball->direction = UP_LEFT;
+            return TRUE;
         }
     }
     else if (ball->direction == DOWN_LEFT)
@@ -40,14 +43,17 @@ void move_ball(Ball * ball)
         if (ball->x == MARGIN)
         {
             ball->direction = DOWN_RIGHT;
+            return TRUE;
         }
         else if (ball->y == WINDOW_H - MARGIN - BALL_H)
         {
             ball->direction = UP_LEFT;
+            return TRUE;
         }
         else if (ball->x == WINDOW_W - MARGIN - BALL_W && ball->y == WINDOW_H - MARGIN - BALL_H)
         {
             ball->direction = UP_RIGHT;
+            return TRUE;
         }
     }
     else if (ball->direction == UP_LEFT)
@@ -57,14 +63,17 @@ void move_ball(Ball * ball)
         if (ball->x == MARGIN)
         {
             ball->direction = UP_RIGHT;
+            return TRUE;
         }
         else if (ball->y == MARGIN)
         {
             ball->direction = DOWN_LEFT;
+            return TRUE;
         }
         else if (ball->x == MARGIN && ball->y == MARGIN)
         {
             ball->direction = DOWN_RIGHT;
+            return TRUE;
         }
     }
     else if (ball->direction == UP_RIGHT)
@@ -74,14 +83,18 @@ void move_ball(Ball * ball)
         if (ball->x == WINDOW_W - MARGIN - BALL_W)
         {
             ball->direction = UP_LEFT;
+            return TRUE;
         }
         else if (ball->y == MARGIN)
         {
             ball->direction = DOWN_RIGHT;
+            return TRUE;
         }
         else if (ball->x == WINDOW_W - MARGIN - BALL_W && ball->y == MARGIN)
         {
             ball->direction = DOWN_LEFT;
+            return TRUE;
         }
     }
+    return FALSE;
 }

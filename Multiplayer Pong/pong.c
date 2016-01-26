@@ -51,6 +51,10 @@ void update()
                 }
                 else
                 {
+                    if (msg->second == -1)
+                    {
+                        
+                    }
                     update_paddle(paddles[msg->PADDLE], msg->LOCATION, msg->DIRECTION);
                 }
             }
@@ -67,7 +71,12 @@ void update()
         if (started)
         {
             // move the ball
-            move_ball(ball);
+            if (move_ball(ball)) {
+                if (ball->x == MARGIN) {
+                    // left
+                    
+                }
+            }
         }
         
         // redraw the window
