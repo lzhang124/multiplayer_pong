@@ -106,6 +106,7 @@ void pong(int port_num)
                 else
                 {
                     // send info to other players
+                    update_paddle(game->players[player_number]->paddle, msg->LOCATION, msg->DIRECTION);
                     notify_others(player_number, msg);
                 }
                 free(msg);
