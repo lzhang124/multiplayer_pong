@@ -190,12 +190,16 @@ void send_message(int client_number, Message *msg)
     send(sd, msg, sizeof(*msg), 0);
 }
 
-void read_message(int client_number, Message *msg)
+Message * read_message(int client_number)
 {
+    Message *msg = malloc(sizeof(*msg));
     int sd = client_sockets[client_number];
     long n = read(sd, msg, sizeof(*msg));
     if (n == 0)
     {
+        free(msg);
         disconnect(client_number);
+        return NULL;
     }
+    return msg;
 }

@@ -91,8 +91,7 @@ void pong(int port_num)
         else
         {
             int player_number = check_socket();
-            Message *msg;
-            read_message(player_number, msg);
+            Message *msg = read_message(player_number);
             if (msg == NULL)
             {
                 remove_player(game, player_number);
@@ -109,6 +108,7 @@ void pong(int port_num)
                     // send info to other players
                     notify_others(player_number, msg);
                 }
+                free(msg);
             }
         }
         

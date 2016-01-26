@@ -8,7 +8,6 @@
 #define ball_h
 
 #include <stdlib.h>
-#include <time.h>
 
 typedef enum
 {

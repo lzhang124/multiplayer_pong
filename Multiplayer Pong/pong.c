@@ -44,28 +44,32 @@ void update()
         }
         else
         {
-            Message msg;
-            read_message(master_socket, &msg);
+            Message *msg = read_message(master_socket);
             
-            if (msg.first > MAX_PLAYERS)
-            {
-                // receiving ball location
-                started = TRUE;
-                ball = new_ball(msg.BALL_X, msg.BALL_Y, msg.DIRECTION);
-            }
-            else
-            {
-                // receiving paddle update
-                if (!paddles[msg.PADDLE])
+            if (msg) {
+                if (msg->first > MAX_PLAYERS)
                 {
-                    paddles[msg.PADDLE] = new_paddle(msg.PADDLE, msg.LOCATION, msg.DIRECTION);
-                    num_players++;
+                    // receiving ball location
+                    started = TRUE;
+                    ball = new_ball(msg->BALL_X, msg->BALL_Y, msg->DIRECTION);
                 }
                 else
                 {
-                    update_paddle(paddles[msg.PADDLE], msg.LOCATION, msg.DIRECTION);
+                    // receiving paddle update
+                    if (!paddles[msg->PADDLE])
+                    {
+                        paddles[msg->PADDLE] = new_paddle(msg->PADDLE, msg->LOCATION, msg->DIRECTION);
+                        num_players++;
+                    }
+                    else
+                    {
+                        update_paddle(paddles[msg->PADDLE], msg->LOCATION, msg->DIRECTION);
+                    }
                 }
+                
+                free(msg);
             }
+            
         }
         
         // redraw the window
@@ -232,17 +236,17 @@ void pong(int argc, char *argv[], char *server_name[], int port_num)
     master_socket = start_client(server_name, port_num);
     
     // get paddle
-    Message *msg;
-	read_message(master_socket, msg);
+    Message *msg = read_message(master_socket);
     int paddle_number = msg->PADDLE;
     num_players = paddle_number + 1;
     paddles[paddle_number] = new_paddle(paddle_number, msg->LOCATION, msg->DIRECTION);
     
     for (i = 0; i < paddle_number; i++)
     {
-        read_message(master_socket, msg);
+        msg = read_message(master_socket);
         paddles[i] = new_paddle(i, msg->LOCATION, msg->DIRECTION);
     }
+    free(msg);
     
     // set master_socket so that reads/writes don't block
     fcntl(master_socket, F_SETFL, O_NONBLOCK);

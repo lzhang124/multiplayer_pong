@@ -21,7 +21,7 @@
 
 int start_client(char *server_name[], int port_num);
 void write_message(int master_socket, Message *msg);
-void read_message(int master_socket, Message *msg);
+Message * read_message(int master_socket);
 void end_connection(int master_socket);
 
 #endif /* client_h */

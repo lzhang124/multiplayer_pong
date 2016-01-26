@@ -50,13 +50,16 @@ void write_message(int master_socket, Message *msg)
     write(master_socket, msg, sizeof(*msg));
 }
 
-void read_message(int master_socket, Message *msg)
+Message * read_message(int master_socket)
 {
+    Message *msg = malloc(sizeof(*msg));
     long n = read(master_socket, msg, sizeof(*msg));
-    if (n < 0)
+    if (n == -1)
     {
-        error("ERROR reading");
+        free(msg);
+        return NULL;
     }
+    return msg;
 }
 
 void end_connection(int master_socket)
