@@ -77,7 +77,7 @@ void update_scores(Game *game, int paddle_number)
     {
         if (i != paddle_number)
         {
-            if (++game->paddles[i]->score > game->max_score)
+            if (++(game->paddles[i]->score) > game->max_score)
             {
                 game->max_score = game->paddles[i]->score;
             }
@@ -123,24 +123,22 @@ void pong(int port_num)
                     start_ball(game);
                     game->started = TRUE;
                 }
+                else if (check_ball_hit(msg))
+                {
+                    update_scores(game, paddle_number);
+                    reset_ball(game->ball);
+                    reset_all_paddles(game->paddles, game->number_players);
+                    start_ball(game);
+                    
+                    if (game->max_score == MAX_SCORE)
+                    {
+                        game->started = FALSE;
+                    }
+                    notify_all(msg);
+                }
                 else
                 {
-                    if (check_ball_hit(msg))
-                    {
-                        update_scores(game, paddle_number);
-                        reset_ball(game->ball);
-                        reset_all_paddles(game->paddles, game->number_players);
-                        start_ball(game);
-                        
-                        if (game->max_score == MAX_SCORE)
-                        {
-                            game->started = FALSE;
-                        }
-                    }
-                    else
-                    {
-                    	update_paddle(game->paddles[paddle_number], msg->LOCATION, msg->DIRECTION);
-                    }
+                    update_paddle(game->paddles[paddle_number], msg->LOCATION, msg->DIRECTION);
                     notify_others(paddle_number, msg);
                 }
                 free(msg);
