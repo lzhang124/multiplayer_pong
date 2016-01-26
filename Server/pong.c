@@ -37,19 +37,23 @@ void update_player(Game *game, int player_number)
 {
     int i;
     Message msg;
-    Player *players = game->players;
+    Player **players = game->players;
     for (i = 0; i < player_number; i++)
     {
-        Paddle *paddle = players->paddle;
+        Paddle *paddle = players[i]->paddle;
         if (paddle->type == LEFT || paddle->type == RIGHT)
         {
-            msg = {paddle->type, paddle->y, paddle->direction};
+            msg.PADDLE = paddle->type;
+            msg.LOCATION = paddle->y;
+            msg.DIRECTION = paddle->direction;
         }
         else
         {
-        	msg = {paddle->type, paddle->x, paddle->direction};
+            msg.PADDLE = paddle->type;
+            msg.LOCATION = paddle->x;
+            msg.DIRECTION = paddle->direction;
         }
-        send_message(player_number, msg);
+        send_message(player_number, &msg);
     }
 }
 
@@ -75,12 +79,12 @@ int check_start_signal(Message *msg)
     return msg->PADDLE == -1;
 }
 
-void init_ball(Game *game)
+void start_ball(Game *game)
 {
     // send all players ball location
     Ball *ball = game->ball;
-    Message *msg = {ball->x, ball->y, ball->direction};
-    notify_all(msg);
+    Message msg = {ball->x, ball->y, ball->direction};
+    notify_all(&msg);
 }
 
 void pong(int port_num)
@@ -109,7 +113,7 @@ void pong(int port_num)
             else
             {
                 // check if message is a start signal
-                if (check_start_signal(msg) == TRUE)
+                if (check_start_signal(msg) == 1)
                 {
                     start_ball(game);
                 }

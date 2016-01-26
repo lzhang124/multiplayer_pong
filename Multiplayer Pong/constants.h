@@ -25,4 +25,11 @@
 #define MAX_PLAYERS 4
 #define START_MESSAGE {-1, -1, -1}
 
+#define BALL_X first
+#define BALL_Y second
+
+#define PADDLE first
+#define LOCATION second
+#define DIRECTION third
+
 #endif /* constants_h */
