@@ -26,5 +26,6 @@ typedef struct
 } Ball;
 
 Ball * new_ball();
+void reset_ball(Ball *ball);
 
 #endif /* ball_h */
