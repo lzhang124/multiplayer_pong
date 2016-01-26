@@ -176,19 +176,12 @@ void pong(int port_num)
                     notify_all(msg);
                     
                     reset_ball(game->ball);
-                    int i;
-                    for (i = 0; i < game->number_players; i++)
-                    {
-                        Paddle *paddle = game->paddles[i];
-                        reset_paddle(paddle);
-                        Message reset_msg;`
-                        reset_msg = (Message) {i, paddle->coordinate, paddle->direction};
-                        notify_all(&reset_msg);
-                    }
+                    sleep(3);
                     start_ball(game);
                     
                     if (game->max_score == MAX_SCORE)
                     {
+                        int i;
                         for (i = 0; i < game->number_players; i++) {
                             remove_paddle(game, i);
                         }
