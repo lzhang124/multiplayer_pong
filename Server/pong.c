@@ -126,15 +126,25 @@ void pong(int port_num)
                 else if (check_ball_hit(msg))
                 {
                     update_scores(game, paddle_number);
+                    notify_all(msg);
+                    
+                    Message reset_msg;
                     reset_ball(game->ball);
-                    reset_all_paddles(game->paddles, game->number_players);
+                    int i;
+                    for (i = 0; i < game->number_players; i++)
+                    {
+                        Paddle *paddle = game->paddles[i];
+                        reset_paddle(paddle);
+                        reset_msg = (Message) {i, paddle->coordinate, paddle->direction};
+                        notify_all(&reset_msg);
+                    }
                     start_ball(game);
                     
                     if (game->max_score == MAX_SCORE)
                     {
                         game->started = FALSE;
+                        // reset scores
                     }
-                    notify_all(msg);
                 }
                 else
                 {
