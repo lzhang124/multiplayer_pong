@@ -58,6 +58,7 @@ void update()
                             if (i != msg->PADDLE) {
                                 paddles[i]->score++;
                             }
+                            reset_paddle(paddles[i]);
                         }
                     }
                     update_paddle(paddles[msg->PADDLE], msg->LOCATION, msg->DIRECTION);
