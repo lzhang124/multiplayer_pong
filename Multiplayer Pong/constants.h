@@ -21,6 +21,10 @@
 #define BALL_H 5
 #define BALL_MOVEMENT 5
 #define MARGIN 15
+#define PADDLE_L 10
+#define PADDLE_R 1120
+#define PADDLE_T 10
+#define PADDLE_B 720
 
 #define MAX_PLAYERS 4
 #define START_MESSAGE {-1, -1, -1}

@@ -28,8 +28,7 @@ typedef enum
 
 typedef struct
 {
-    int x;
-    int y;
+    int coordinate;
     PaddleType type;
     PaddleDir direction;
 } Paddle;

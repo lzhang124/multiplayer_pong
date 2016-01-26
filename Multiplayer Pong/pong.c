@@ -98,13 +98,19 @@ void display()
             glColor3f(0.3, 0.3, 0.3);
         }
         
-        if (paddle->type == LEFT || paddle->type == RIGHT)
-        {
-            glRecti(paddle->x, paddle->y, paddle->x + V_PADDLE_W, paddle->y + V_PADDLE_H);
-        }
-        else if (paddle->type == TOP || paddle->type == BOTTOM)
-        {
-            glRecti(paddle->x, paddle->y, paddle->x + H_PADDLE_W, paddle->y + H_PADDLE_H);
+        switch (paddle->type) {
+            case LEFT:
+                glRecti(PADDLE_L, paddle->coordinate, PADDLE_L + V_PADDLE_W, paddle->coordinate + V_PADDLE_H);
+                break;
+            case RIGHT:
+                glRecti(PADDLE_R, paddle->coordinate, PADDLE_R + V_PADDLE_W, paddle->coordinate + V_PADDLE_H);
+                break;
+            case TOP:
+                glRecti(paddle->coordinate, PADDLE_T, paddle->coordinate + H_PADDLE_W, PADDLE_T + H_PADDLE_H);
+                break;
+            case BOTTOM:
+                glRecti(paddle->coordinate, PADDLE_B, paddle->coordinate + H_PADDLE_W, PADDLE_B + H_PADDLE_H);
+                break;
         }
     }
     
@@ -135,50 +141,62 @@ void special_pressed(int key, int xscr, int yscr)
     Paddle *paddle = paddles[paddle_number];
     switch (key)
     {
-        case GLUT_KEY_DOWN :
+        case GLUT_KEY_DOWN:
             paddle->direction = SOUTH;
             break;
-        case GLUT_KEY_UP :
+        case GLUT_KEY_UP:
             paddle->direction = NORTH;
             break;
-        case GLUT_KEY_LEFT :
+        case GLUT_KEY_LEFT:
             paddle->direction = WEST;
             break;
-        case GLUT_KEY_RIGHT :
+        case GLUT_KEY_RIGHT:
             paddle->direction = EAST;
             break;
     }
+    Message msg = {paddle_number, paddle->coordinate, paddle->direction};
+    write_message(master_socket, &msg);
 }
 
 void special_released(int key, int xscr, int yscr)
 {
+    int stopped = FALSE;
     Paddle *paddle = paddles[paddle_number];
     switch (key)
     {
-        case GLUT_KEY_DOWN :
+        case GLUT_KEY_DOWN:
             if (paddle->direction == SOUTH)
             {
                 paddle->direction = NONE;
+                stopped = TRUE;
             }
             break;
-        case GLUT_KEY_UP :
+        case GLUT_KEY_UP:
             if (paddle->direction == NORTH)
             {
                 paddle->direction = NONE;
+                stopped = TRUE;
             }
             break;
-        case GLUT_KEY_LEFT :
+        case GLUT_KEY_LEFT:
             if (paddle->direction == WEST)
             {
                 paddle->direction = NONE;
+                stopped = TRUE;
             }
             break;
-        case GLUT_KEY_RIGHT :
+        case GLUT_KEY_RIGHT:
             if (paddle->direction == EAST)
             {
                 paddle->direction = NONE;
+                stopped = TRUE;
             }
             break;
+    }
+    
+    if (stopped) {
+        Message msg = {paddle_number, paddle->coordinate, NONE};
+        write_message(master_socket, &msg);
     }
 }
 
@@ -199,7 +217,7 @@ void close_window()
         Paddle *paddle = paddles[i];
         free(paddle);
     }
-//    end_connection(master_socket);
+    end_connection(master_socket);
     exit(0);
 }
 
