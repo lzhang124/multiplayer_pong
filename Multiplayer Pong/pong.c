@@ -38,8 +38,15 @@ void update()
         if (msg) {
             if (msg->first > MAX_PLAYERS)
             {
+                if (!started) {
+                    started = TRUE;
+                    
+                    // reset scores
+                    for (i = 0; i < num_players; i++) {
+                        paddles[i]->score = 0;
+                    }
+                }
                 // receiving ball location
-                started = TRUE;
                 start_ball = TRUE;
                 ball = new_ball(msg->BALL_X, msg->BALL_Y, msg->DIRECTION);
                 
@@ -206,11 +213,6 @@ void mouse_function(int button, int state, int xscr, int yscr)
             // send start message to server
             Message msg = START_MESSAGE;
             write_message(master_socket, &msg);
-            
-            // reset scores
-            for (i = 0; i < num_players; i++) {
-                paddles[i]->score = 0;
-            }
         }
     }
 }

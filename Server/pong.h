@@ -21,7 +21,6 @@ typedef struct
     Paddle *paddles[MAX_PLAYERS];
     Ball *ball;
     int started;
-    int max_score;
 } Game;
 
 void pong(int port_num);

@@ -11,7 +11,7 @@ Game * init_game()
 {
     Ball *ball = new_ball();
     Game *game = malloc(sizeof(*game));
-    *game = (Game) {0, {NULL}, ball, FALSE, 0};
+    *game = (Game) {0, {NULL}, ball, FALSE};
     
     return game;
 }
@@ -70,21 +70,24 @@ int check_ball_hit(Message *msg)
     return msg->second == -1;
 }
 
-void update_scores(Game *game, int paddle_number)
+int update_scores(Game *game, int paddle_number)
 {
+    int end_game = FALSE;
+    
     // losing paddle +0, all others +1
     int i;
     for (i = 0; i < game->number_players; i++)
     {
+        reset_paddle(game->paddles[i]);
         if (i != paddle_number)
         {
-            if (++(game->paddles[i]->score) > game->max_score)
+            if (++(game->paddles[i]->score) == MAX_SCORE)
             {
-                game->max_score++;
+                end_game = TRUE;
             }
         }
-        reset_paddle(game->paddles[i]);
     }
+    return end_game;
 }
 
 void start_ball(Game *game)
@@ -102,7 +105,7 @@ void pong(int port_num)
     
     while (TRUE)
     {
-        while(!game->started)
+        if (!game->started)
         {
             // wait for players to join game
             if (wait_for_connection(master_socket))
@@ -132,6 +135,12 @@ void pong(int port_num)
                     if (check_start_signal(msg))
                     {
                         game->started = TRUE;
+
+                        // reset scores
+                        int i;
+                        for (i = 0; i < game->number_players; i++) {
+                            game->paddles[i]->score = 0;
+                        }
                         start_ball(game);
                     }
                     else
@@ -150,8 +159,7 @@ void pong(int port_num)
                 exit(0);
             }
         }
-        
-        while (game->started)
+        else
         {
             if (wait_for_connection(master_socket))
             {
@@ -170,15 +178,12 @@ void pong(int port_num)
                     // check if message is for a ball missing a paddle
                     if (check_ball_hit(msg))
                     {
-                        update_scores(game, msg->PADDLE);
                         notify_all(msg);
-                        
-                        if (game->max_score == MAX_SCORE)
-                        {
+                        if (update_scores(game, msg->PADDLE)) {
                             game->started = FALSE;
                             Message msg = START_MESSAGE;
                             notify_all(&msg);
-                            break;
+                            continue;
                         }
                         
                         sleep(1);
