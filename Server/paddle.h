@@ -35,5 +35,6 @@ typedef struct
 } Paddle;
 
 Paddle * new_paddle(int paddle_number);
+void update_paddle(Paddle * paddle, int location, PaddleDir direction);
 
 #endif /* paddle_h */

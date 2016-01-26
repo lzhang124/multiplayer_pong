@@ -29,6 +29,19 @@ Paddle * new_paddle(int paddle_number, int location, PaddleDir direction)
     return paddle;
 }
 
+void update_paddle(Paddle * paddle, int location, PaddleDir direction)
+{
+    if (paddle->type == LEFT || paddle->type == RIGHT)
+    {
+        paddle->y = location;
+    }
+    else if (paddle->type == TOP || paddle->type == BOTTOM)
+    {
+        paddle->x = location;
+    }
+    paddle->direction = direction;
+}
+
 void move_up(Paddle * paddle)
 {
     if (paddle->type == LEFT || paddle->type == RIGHT)
