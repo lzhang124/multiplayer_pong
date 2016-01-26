@@ -53,7 +53,12 @@ void update()
                 {
                     if (msg->second == -1)
                     {
-                        
+                        for (i = 0; i < num_players; i++)
+                        {
+                            if (i != msg->PADDLE) {
+                                paddles[i]->score++;
+                            }
+                        }
                     }
                     update_paddle(paddles[msg->PADDLE], msg->LOCATION, msg->DIRECTION);
                 }
@@ -72,9 +77,42 @@ void update()
         {
             // move the ball
             if (move_ball(ball)) {
-                if (ball->x == MARGIN) {
-                    // left
-                    
+                Paddle *paddle = paddles[paddle_number];
+                Message msg = {paddle_number, -1, -1};
+                switch (paddle_number)
+                {
+                    case LEFT:
+                        if (ball->x == MARGIN &&
+                            (ball->y <= paddle->coordinate - BALL_H ||
+                             ball->y >= paddle->coordinate + V_PADDLE_H))
+                        {
+                            write_message(master_socket, &msg);
+                        }
+                        break;
+                    case RIGHT:
+                        if (ball->x == WINDOW_W - MARGIN - BALL_W &&
+                            (ball->y <= paddle->coordinate - BALL_H ||
+                             ball->y >= paddle->coordinate + V_PADDLE_H))
+                        {
+                            write_message(master_socket, &msg);
+                        }
+                        break;
+                    case TOP:
+                        if (ball->y == MARGIN &&
+                            (ball->x <= paddle->coordinate - BALL_W ||
+                             ball->x >= paddle->coordinate + H_PADDLE_W))
+                        {
+                            write_message(master_socket, &msg);
+                        }
+                        break;
+                    case BOTTOM:
+                        if (ball->y == WINDOW_H - MARGIN - BALL_H &&
+                            (ball->x <= paddle->coordinate - BALL_W ||
+                             ball->x >= paddle->coordinate + H_PADDLE_W))
+                        {
+                            write_message(master_socket, &msg);
+                        }
+                        break;
                 }
             }
         }

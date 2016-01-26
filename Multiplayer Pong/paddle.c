@@ -12,19 +12,19 @@ Paddle * new_paddle(int paddle_number, int location, PaddleDir direction)
     Paddle *paddle = malloc(sizeof(*paddle));
     if (paddle_number == LEFT)
     {
-        *paddle = (Paddle) {location, LEFT, direction};
+        *paddle = (Paddle) {location, LEFT, direction, 0};
     }
     else if (paddle_number == RIGHT)
     {
-        *paddle = (Paddle) {location, RIGHT, direction};
+        *paddle = (Paddle) {location, RIGHT, direction, 0};
     }
     else if (paddle_number == TOP)
     {
-        *paddle = (Paddle) {location, TOP, direction};
+        *paddle = (Paddle) {location, TOP, direction, 0};
     }
     else if (paddle_number == BOTTOM)
     {
-        *paddle = (Paddle) {location, BOTTOM, direction};
+        *paddle = (Paddle) {location, BOTTOM, direction, 0};
     }
     return paddle;
 }
