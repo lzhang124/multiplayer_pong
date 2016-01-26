@@ -20,6 +20,7 @@ Paddle *paddles[MAX_PLAYERS] = {NULL};
 Ball *ball;
 
 int started = FALSE;
+int start_ball = FALSE;
 
 int i;
 
@@ -39,6 +40,7 @@ void update()
             {
                 // receiving ball location
                 started = TRUE;
+                start_ball = TRUE;
                 ball = new_ball(msg->BALL_X, msg->BALL_Y, msg->DIRECTION);
             }
             else
@@ -78,7 +80,7 @@ void update()
             move_paddle(paddle);
         }
         
-        if (started)
+        if (start_ball)
         {
             // move the ball
             if (move_ball(ball)) {
@@ -131,6 +133,7 @@ void display()
 {
     glClear(GL_COLOR_BUFFER_BIT);
 
+    // start button
     if (!started)
     {
         glColor3f(1.0, 1.0, 1.0);
@@ -166,9 +169,20 @@ void display()
     }
     
     // ball
-    if (started) {
+    if (start_ball) {
         glColor3f(1.0, 1.0, 1.0);
         glRecti(ball->x, ball->y, ball->x + BALL_W, ball->y + BALL_H);
+    }
+    
+    // scores
+    // TODO CHANGE THIS
+    if (!started) {
+        glColor3f(0.3, 0.3, 0.3);
+        for (i = 0; i < num_players; i++)
+        {
+//            draw_number(paddles[i]->score, i);
+            draw_number(9, i);
+        }
     }
     
     glutSwapBuffers();
