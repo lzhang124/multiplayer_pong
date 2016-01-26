@@ -16,42 +16,37 @@ Game * init_game()
     return game;
 }
 
-void add_player(Game *game, int player_number)
+void add_paddle(Game *game, int paddle_number)
 {
-    Paddle *paddle = new_paddle(player_number);
+    Paddle *paddle = new_paddle(paddle_number);
     
-    Player *player = malloc(sizeof(*player));
-    *player = (Player) {player_number, 0, paddle};
-    
-    game->players[player_number] = player;
+    game->paddles[paddle_number] = paddle;
     game->number_players++;
     
     // notify all players of new player
-    Message msg = {player_number, paddle->coordinate, NONE};
+    Message msg = {paddle_number, paddle->coordinate, NONE};
     notify_all(&msg);
 }
 
-void update_player(Game *game, int player_number)
+void send_previous_paddles(Game *game, int paddle_number)
 {
     int i;
     Message msg;
-    Player **players = game->players;
-    for (i = 0; i < player_number; i++)
+    Paddle **paddles = game->paddles;
+    for (i = 0; i < paddle_number; i++)
     {
-        Paddle *paddle = players[i]->paddle;
-        msg = (Message) {paddle->type, paddle->coordinate, paddle->direction};
-        send_message(player_number, &msg);
+        msg = (Message) {paddles[i]->type, paddles[i]->coordinate, paddles[i]->direction};
+        send_message(paddle_number, &msg);
     }
 }
 
-void remove_player(Game *game, int player_number)
+void remove_paddle(Game *game, int paddle_number)
 {
     // free paddle and player
-    Player *player = game->players[player_number];
-    free(player->paddle);
-    free(player);
+    Paddle *paddle = game->paddles[paddle_number];
+    free(paddle);
     
-    game->players[player_number] = NULL;
+    game->paddles[paddle_number] = NULL;
     game->number_players--;
 }
 
@@ -84,17 +79,17 @@ void pong(int port_num)
         // wait for players to join game
         if (wait_for_connection(master_socket))
         {
-            int player_number = add_connection(master_socket);
-            add_player(game, player_number);
-            update_player(game, player_number);
+            int paddle_number = add_connection(master_socket);
+            add_paddle(game, paddle_number);
+            send_previous_paddles(game, paddle_number);
         }
         else
         {
-            int player_number = check_socket();
-            Message *msg = read_message(player_number);
+            int paddle_number = check_socket();
+            Message *msg = read_message(paddle_number);
             if (msg == NULL)
             {
-                remove_player(game, player_number);
+                remove_paddle(game, paddle_number);
             }
             else
             {
@@ -106,8 +101,8 @@ void pong(int port_num)
                 else
                 {
                     // send info to other players
-                    update_paddle(game->players[player_number]->paddle, msg->LOCATION, msg->DIRECTION);
-                    notify_others(player_number, msg);
+                    update_paddle(game->paddles[paddle_number], msg->LOCATION, msg->DIRECTION);
+                    notify_others(paddle_number, msg);
                 }
                 free(msg);
             }
