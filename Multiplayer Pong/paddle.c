@@ -12,11 +12,11 @@ Paddle * add_paddle(int paddle_number)
     Paddle *paddle = malloc(sizeof(*paddle));
     if (paddle_number == LEFT)
     {
-        *paddle = (Paddle) {10, 363, LEFT, NONE};
+        *paddle = (Paddle) {10, 314, LEFT, NONE};
     }
     else if (paddle_number == RIGHT)
     {
-        *paddle = (Paddle) {1120, 363, RIGHT, NONE};
+        *paddle = (Paddle) {1120, 314, RIGHT, NONE};
     }
     else if (paddle_number == TOP)
     {
@@ -24,7 +24,7 @@ Paddle * add_paddle(int paddle_number)
     }
     else if (paddle_number == BOTTOM)
     {
-        *paddle = (Paddle) {495, 820, BOTTOM, NONE};
+        *paddle = (Paddle) {495, 720, BOTTOM, NONE};
     }
     return paddle;
 }
@@ -33,9 +33,9 @@ void move_up(Paddle * paddle)
 {
     if (paddle->type == LEFT || paddle->type == RIGHT)
     {
-        if (paddle->y >= MARGIN + V_PADDLE_MOVEMENT)
+        if (paddle->y >= MARGIN + PADDLE_MOVEMENT)
         {
-            paddle->y -= V_PADDLE_MOVEMENT;
+            paddle->y -= PADDLE_MOVEMENT;
         }
     }
 }
@@ -44,9 +44,9 @@ void move_down(Paddle * paddle)
 {
     if (paddle->type == LEFT || paddle->type == RIGHT)
     {
-        if (paddle->y <= WINDOW_H - MARGIN - V_PADDLE_H - V_PADDLE_MOVEMENT)
+        if (paddle->y <= WINDOW_H - MARGIN - V_PADDLE_H - PADDLE_MOVEMENT)
         {
-            paddle->y += V_PADDLE_MOVEMENT;
+            paddle->y += PADDLE_MOVEMENT;
         }
     }
 }
@@ -55,9 +55,9 @@ void move_left(Paddle * paddle)
 {
     if (paddle->type == TOP || paddle->type == BOTTOM)
     {
-        if (paddle->x >= MARGIN + H_PADDLE_MOVEMENT)
+        if (paddle->x >= MARGIN + PADDLE_MOVEMENT)
         {
-            paddle->x -= H_PADDLE_MOVEMENT;
+            paddle->x -= PADDLE_MOVEMENT;
         }
     }
 }
@@ -66,9 +66,9 @@ void move_right(Paddle * paddle)
 {
     if (paddle->type == TOP || paddle->type == BOTTOM)
     {
-        if (paddle->x <= WINDOW_W - MARGIN - H_PADDLE_W - H_PADDLE_MOVEMENT)
+        if (paddle->x <= WINDOW_W - MARGIN - H_PADDLE_W - PADDLE_MOVEMENT)
         {
-            paddle->x += H_PADDLE_MOVEMENT;
+            paddle->x += PADDLE_MOVEMENT;
         }
     }
 }

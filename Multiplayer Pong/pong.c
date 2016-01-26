@@ -99,10 +99,8 @@ void display()
 
     if (!started)
     {
-        glColor3f(1.0, 0, 0);
-        glRecti(550, 415, 590, 430);
         glColor3f(1.0, 1.0, 1.0);
-        draw_text("Start", 550, 430);
+        draw_text("Start", 550, 380);
     }
     
     // paddles
@@ -140,7 +138,7 @@ void mouse_function(int button, int state, int xscr, int yscr)
 {
     if (!started)
     {
-        if (xscr > 550 && xscr < 590 && yscr > 415 && yscr < 430)
+        if (xscr > 550 && xscr < 592 && yscr > 365 && yscr < 382)
         {
             started = TRUE;
             ball = add_ball();
@@ -164,7 +162,9 @@ void special_pressed(int key, int xscr, int yscr)
 
 void special_released(int key, int xscr, int yscr)
 {
-    key_pressed = -1;
+    if (key == key_pressed) {
+        key_pressed = -1;
+    }
 }
 
 void resize(int width, int height)
