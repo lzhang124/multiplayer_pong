@@ -20,21 +20,11 @@ Paddle *paddles[MAX_PLAYERS] = {NULL};
 Ball *ball;
 
 int started = FALSE;
-int session_ended = FALSE;
+int start_ball = FALSE;
 
 int i;
 
 int count = 0;
-
-void delay(int length)
-{
-    int i;
-    while (i < length)
-    {
-        i++;
-    }
-}
-
 void update()
 {
     ++count;
@@ -74,7 +64,6 @@ void update()
                             }
                             reset_paddle(paddles[i]);
                         }
-                        session_ended = TRUE;
                     }
                     else
                     {
@@ -95,12 +84,6 @@ void update()
         if (start_ball)
         {
             // move the ball
-            if (session_ended)
-            {
-//                delay(50000);
-                sleep(1);
-                session_ended = FALSE;
-            }
             if (move_ball(ball)) {
                 Paddle *paddle = paddles[paddle_number];
                 Message msg = {paddle_number, -1, -1};
@@ -187,7 +170,7 @@ void display()
     }
     
     // ball
-    if (start_ball) {
+    if (started) {
         glColor3f(1.0, 1.0, 1.0);
         glRecti(ball->x, ball->y, ball->x + BALL_W, ball->y + BALL_H);
     }

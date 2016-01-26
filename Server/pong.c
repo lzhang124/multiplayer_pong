@@ -171,9 +171,6 @@ void pong(int port_num)
                     update_scores(game, msg->PADDLE);
                     notify_all(msg);
                     
-                    reset_ball(game->ball);
-                    start_ball(game);
-                    
                     if (game->max_score == MAX_SCORE)
                     {
                         int i;
@@ -183,6 +180,10 @@ void pong(int port_num)
                         end_game(game, master_socket);
                         break;
                     }
+                    
+                    sleep(1);
+                    reset_ball(game->ball);
+                    start_ball(game);
                 }
                 else
                 {
