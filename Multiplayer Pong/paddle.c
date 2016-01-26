@@ -42,46 +42,47 @@ void update_paddle(Paddle * paddle, int location, PaddleDir direction)
     paddle->direction = direction;
 }
 
-void move_up(Paddle * paddle)
+void move_paddle(Paddle * paddle)
 {
-    if (paddle->type == LEFT || paddle->type == RIGHT)
+    switch (paddle->direction)
     {
-        if (paddle->y >= MARGIN + PADDLE_MOVEMENT)
-        {
-            paddle->y -= PADDLE_MOVEMENT;
-        }
-    }
-}
-
-void move_down(Paddle * paddle)
-{
-    if (paddle->type == LEFT || paddle->type == RIGHT)
-    {
-        if (paddle->y <= WINDOW_H - MARGIN - V_PADDLE_H - PADDLE_MOVEMENT)
-        {
-            paddle->y += PADDLE_MOVEMENT;
-        }
-    }
-}
-
-void move_left(Paddle * paddle)
-{
-    if (paddle->type == TOP || paddle->type == BOTTOM)
-    {
-        if (paddle->x >= MARGIN + PADDLE_MOVEMENT)
-        {
-            paddle->x -= PADDLE_MOVEMENT;
-        }
-    }
-}
-
-void move_right(Paddle * paddle)
-{
-    if (paddle->type == TOP || paddle->type == BOTTOM)
-    {
-        if (paddle->x <= WINDOW_W - MARGIN - H_PADDLE_W - PADDLE_MOVEMENT)
-        {
-            paddle->x += PADDLE_MOVEMENT;
-        }
+        case NORTH:
+            if (paddle->type == LEFT || paddle->type == RIGHT)
+            {
+                if (paddle->y >= MARGIN + PADDLE_MOVEMENT)
+                {
+                    paddle->y -= PADDLE_MOVEMENT;
+                }
+            }
+            break;
+        case SOUTH:
+            if (paddle->type == LEFT || paddle->type == RIGHT)
+            {
+                if (paddle->y <= WINDOW_H - MARGIN - V_PADDLE_H - PADDLE_MOVEMENT)
+                {
+                    paddle->y += PADDLE_MOVEMENT;
+                }
+            }
+            break;
+        case WEST:
+            if (paddle->type == TOP || paddle->type == BOTTOM)
+            {
+                if (paddle->x >= MARGIN + PADDLE_MOVEMENT)
+                {
+                    paddle->x -= PADDLE_MOVEMENT;
+                }
+            }
+            break;
+        case EAST:
+            if (paddle->type == TOP || paddle->type == BOTTOM)
+            {
+                if (paddle->x <= WINDOW_W - MARGIN - H_PADDLE_W - PADDLE_MOVEMENT)
+                {
+                    paddle->x += PADDLE_MOVEMENT;
+                }
+            }
+            break;
+        case NONE:
+            break;
     }
 }

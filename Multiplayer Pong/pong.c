@@ -23,7 +23,6 @@ Paddle *paddles[MAX_PLAYERS] = {NULL};
 Ball *ball;
 
 int started = FALSE;
-int key_pressed = -1;
 
 int i;
 
@@ -35,31 +34,16 @@ void update()
     {
         count = 0;
     
-        // move the paddle
-        Paddle *paddle = paddles[paddle_number];
-        if (key_pressed != -1)
-        {
-            switch (key_pressed)
-            {
-                case GLUT_KEY_DOWN :
-                    move_down(paddle);
-                    break;
-                case GLUT_KEY_UP :
-                    move_up(paddle);
-                    break;
-                case GLUT_KEY_LEFT :
-                    move_left(paddle);
-                    break;
-                case GLUT_KEY_RIGHT :
-                    move_right(paddle);
-                    break;
-            }
+        // move the paddles
+        for (i = 0; i < num_players; i++) {
+            Paddle *paddle = paddles[paddle_number];
+            move_paddle(paddle);
         }
         
         if (started)
         {
             // move the ball
-            update_ball(ball);
+            move_ball(ball);
         }
         else
         {
@@ -70,20 +54,18 @@ void update()
             {
                 // receiving ball location
                 started = TRUE;
-                ball = new_ball(msg.first, msg.second, msg.third);
+                ball = new_ball(msg.BALL_X, msg.BALL_Y, msg.DIRECTION);
             }
             else
             {
                 // receiving paddle update
                 if (!paddles[msg.PADDLE])
                 {
-                    // new paddle
                     paddles[msg.PADDLE] = new_paddle(msg.PADDLE, msg.LOCATION, msg.DIRECTION);
                     num_players++;
                 }
                 else
                 {
-                    // update paddle
                     update_paddle(paddles[msg.PADDLE], msg.LOCATION, msg.DIRECTION);
                 }
             }
@@ -150,13 +132,53 @@ void mouse_function(int button, int state, int xscr, int yscr)
 
 void special_pressed(int key, int xscr, int yscr)
 {
-    key_pressed = key;
+    Paddle *paddle = paddles[paddle_number];
+    switch (key)
+    {
+        case GLUT_KEY_DOWN :
+            paddle->direction = SOUTH;
+            break;
+        case GLUT_KEY_UP :
+            paddle->direction = NORTH;
+            break;
+        case GLUT_KEY_LEFT :
+            paddle->direction = WEST;
+            break;
+        case GLUT_KEY_RIGHT :
+            paddle->direction = EAST;
+            break;
+    }
 }
 
 void special_released(int key, int xscr, int yscr)
 {
-    if (key == key_pressed) {
-        key_pressed = -1;
+    Paddle *paddle = paddles[paddle_number];
+    switch (key)
+    {
+        case GLUT_KEY_DOWN :
+            if (paddle->direction == SOUTH)
+            {
+                paddle->direction = NONE;
+            }
+            break;
+        case GLUT_KEY_UP :
+            if (paddle->direction == NORTH)
+            {
+                paddle->direction = NONE;
+            }
+            break;
+        case GLUT_KEY_LEFT :
+            if (paddle->direction == WEST)
+            {
+                paddle->direction = NONE;
+            }
+            break;
+        case GLUT_KEY_RIGHT :
+            if (paddle->direction == EAST)
+            {
+                paddle->direction = NONE;
+            }
+            break;
     }
 }
 
