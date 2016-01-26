@@ -16,15 +16,8 @@
 
 typedef struct
 {
-    int player_number;
-    int score;
-    Paddle *paddle;
-} Player;
-
-typedef struct
-{
     int number_players;
-    Player *players[MAX_PLAYERS];
+    Paddle *paddles[MAX_PLAYERS];
     Ball *ball;
     int started;
 } Game;

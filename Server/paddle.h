@@ -31,6 +31,7 @@ typedef struct
     int coordinate;
     PaddleType type;
     PaddleDir direction;
+    int score;
 } Paddle;
 
 Paddle * new_paddle(int paddle_number);
