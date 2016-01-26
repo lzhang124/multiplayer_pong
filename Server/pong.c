@@ -100,105 +100,106 @@ void pong(int port_num)
     int master_socket = start_server(port_num);
     Game *game = init_game();
     
-    while(!game->started)
+    while (TRUE)
     {
-        // wait for players to join game
-        if (wait_for_connection(master_socket))
+        while(!game->started)
         {
-            if (game->number_players >= MAX_PLAYERS)
+            // wait for players to join game
+            if (wait_for_connection(master_socket))
+            {
+                if (game->number_players >= MAX_PLAYERS)
+                {
+                    add_connection(master_socket, FALSE);
+                }
+                else
+                {
+                    int paddle_number = add_connection(master_socket, TRUE);
+                    add_paddle(game, paddle_number);
+                    send_all_other_paddles(game, paddle_number);
+                }
+            }
+            else
+            {
+                int paddle_number = check_socket();
+                Message *msg = read_message(paddle_number);
+                if (msg == NULL)
+                {
+                    remove_paddle(game, paddle_number);
+                }
+                else
+                {
+                    // check if message is a start signal
+                    if (check_start_signal(msg))
+                    {
+                        game->started = TRUE;
+                        start_ball(game);
+                    }
+                    else
+                    {
+                        update_paddle(game->paddles[paddle_number], msg->LOCATION, msg->DIRECTION);
+                        notify_others(paddle_number, msg);
+                    }
+                    free(msg);
+                }
+            }
+            
+            // close the server when no more clients
+            if (game->number_players == 0)
+            {
+                end_game(game, master_socket);
+                exit(0);
+            }
+        }
+        
+        while (game->started)
+        {
+            if (wait_for_connection(master_socket))
             {
                 add_connection(master_socket, FALSE);
             }
             else
             {
-                int paddle_number = add_connection(master_socket, TRUE);
-                add_paddle(game, paddle_number);
-                send_all_other_paddles(game, paddle_number);
-            }
-        }
-        else
-        {
-            int paddle_number = check_socket();
-            Message *msg = read_message(paddle_number);
-            if (msg == NULL)
-            {
-                remove_paddle(game, paddle_number);
-            }
-            else
-            {
-                // check if message is a start signal
-                if (check_start_signal(msg))
+                int paddle_number = check_socket();
+                Message *msg = read_message(paddle_number);
+                if (msg == NULL)
                 {
-                    game->started = TRUE;
-                    start_ball(game);
+                    remove_paddle(game, paddle_number);
                 }
                 else
                 {
-                    update_paddle(game->paddles[paddle_number], msg->LOCATION, msg->DIRECTION);
-                    notify_others(paddle_number, msg);
-                }
-                free(msg);
-            }
-        }
-        
-        // close the server when no more clients
-        if (game->number_players == 0)
-        {
-            end_game(game, master_socket);
-            break;
-        }
-    }
-    
-    while (game->started)
-    {
-        if (wait_for_connection(master_socket))
-        {
-            add_connection(master_socket, FALSE);
-        }
-        else
-        {
-            int paddle_number = check_socket();
-            Message *msg = read_message(paddle_number);
-            if (msg == NULL)
-            {
-                remove_paddle(game, paddle_number);
-            }
-            else
-            {
-                // check if message is for a ball missing a paddle
-                if (check_ball_hit(msg))
-                {
-                    update_scores(game, msg->PADDLE);
-                    notify_all(msg);
-                    
-                    if (game->max_score == MAX_SCORE)
+                    // check if message is for a ball missing a paddle
+                    if (check_ball_hit(msg))
                     {
-                        int i;
-                        for (i = 0; i < game->number_players; i++) {
-                            remove_paddle(game, i);
+                        update_scores(game, msg->PADDLE);
+                        notify_all(msg);
+                        
+                        if (game->max_score == MAX_SCORE)
+                        {
+                            game->started = FALSE;
+                            Message msg = START_MESSAGE;
+                            notify_all(&msg);
+                            break;
                         }
-                        end_game(game, master_socket);
-                        break;
+                        
+                        sleep(1);
+                        reset_ball(game->ball);
+                        start_ball(game);
                     }
-                    
-                    sleep(1);
-                    reset_ball(game->ball);
-                    start_ball(game);
+                    else
+                    {
+                        update_paddle(game->paddles[paddle_number], msg->LOCATION, msg->DIRECTION);
+                        notify_others(paddle_number, msg);
+                    }
+                    free(msg);
                 }
-                else
-                {
-                    update_paddle(game->paddles[paddle_number], msg->LOCATION, msg->DIRECTION);
-                    notify_others(paddle_number, msg);
-                }
-                free(msg);
             }
-        }
-    
-        // close the server when no more clients
-        if (game->number_players == 0)
-        {
-            end_game(game, master_socket);
-            break;
+        
+            // close the server when no more clients
+            if (game->number_players == 0)
+            {
+                end_game(game, master_socket);
+                exit(0);
+            }
         }
     }
 }

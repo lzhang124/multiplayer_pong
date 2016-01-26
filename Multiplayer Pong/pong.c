@@ -49,6 +49,11 @@ void update()
                     reset_paddle(paddles[i]);
                 }
             }
+            else if (msg->first == -1)
+            {
+                started = FALSE;
+                start_ball = FALSE;
+            }
             else
             {
                 // receiving paddle update
@@ -64,6 +69,7 @@ void update()
                         start_ball = FALSE;
                         for (i = 0; i < num_players; i++)
                         {
+                            paddles[i]->direction = NONE;
                             if (i != msg->PADDLE)
                             {
                                 paddles[i]->score++;
@@ -179,13 +185,13 @@ void display()
         // ball
         glColor3f(1.0, 1.0, 1.0);
         glRecti(ball->x, ball->y, ball->x + BALL_W, ball->y + BALL_H);
-        
-        // scores
-        glColor3f(0.3, 0.3, 0.3);
-        for (i = 0; i < num_players; i++)
-        {
-            draw_number(paddles[i]->score, i);
-        }
+    }
+    
+    // scores
+    glColor3f(0.3, 0.3, 0.3);
+    for (i = 0; i < num_players; i++)
+    {
+        draw_number(paddles[i]->score, i);
     }
     
     glutSwapBuffers();
@@ -200,6 +206,11 @@ void mouse_function(int button, int state, int xscr, int yscr)
             // send start message to server
             Message msg = START_MESSAGE;
             write_message(master_socket, &msg);
+            
+            // reset scores
+            for (i = 0; i < num_players; i++) {
+                paddles[i]->score = 0;
+            }
         }
     }
 }

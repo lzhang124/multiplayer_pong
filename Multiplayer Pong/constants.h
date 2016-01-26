@@ -37,7 +37,7 @@
 #define NUMBER_H_M 15
 
 #define MAX_PLAYERS 4
-#define MAX_SCORE 5
+#define MAX_SCORE 2
 #define START_MESSAGE {-1, -1, -1}
 
 #define BALL_X first

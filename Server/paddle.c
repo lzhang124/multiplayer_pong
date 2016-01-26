@@ -35,22 +35,22 @@ void update_paddle(Paddle * paddle, int location, PaddleDir direction)
     paddle->direction = direction;
 }
 
-void reset_paddle(Paddle *paddle)
+void reset_paddle(Paddle * paddle)
 {
     if (paddle->type == LEFT)
     {
-        *paddle = (Paddle) {V_PADDLE_START, LEFT, NONE, 0};
+        *paddle = (Paddle) {V_PADDLE_START, LEFT, NONE, paddle->score};
     }
     else if (paddle->type == RIGHT)
     {
-        *paddle = (Paddle) {V_PADDLE_START, RIGHT, NONE, 0};
+        *paddle = (Paddle) {V_PADDLE_START, RIGHT, NONE, paddle->score};
     }
     else if (paddle->type == TOP)
     {
-        *paddle = (Paddle) {H_PADDLE_START, TOP, NONE, 0};
+        *paddle = (Paddle) {H_PADDLE_START, TOP, NONE, paddle->score};
     }
     else if (paddle->type == BOTTOM)
     {
-        *paddle = (Paddle) {H_PADDLE_START, BOTTOM, NONE, 0};
+        *paddle = (Paddle) {H_PADDLE_START, BOTTOM, NONE, paddle->score};
     }
 }
