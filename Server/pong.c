@@ -80,9 +80,10 @@ void update_scores(Game *game, int paddle_number)
         {
             if (++(game->paddles[i]->score) > game->max_score)
             {
-                game->max_score = game->paddles[i]->score;
+                game->max_score++;
             }
         }
+        reset_paddle(game->paddles[i]);
     }
 }
 
@@ -99,10 +100,10 @@ void pong(int port_num)
     int master_socket = start_server(port_num);
     Game *game = init_game();
     
-    while(game->number_players <= MAX_PLAYERS)
+    while(!game->started)
     {
         // wait for players to join game
-        if (!game->started && wait_for_connection(master_socket))
+        if (wait_for_connection(master_socket))
         {
             if (game->number_players >= MAX_PLAYERS)
             {
@@ -164,19 +165,14 @@ void pong(int port_num)
             }
             else
             {
-                // check if message is a start signal
-                if (check_start_signal(msg))
-                {
-                    game->started = TRUE;
-                    start_ball(game);
-                }
-                else if (check_ball_hit(msg))
+                // check if message is for a ball missing a paddle
+                if (check_ball_hit(msg))
                 {
                     update_scores(game, msg->PADDLE);
                     notify_all(msg);
                     
                     reset_ball(game->ball);
-                    sleep(3);
+//                    sleep(3);
                     start_ball(game);
                     
                     if (game->max_score == MAX_SCORE)

@@ -55,13 +55,17 @@ void update()
                     {
                         for (i = 0; i < num_players; i++)
                         {
-                            if (i != msg->PADDLE) {
+                            if (i != msg->PADDLE)
+                            {
                                 paddles[i]->score++;
                             }
                             reset_paddle(paddles[i]);
                         }
                     }
-                    update_paddle(paddles[msg->PADDLE], msg->LOCATION, msg->DIRECTION);
+                    else
+                    {
+                        update_paddle(paddles[msg->PADDLE], msg->LOCATION, msg->DIRECTION);
+                    }
                 }
             }
             
