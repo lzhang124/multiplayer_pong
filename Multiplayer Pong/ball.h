@@ -25,7 +25,7 @@ typedef struct
     BallDir direction;
 } Ball;
 
-Ball * add_ball();
+Ball * new_ball(int x, int y, BallDir direction);
 void update_ball(Ball * ball);
 
 #endif /* ball_h */

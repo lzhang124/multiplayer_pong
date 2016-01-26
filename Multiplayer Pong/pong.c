@@ -144,16 +144,11 @@ void mouse_function(int button, int state, int xscr, int yscr)
             ball = add_ball();
 //
 //            // send start message to server to send to other players
-//            Message msg = {-1, -1, -1};
-//            write_message(master_socket, &msg);
+            Message msg = {-1, -1, -1};
+            write_message(master_socket, &msg);
         }
     }
 }
-
-//void key_pressed(unsigned char key, int xscr, int yscr)
-//{
-//    printf("Key %c pressed.\n", key);
-//}
 
 void special_pressed(int key, int xscr, int yscr)
 {
@@ -199,22 +194,23 @@ void set_viewport()
 
 void pong(int argc, char *argv[], char *server_name[], int port_num)
 {
-//    master_socket = start_client(server_name, port_num);
+    master_socket = start_client(server_name, port_num);
     
-    // get paddle number
-//    Message *msg;
-//	read_message(master_socket, msg);
-//    int paddle_number = msg->PADDLE;
-    paddle_number = 3;
+    // get paddle
+    Message *msg;
+	read_message(master_socket, msg);
+    int paddle_number = msg->PADDLE;
     num_players = paddle_number + 1;
+    paddles[paddle_number] = new_paddle(paddle_number, msg->LOCATION, msg->DIRECTION);
     
-    for (i = 0; i <= paddle_number; i++)
+    for (i = 0; i < paddle_number; i++)
     {
-        paddles[i] = add_paddle(i);
+        read_message(master_socket, msg);
+        paddles[i] = new_paddle(i, msg->LOCATION, msg->DIRECTION);
     }
     
     // set master_socket so that reads/writes don't block
-//    fcntl(master_socket, F_SETFL, O_NONBLOCK);
+    fcntl(master_socket, F_SETFL, O_NONBLOCK);
     
     // init glut
     glutInit(&argc, argv);
@@ -236,7 +232,6 @@ void pong(int argc, char *argv[], char *server_name[], int port_num)
     glutIdleFunc(update);
     glutDisplayFunc(display);
     glutMouseFunc(mouse_function);
-//    glutKeyboardFunc(key_pressed);
     glutSpecialFunc(special_pressed);
     glutSpecialUpFunc(special_released);
     glutReshapeFunc(resize);

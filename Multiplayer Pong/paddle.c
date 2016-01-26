@@ -7,24 +7,24 @@
 #include "paddle.h"
 #include "constants.h"
 
-Paddle * add_paddle(int paddle_number)
+Paddle * new_paddle(int paddle_number, int location, PaddleDir direction)
 {
     Paddle *paddle = malloc(sizeof(*paddle));
     if (paddle_number == LEFT)
     {
-        *paddle = (Paddle) {10, 314, LEFT, NONE};
+        *paddle = (Paddle) {10, location, LEFT, direction};
     }
     else if (paddle_number == RIGHT)
     {
-        *paddle = (Paddle) {1120, 314, RIGHT, NONE};
+        *paddle = (Paddle) {1120, location, RIGHT, direction};
     }
     else if (paddle_number == TOP)
     {
-        *paddle = (Paddle) {495, 10, TOP, NONE};
+        *paddle = (Paddle) {location, 10, TOP, direction};
     }
     else if (paddle_number == BOTTOM)
     {
-        *paddle = (Paddle) {495, 720, BOTTOM, NONE};
+        *paddle = (Paddle) {location, 720, BOTTOM, direction};
     }
     return paddle;
 }

@@ -34,7 +34,7 @@ typedef struct
     PaddleDir direction;
 } Paddle;
 
-Paddle *add_paddle(int paddle_number);
+Paddle * new_paddle(int paddle_number, int location, PaddleDir direction);
 void move_up(Paddle * paddle);
 void move_down(Paddle * paddle);
 void move_left(Paddle * paddle);
