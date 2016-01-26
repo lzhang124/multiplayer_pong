@@ -151,13 +151,6 @@ void pong(int port_num)
                     free(msg);
                 }
             }
-            
-            // close the server when no more clients
-            if (game->number_players == 0)
-            {
-                end_game(game, master_socket);
-                exit(0);
-            }
         }
         else
         {
@@ -198,13 +191,13 @@ void pong(int port_num)
                     free(msg);
                 }
             }
+        }
         
-            // close the server when no more clients
-            if (game->number_players == 0)
-            {
-                end_game(game, master_socket);
-                exit(0);
-            }
+        // close the server when no more clients
+        if (game->number_players == 0)
+        {
+            end_game(game, master_socket);
+            exit(0);
         }
     }
 }
