@@ -44,13 +44,13 @@ void update_player(Game *game, int player_number)
         if (paddle->type == LEFT || paddle->type == RIGHT)
         {
             msg.PADDLE = paddle->type;
-            msg.LOCATION = paddle->y;
+            msg.LOCATION = paddle->coordinate;
             msg.DIRECTION = paddle->direction;
         }
         else
         {
             msg.PADDLE = paddle->type;
-            msg.LOCATION = paddle->x;
+            msg.LOCATION = paddle->coordinate;
             msg.DIRECTION = paddle->direction;
         }
         send_message(player_number, &msg);
