@@ -30,6 +30,11 @@
 #define PADDLE_R 1120
 #define PADDLE_T 10
 #define PADDLE_B 720
+#define NUMBER_W 40
+#define NUMBER_H 60
+#define NUMBER_SIZE 10
+#define NUMBER_V_M 25
+#define NUMBER_H_M 15
 
 #define MAX_PLAYERS 4
 #define MAX_SCORE 5
