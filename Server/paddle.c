@@ -12,19 +12,19 @@ Paddle * new_paddle(int paddle_number)
     Paddle *paddle = malloc(sizeof(*paddle));
     if (paddle_number == LEFT)
     {
-        *paddle = (Paddle) {10, LEFT, NONE};
+        *paddle = (Paddle) {V_PADDLE_START, LEFT, NONE};
     }
     else if (paddle_number == RIGHT)
     {
-        *paddle = (Paddle) {1120, RIGHT, NONE};
+        *paddle = (Paddle) {V_PADDLE_START, RIGHT, NONE};
     }
     else if (paddle_number == TOP)
     {
-        *paddle = (Paddle) {10, TOP, NONE};
+        *paddle = (Paddle) {H_PADDLE_START, TOP, NONE};
     }
     else if (paddle_number == BOTTOM)
     {
-        *paddle = (Paddle) {720, BOTTOM, NONE};
+        *paddle = (Paddle) {H_PADDLE_START, BOTTOM, NONE};
     }
     return paddle;
 }

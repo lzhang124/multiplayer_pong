@@ -26,6 +26,7 @@ typedef struct
     int number_players;
     Player *players[MAX_PLAYERS];
     Ball *ball;
+    int started;
 } Game;
 
 void pong(int port_num);

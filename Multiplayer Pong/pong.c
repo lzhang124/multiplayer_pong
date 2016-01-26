@@ -11,9 +11,6 @@
 #include "client.h"
 #include "draw.h"
 
-#define FALSE 0
-#define TRUE 1
-
 const char* NAME = "Pong";
 
 int master_socket;

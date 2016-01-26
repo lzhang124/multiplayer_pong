@@ -7,18 +7,17 @@
 #include "pong.h"
 #include "server.h"
 
-Game *init_game()
+Game * init_game()
 {
     Ball *ball = new_ball();
     Game *game = malloc(sizeof(*game));
-    *game = (Game) {0, {NULL}, ball};
+    *game = (Game) {0, {NULL}, ball, FALSE};
     
     return game;
 }
 
 void add_player(Game *game, int player_number)
 {
-    // MODIFY COORDS
     Paddle *paddle = new_paddle(player_number);
     
     Player *player = malloc(sizeof(*player));
@@ -28,8 +27,7 @@ void add_player(Game *game, int player_number)
     game->number_players++;
     
     // notify all players of new player
-    // bogus location since all clients should know the initial location
-    Message msg = {player_number, 400, NONE};
+    Message msg = {player_number, paddle->coordinate, NONE};
     notify_all(&msg);
 }
 
@@ -41,18 +39,7 @@ void update_player(Game *game, int player_number)
     for (i = 0; i < player_number; i++)
     {
         Paddle *paddle = players[i]->paddle;
-        if (paddle->type == LEFT || paddle->type == RIGHT)
-        {
-            msg.PADDLE = paddle->type;
-            msg.LOCATION = paddle->coordinate;
-            msg.DIRECTION = paddle->direction;
-        }
-        else
-        {
-            msg.PADDLE = paddle->type;
-            msg.LOCATION = paddle->coordinate;
-            msg.DIRECTION = paddle->direction;
-        }
+        msg = (Message) {paddle->type, paddle->coordinate, paddle->direction};
         send_message(player_number, &msg);
     }
 }
@@ -76,7 +63,7 @@ void end_game(Game *game)
 
 int check_start_signal(Message *msg)
 {
-    return msg->PADDLE == -1;
+    return msg->first == -1;
 }
 
 void start_ball(Game *game)
@@ -92,10 +79,10 @@ void pong(int port_num)
     int master_socket = start_server(port_num);
     Game *game = init_game();
     
-    while(game->number_players < MAX_PLAYERS)
+    while(game->number_players < MAX_PLAYERS && !game->started)
     {
         // wait for players to join game
-        if (wait_for_connection(master_socket) == 1)
+        if (wait_for_connection(master_socket))
         {
             int player_number = add_connection(master_socket);
             add_player(game, player_number);

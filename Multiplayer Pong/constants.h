@@ -7,6 +7,9 @@
 #ifndef constants_h
 #define constants_h
 
+#define FALSE 0
+#define TRUE 1
+
 #define WINDOW_W 1135
 #define WINDOW_H 735
 #define WINDOW_START_X 100
@@ -16,6 +19,8 @@
 #define V_PADDLE_H 105
 #define H_PADDLE_W 145
 #define H_PADDLE_H 5
+#define V_PADDLE_START 314
+#define H_PADDLE_START 495
 #define PADDLE_MOVEMENT 4
 #define BALL_W 5
 #define BALL_H 5
@@ -31,7 +36,6 @@
 
 #define BALL_X first
 #define BALL_Y second
-
 #define PADDLE first
 #define LOCATION second
 #define DIRECTION third
