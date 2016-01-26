@@ -54,7 +54,7 @@ Message * read_message(int master_socket)
 {
     Message *msg = malloc(sizeof(*msg));
     long n = read(master_socket, msg, sizeof(*msg));
-    if (n == -1)
+    if (n == -1 || n == 0)
     {
         free(msg);
         return NULL;

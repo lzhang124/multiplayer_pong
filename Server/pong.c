@@ -11,7 +11,7 @@ Game * init_game()
 {
     Ball *ball = new_ball();
     Game *game = malloc(sizeof(*game));
-    *game = (Game) {0, {NULL}, ball, FALSE};
+    *game = (Game) {0, {NULL}, ball, FALSE, 0};
     
     return game;
 }
@@ -53,10 +53,11 @@ void remove_paddle(Game *game, int paddle_number)
     game->number_players--;
 }
 
-void end_game(Game *game)
+void end_game(Game *game, int master_socket)
 {
     free(game->ball);
     free(game);
+    end_connection(master_socket);
 }
 
 int check_start_signal(Message *msg)
@@ -73,7 +74,7 @@ void update_scores(Game *game, int paddle_number)
 {
     // losing paddle +0, all others +1
     int i;
-    for (i = 0; i < MAX_PLAYERS; i++)
+    for (i = 0; i < game->number_players; i++)
     {
         if (i != paddle_number)
         {
@@ -103,9 +104,16 @@ void pong(int port_num)
         // wait for players to join game
         if (!game->started && wait_for_connection(master_socket))
         {
-            int paddle_number = add_connection(master_socket);
-            add_paddle(game, paddle_number);
-            send_all_other_paddles(game, paddle_number);
+            if (game->number_players >= MAX_PLAYERS)
+            {
+                add_connection(master_socket, FALSE);
+            }
+            else
+            {
+                int paddle_number = add_connection(master_socket, TRUE);
+                add_paddle(game, paddle_number);
+                send_all_other_paddles(game, paddle_number);
+            }
         }
         else
         {
@@ -120,8 +128,47 @@ void pong(int port_num)
                 // check if message is a start signal
                 if (check_start_signal(msg))
                 {
-                    start_ball(game);
                     game->started = TRUE;
+                    start_ball(game);
+                }
+                else
+                {
+                    update_paddle(game->paddles[paddle_number], msg->LOCATION, msg->DIRECTION);
+                    notify_others(paddle_number, msg);
+                }
+                free(msg);
+            }
+        }
+        
+        // close the server when no more clients
+        if (game->number_players == 0)
+        {
+            end_game(game, master_socket);
+            break;
+        }
+    }
+    
+    while (game->started)
+    {
+        if (wait_for_connection(master_socket))
+        {
+            add_connection(master_socket, FALSE);
+        }
+        else
+        {
+            int paddle_number = check_socket();
+            Message *msg = read_message(paddle_number);
+            if (msg == NULL)
+            {
+                remove_paddle(game, paddle_number);
+            }
+            else
+            {
+                // check if message is a start signal
+                if (check_start_signal(msg))
+                {
+                    game->started = TRUE;
+                    start_ball(game);
                 }
                 else if (check_ball_hit(msg))
                 {
@@ -142,8 +189,11 @@ void pong(int port_num)
                     
                     if (game->max_score == MAX_SCORE)
                     {
-                        game->started = FALSE;
-                        // reset scores
+                        for (i = 0; i < game->number_players; i++) {
+                            remove_paddle(game, i);
+                        }
+                        end_game(game, master_socket);
+                        break;
                     }
                 }
                 else
@@ -154,12 +204,11 @@ void pong(int port_num)
                 free(msg);
             }
         }
-        
+    
         // close the server when no more clients
         if (game->number_players == 0)
         {
-            end_game(game);
-            end_connection(master_socket);
+            end_game(game, master_socket);
             break;
         }
     }

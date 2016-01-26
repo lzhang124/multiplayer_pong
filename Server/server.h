@@ -20,7 +20,7 @@
 
 int start_server(int port_num);
 int wait_for_connection(int master_socket);
-int add_connection(int master_socket);
+int add_connection(int master_socket, int accept_connection);
 int check_socket();
 void disconnect(int client_number);
 void end_connection(int master_socket);

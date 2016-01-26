@@ -282,16 +282,24 @@ void pong(int argc, char *argv[], char *server_name[], int port_num)
     
     // get paddle
     Message *msg = read_message(master_socket);
-    paddle_number = msg->PADDLE;
-    num_players = paddle_number + 1;
-    paddles[paddle_number] = new_paddle(paddle_number, msg->LOCATION, msg->DIRECTION);
-    
-    for (i = 0; i < paddle_number; i++)
+    if (msg)
     {
-        msg = read_message(master_socket);
-        paddles[i] = new_paddle(i, msg->LOCATION, msg->DIRECTION);
+        paddle_number = msg->PADDLE;
+        num_players = paddle_number + 1;
+        paddles[paddle_number] = new_paddle(paddle_number, msg->LOCATION, msg->DIRECTION);
+        
+        for (i = 0; i < paddle_number; i++)
+        {
+            msg = read_message(master_socket);
+            paddles[i] = new_paddle(i, msg->LOCATION, msg->DIRECTION);
+        }
+        free(msg);
     }
-    free(msg);
+    else
+    {
+        end_connection(master_socket);
+        exit(0);
+    }
     
     // set master_socket so that reads/writes don't block
     fcntl(master_socket, F_SETFL, O_NONBLOCK);
