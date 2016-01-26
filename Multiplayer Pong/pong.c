@@ -33,7 +33,7 @@ void update()
     
         // move the paddles
         for (i = 0; i < num_players; i++) {
-            Paddle *paddle = paddles[paddle_number];
+            Paddle *paddle = paddles[i];
             move_paddle(paddle);
         }
         
@@ -237,7 +237,7 @@ void pong(int argc, char *argv[], char *server_name[], int port_num)
     
     // get paddle
     Message *msg = read_message(master_socket);
-    int paddle_number = msg->PADDLE;
+    paddle_number = msg->PADDLE;
     num_players = paddle_number + 1;
     paddles[paddle_number] = new_paddle(paddle_number, msg->LOCATION, msg->DIRECTION);
     
