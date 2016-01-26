@@ -28,17 +28,13 @@ typedef enum
 
 typedef struct
 {
-    int x;
-    int y;
+    int coordinate;
     PaddleType type;
     PaddleDir direction;
 } Paddle;
 
 Paddle * new_paddle(int paddle_number, int location, PaddleDir direction);
 void update_paddle(Paddle * paddle, int location, PaddleDir direction);
-void move_up(Paddle * paddle);
-void move_down(Paddle * paddle);
-void move_left(Paddle * paddle);
-void move_right(Paddle * paddle);
+void move_paddle(Paddle * paddle);
 
 #endif /* paddle_h */

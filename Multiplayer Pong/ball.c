@@ -14,7 +14,7 @@ Ball * new_ball(int x, int y, BallDir direction)
     return ball;
 }
 
-void update_ball(Ball * ball)
+void move_ball(Ball * ball)
 {
     if (ball->direction == DOWN_RIGHT)
     {
