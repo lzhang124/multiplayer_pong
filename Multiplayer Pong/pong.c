@@ -30,6 +30,33 @@ void update()
     if (count == 1000)
     {
         count = 0;
+        
+        // update paddles
+        Message *msg = read_message(master_socket);
+        
+        if (msg) {
+            if (msg->first > MAX_PLAYERS)
+            {
+                // receiving ball location
+                started = TRUE;
+                ball = new_ball(msg->BALL_X, msg->BALL_Y, msg->DIRECTION);
+            }
+            else
+            {
+                // receiving paddle update
+                if (!paddles[msg->PADDLE])
+                {
+                    paddles[msg->PADDLE] = new_paddle(msg->PADDLE, msg->LOCATION, msg->DIRECTION);
+                    num_players++;
+                }
+                else
+                {
+                    update_paddle(paddles[msg->PADDLE], msg->LOCATION, msg->DIRECTION);
+                }
+            }
+            
+            free(msg);
+        }
     
         // move the paddles
         for (i = 0; i < num_players; i++) {
@@ -41,35 +68,6 @@ void update()
         {
             // move the ball
             move_ball(ball);
-        }
-        else
-        {
-            Message *msg = read_message(master_socket);
-            
-            if (msg) {
-                if (msg->first > MAX_PLAYERS)
-                {
-                    // receiving ball location
-                    started = TRUE;
-                    ball = new_ball(msg->BALL_X, msg->BALL_Y, msg->DIRECTION);
-                }
-                else
-                {
-                    // receiving paddle update
-                    if (!paddles[msg->PADDLE])
-                    {
-                        paddles[msg->PADDLE] = new_paddle(msg->PADDLE, msg->LOCATION, msg->DIRECTION);
-                        num_players++;
-                    }
-                    else
-                    {
-                        update_paddle(paddles[msg->PADDLE], msg->LOCATION, msg->DIRECTION);
-                    }
-                }
-                
-                free(msg);
-            }
-            
         }
         
         // redraw the window
