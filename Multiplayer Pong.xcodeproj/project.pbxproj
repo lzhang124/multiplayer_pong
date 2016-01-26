@@ -58,16 +58,18 @@
 		462B424E1C5181A0005889C7 /* client.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = client.h; sourceTree = "<group>"; };
 		467848C81C53278B0026719C /* ball.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ball.c; sourceTree = "<group>"; };
 		467848C91C53278B0026719C /* ball.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ball.h; sourceTree = "<group>"; };
-		467848CC1C5330060026719C /* constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = constants.h; path = "Multiplayer Pong/constants.h"; sourceTree = "<group>"; };
+		467848CC1C5330060026719C /* constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = constants.h; sourceTree = "<group>"; };
 		467848CD1C5335090026719C /* draw.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = draw.c; sourceTree = "<group>"; };
 		467848CE1C5335090026719C /* draw.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = draw.h; sourceTree = "<group>"; };
 		467DD29D1C56F2B9006ED197 /* ball.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ball.h; sourceTree = "<group>"; };
 		467DD29E1C56F2B9006ED197 /* paddle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = paddle.h; sourceTree = "<group>"; };
+		4691F0601C583DE400B30C7D /* constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = constants.h; sourceTree = "<group>"; };
+		4691F0611C583DE400B30C7D /* message.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = message.h; sourceTree = "<group>"; };
 		469FE97F1C528E76007B64E8 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		469FE9811C528EDF007B64E8 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
 		469FE99D1C52EF67007B64E8 /* paddle.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = paddle.c; sourceTree = "<group>"; };
 		469FE99E1C52EF67007B64E8 /* paddle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = paddle.h; sourceTree = "<group>"; };
-		46F1B0CE1C56D6FB0021044E /* message.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = message.h; path = "Multiplayer Pong/message.h"; sourceTree = "<group>"; };
+		46F1B0CE1C56D6FB0021044E /* message.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = message.h; sourceTree = "<group>"; };
 		46F1B0D01C56E4B40021044E /* ball.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ball.c; sourceTree = "<group>"; };
 		46F1B0D21C56E4E70021044E /* paddle.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = paddle.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -97,8 +99,6 @@
 			children = (
 				469FE9811C528EDF007B64E8 /* GLUT.framework */,
 				469FE97F1C528E76007B64E8 /* OpenGL.framework */,
-				46F1B0CE1C56D6FB0021044E /* message.h */,
-				467848CC1C5330060026719C /* constants.h */,
 				4603A85B1C5026EC00F2D26C /* Multiplayer Pong */,
 				4603A8711C5036C900F2D26C /* Server */,
 				462B42451C51720F005889C7 /* Multiplayer Pong */,
@@ -114,8 +114,10 @@
 				467848C91C53278B0026719C /* ball.h */,
 				462B424D1C5181A0005889C7 /* client.c */,
 				462B424E1C5181A0005889C7 /* client.h */,
+				467848CC1C5330060026719C /* constants.h */,
 				467848CD1C5335090026719C /* draw.c */,
 				467848CE1C5335090026719C /* draw.h */,
+				46F1B0CE1C56D6FB0021044E /* message.h */,
 				469FE99D1C52EF67007B64E8 /* paddle.c */,
 				469FE99E1C52EF67007B64E8 /* paddle.h */,
 				4603A8951C50392D00F2D26C /* pong.c */,
@@ -130,6 +132,8 @@
 				4603A8721C5036C900F2D26C /* main.c */,
 				46F1B0D01C56E4B40021044E /* ball.c */,
 				467DD29D1C56F2B9006ED197 /* ball.h */,
+				4691F0601C583DE400B30C7D /* constants.h */,
+				4691F0611C583DE400B30C7D /* message.h */,
 				46F1B0D21C56E4E70021044E /* paddle.c */,
 				467DD29E1C56F2B9006ED197 /* paddle.h */,
 				462B424A1C518080005889C7 /* pong.c */,
