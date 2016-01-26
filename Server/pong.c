@@ -125,16 +125,16 @@ void pong(int port_num)
                 }
                 else if (check_ball_hit(msg))
                 {
-                    update_scores(game, paddle_number);
+                    update_scores(game, msg->PADDLE);
                     notify_all(msg);
                     
-                    Message reset_msg;
                     reset_ball(game->ball);
                     int i;
                     for (i = 0; i < game->number_players; i++)
                     {
                         Paddle *paddle = game->paddles[i];
                         reset_paddle(paddle);
+                        Message reset_msg;
                         reset_msg = (Message) {i, paddle->coordinate, paddle->direction};
                         notify_all(&reset_msg);
                     }
