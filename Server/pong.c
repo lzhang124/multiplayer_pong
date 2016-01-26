@@ -102,11 +102,18 @@ void pong(int port_num)
     while(!game->started)
     {
         // wait for players to join game
-        if (wait_for_connection(master_socket) && game->number_players < MAX_PLAYERS)
+        if (wait_for_connection(master_socket))
         {
-            int paddle_number = add_connection(master_socket);
-            add_paddle(game, paddle_number);
-            send_all_other_paddles(game, paddle_number);
+            if (game->number_players >= MAX_PLAYERS)
+            {
+                add_connection(master_socket, FALSE);
+            }
+            else
+            {
+                int paddle_number = add_connection(master_socket, TRUE);
+                add_paddle(game, paddle_number);
+                send_all_other_paddles(game, paddle_number);
+            }
         }
         else
         {
@@ -143,8 +150,9 @@ void pong(int port_num)
     
     while (game->started)
     {
-        if (!wait_for_connection(master_socket)) {
-            
+        if (wait_for_connection(master_socket))
+        {
+            add_connection(master_socket, FALSE);
         }
         else
         {

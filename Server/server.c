@@ -92,7 +92,7 @@ int wait_for_connection(int master_socket)
     return 0;
 }
 
-int add_connection(int master_socket)
+int add_connection(int master_socket, int accept_connection)
 {
     // accept incoming connections, need client address
     struct sockaddr_in cli_addr;
@@ -103,6 +103,11 @@ int add_connection(int master_socket)
     {
         perror("ERROR cannot accept connection");
         exit(EXIT_FAILURE);
+    }
+    
+    if (!accept_connection) {
+        close(new_socket);
+        return -1;
     }
     
     // inform user of socket number - used in send and receive commands
