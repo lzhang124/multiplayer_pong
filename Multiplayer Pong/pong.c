@@ -46,10 +46,6 @@ void update()
                 // reset paddles
                 for (i = 0; i < num_players; i++)
                 {
-                    if (i != msg->PADDLE)
-                    {
-                        paddles[i]->score++;
-                    }
                     reset_paddle(paddles[i]);
                 }
             }
@@ -66,6 +62,13 @@ void update()
                     if (msg->second == -1)
                     {
                         start_ball = FALSE;
+                        for (i = 0; i < num_players; i++)
+                        {
+                            if (i != msg->PADDLE)
+                            {
+                                paddles[i]->score++;
+                            }
+                        }
                     }
                     else
                     {
