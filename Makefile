@@ -1,3 +1,10 @@
+ifeq ($(OS),Windows_NT)
+COMMAND = dir
+else
+COMMAND = cd
+endif
+
 all :
-	cd Multiplayer\ Pong; make
-	cd Server; make
+	mkdir -p build
+	$(COMMAND) Multiplayer\ Pong; make
+	$(COMMAND) Server; make
