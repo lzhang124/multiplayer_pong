@@ -3,7 +3,7 @@ all : pong
 CFLAGS = -Wno-deprecated
 
 ifeq ($(OS),Windows_NT)
-LDFLAGS = -lopengl32 -lglu32 -lglut32
+LDFLAGS = -lGL -lGLU -lglut
 else
 LDFLAGS = -framework OpenGL -framework GLUT
 endif
